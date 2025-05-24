@@ -60,6 +60,7 @@ Kassa — это современное приложение для автома
 
    ```sh
    dotnet tool install --global dotnet-ef
+   dotnet ef migrations add 'init' --project ./kassa
    dotnet ef database update --project ./kassa
    ```
 
