@@ -3,6 +3,7 @@ using System;
 using Kassa;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kassa.Migrations
 {
     [DbContext(typeof(KassaContext))]
-    partial class KassaContextModelSnapshot : ModelSnapshot
+    [Migration("20250524074401_AddGuestNumberToOrderItem")]
+    partial class AddGuestNumberToOrderItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,38 +166,6 @@ namespace Kassa.Migrations
                             Name = "Второй этаж",
                             TableCount = 8
                         });
-                });
-
-            modelBuilder.Entity("Kassa.Models.TableReservation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<TimeOnly>("FromTime")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<int>("HallId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("TableNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<TimeOnly>("ToTime")
-                        .HasColumnType("time without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TableReservations");
                 });
 
             modelBuilder.Entity("Kassa.Order", b =>
