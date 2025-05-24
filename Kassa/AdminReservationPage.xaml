@@ -1,0 +1,113 @@
+<Page x:Class="Kassa.AdminReservationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      Title="Резервирование стола">
+    <StackPanel Margin="20">
+        <TextBlock Text="Резервирование стола"
+                   FontWeight="Bold"
+                   FontSize="18"
+                   Margin="0,0,0,10"/>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,0,0,10">
+            <TextBlock Text="Зал:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0"/>
+            <ComboBox x:Name="HallComboBox"
+                      Width="120"
+                      SelectionChanged="HallComboBox_SelectionChanged"
+                      Margin="0,0,10,0"/>
+            <TextBlock Text="Стол:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0"/>
+            <ComboBox x:Name="TableComboBox"
+                      Width="80"
+                      Margin="0,0,10,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                Margin="0,0,0,10">
+            <TextBlock Text="Дата:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0"/>
+            <DatePicker x:Name="ReservationDatePicker"
+                        Width="120"
+                        Margin="0,0,10,0"/>
+            <TextBlock Text="Время с:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0"/>
+            <xctk:TimePicker x:Name="FromTimePicker"
+                             Width="90"
+                             Format="Custom"
+                             FormatString="HH:mm"
+                             Margin="0,0,10,0"/>
+            <TextBlock Text="до"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0"/>
+            <xctk:TimePicker x:Name="ToTimePicker"
+                             Width="90"
+                             Format="Custom"
+                             FormatString="HH:mm"
+                             Margin="0,0,10,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                Margin="0,0,0,10">
+            <TextBlock Text="Имя:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0"/>
+            <TextBox x:Name="NameTextBox"
+                     Width="120"
+                     Margin="0,0,10,0"/>
+            <Button Content="Зарезервировать"
+                    Margin="10,0,0,0"
+                    Click="ReserveButton_Click"/>
+        </StackPanel>
+        <Separator Margin="0,10,0,10"/>
+        <TextBlock Text="Таймлайн резервирования"
+                   FontWeight="Bold"
+                   FontSize="16"
+                   Margin="0,0,0,10"/>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,0,0,10">
+            <TextBlock Text="Дата:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0"/>
+            <DatePicker x:Name="TimelineDatePicker"
+                        Width="120"
+                        SelectedDateChanged="TimelineDatePicker_SelectedDateChanged"
+                        Margin="0,0,10,0"/>
+            <TextBlock Text="Зал:"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0"/>
+            <ComboBox x:Name="TimelineHallComboBox"
+                      Width="120"
+                      SelectionChanged="TimelineHallComboBox_SelectionChanged"/>
+        </StackPanel>
+        <ListView x:Name="TimelineListView"
+                  Height="200">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Стол"
+                                    Width="60"
+                                    DisplayMemberBinding="{Binding TableNumber}"/>
+                    <GridViewColumn Header="Время"
+                                    Width="160">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text=" с "/>
+                                    <Run Text="{Binding FromTime, StringFormat='HH:mm'}"/>
+                                    <Run Text=" по "/>
+                                    <Run Text="{Binding ToTime, StringFormat='HH:mm'}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Имя"
+                                    Width="120"
+                                    DisplayMemberBinding="{Binding Name}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </StackPanel>
+</Page>

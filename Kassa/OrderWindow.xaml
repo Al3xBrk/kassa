@@ -1,0 +1,101 @@
+<Window x:Class="Kassa.OrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Создание заказа"
+        Height="400"
+        Width="600"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Группы блюд"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Margin="0,0,0,10"/>
+            <ListBox x:Name="GroupsListBox"
+                     SelectionChanged="GroupsListBox_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    Margin="16,0,0,0">
+            <TextBlock Text="Блюда"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Margin="0,0,0,10"/>
+            <ListBox x:Name="DishesListBox">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,2">
+                            <TextBlock Text="{Binding Name}"
+                                       FontSize="14"
+                                       Width="160"/>
+                            <TextBlock Text="{Binding Price, StringFormat='{}{0:N2} BYN'}"
+                                       FontSize="14"
+                                       Width="80"/>
+                            <Button Content="Добавить"
+                                    Width="80"
+                                    Margin="10,0,0,0"
+                                    Click="AddDishToOrder_Click"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock Text="Список заказа"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Margin="0,20,0,10"/>
+            <ListBox x:Name="OrderListBox"
+                     Height="100"
+                     SelectionChanged="OrderListBox_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding DisplayName}"
+                                    FontWeight="Bold"
+                                    FontSize="14"/>
+                            <ItemsControl ItemsSource="{Binding Dishes}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding NameAndPrice}"
+                                                FontSize="13"
+                                                Margin="10,0,0,0"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button x:Name="AddGuestButton"
+                    Content="Добавить гостя"
+                    Width="120"
+                    Height="28"
+                    Margin="0,5,0,0"
+                    Click="AddGuestButton_Click"/>
+            <TextBlock Text="Итоговая сумма:"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Margin="0,10,0,0"/>
+            <TextBlock x:Name="TotalAmountTextBlock"
+                       FontSize="16"/>
+            <Button x:Name="SaveOrderButton"
+                    Content="Сохранить"
+                    Width="100"
+                    Height="30"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Right"
+                    Click="SaveOrder_Click"/>
+            <Button x:Name="PayOrderButton"
+                    Content="Оплатить"
+                    Width="100"
+                    Height="30"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Right"
+                    Visibility="Collapsed"
+                    Click="PayOrder_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
