@@ -56,6 +56,24 @@ namespace Kassa
                     v => v.Kind == DateTimeKind.Utc ? v : v.ToUniversalTime(),
                     v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
             });
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.Items)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Dish)
+                .WithMany()
+                .HasForeignKey(oi => oi.DishId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.DishGroup)
+                .WithMany()
+                .HasForeignKey(oi => oi.DishGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

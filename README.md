@@ -72,5 +72,5 @@ Kassa — это современное приложение для автома
 
 6. **Запустите приложение**
    ```sh
-   dotnet run --project Kassa.csproj
+   dotnet run --project Kassa
    ```
