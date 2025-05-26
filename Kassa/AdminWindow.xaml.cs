@@ -20,6 +20,7 @@ namespace Kassa
             NavDishesButton.Click += NavDishesButton_Click;
             NavProfitButton.Click += NavProfitButton_Click;
             NavReservationButton.Click += NavReservationButton_Click;
+            NavOrderHistoryButton.Click += NavOrderHistoryButton_Click;
             AdminContentFrame.NavigationUIVisibility = System.Windows.Navigation.NavigationUIVisibility.Hidden;
             AdminContentFrame.Navigate(new AdminDishesPage());
         }
@@ -37,6 +38,11 @@ namespace Kassa
         private void NavReservationButton_Click(object sender, RoutedEventArgs e)
         {
             AdminContentFrame.Navigate(new AdminReservationPage());
+        }
+
+        private void NavOrderHistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            AdminContentFrame.Navigate(new AdminOrderHistoryPage());
         }
 
         private void NavHomeButton_Click(object sender, RoutedEventArgs e)

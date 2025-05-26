@@ -5,44 +5,49 @@
         Height="500"
         Width="900"
         WindowStartupLocation="CenterScreen">
-    <Grid Margin="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="180"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <!-- Панель управления -->
-        <StackPanel Grid.Column="0"
-                    Background="#f3f3f3"
-                    Margin="0,0,12,0"
-                    VerticalAlignment="Stretch">
-            <TextBlock Text="Панель администратора"
-                       FontWeight="Bold"
-                       FontSize="16"
-                       Margin="10,10,10,20"/>
-            <Button x:Name="NavHomeButton"
-                    Content="На главную"
-                    Margin="10,0,10,10"
-                    Height="40"
-                    Click="NavHomeButton_Click"/>
-            <Button x:Name="NavDishesButton"
-                    Content="Добавление блюд"
-                    Margin="10,0,10,10"
-                    Height="40"
-                    Click="NavDishesButton_Click"/>
-            <Button x:Name="NavProfitButton"
-                    Content="График прибыли"
-                    Margin="10,0,10,10"
-                    Height="40"
-                    Click="NavProfitButton_Click"/>
-            <Button x:Name="NavReservationButton"
-                    Content="Резервирование стола"
-                    Margin="10,0,10,10"
-                    Height="40"
-                    Click="NavReservationButton_Click"/>
-        </StackPanel>
-        <!-- Контент -->
-        <Frame x:Name="AdminContentFrame"
-               Grid.Column="1"
-               NavigationUIVisibility="Hidden"/>
-    </Grid>
+        <Grid Margin="20">
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!-- Панель управления -->
+                <StackPanel Grid.Column="0"
+                            Background="#f3f3f3"
+                            Margin="0,0,12,0"
+                            VerticalAlignment="Stretch">
+                        <TextBlock Text="Панель администратора"
+                                   FontWeight="Bold"
+                                   FontSize="16"
+                                   Margin="10,10,10,20"/>
+                        <Button x:Name="NavHomeButton"
+                                Content="На главную"
+                                Margin="10,0,10,10"
+                                Height="40"
+                                Click="NavHomeButton_Click"/>
+                        <Button x:Name="NavDishesButton"
+                                Content="Добавление блюд"
+                                Margin="10,0,10,10"
+                                Height="40"
+                                Click="NavDishesButton_Click"/>
+                        <Button x:Name="NavProfitButton"
+                                Content="График прибыли"
+                                Margin="10,0,10,10"
+                                Height="40"
+                                Click="NavProfitButton_Click"/>
+                        <Button x:Name="NavReservationButton"
+                                Content="Резервирование стола"
+                                Margin="10,0,10,10"
+                                Height="40"
+                                Click="NavReservationButton_Click"/>
+                        <Button x:Name="NavOrderHistoryButton"
+                                Content="История заказов"
+                                Margin="10,0,10,10"
+                                Height="40"
+                                Click="NavOrderHistoryButton_Click"/>
+                </StackPanel>
+                <!-- Контент -->
+                <Frame x:Name="AdminContentFrame"
+                       Grid.Column="1"
+                       NavigationUIVisibility="Hidden"/>
+        </Grid>
 </Window>

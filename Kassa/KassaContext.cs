@@ -53,10 +53,12 @@ namespace Kassa
 
             modelBuilder.Entity<Kassa.Models.TableReservation>(entity =>
             {
-                entity.Property(e => e.Date).HasConversion(
-                    v => v.Kind == DateTimeKind.Utc ? v : v.ToUniversalTime(),
-                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+                // Удалено: HasConversion для DateTimeKind
             });
+
+            modelBuilder.Entity<Kassa.Models.TableReservation>()
+                .Property(r => r.Date)
+                .HasColumnType("timestamp without time zone");
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
@@ -75,6 +77,10 @@ namespace Kassa
                 .WithMany()
                 .HasForeignKey(oi => oi.DishGroupId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.OrderDate)
+                .HasColumnType("timestamp without time zone");
         }
     }
 }

@@ -170,7 +170,7 @@ namespace Kassa
                     HallId = _hallId,
                     TableNumber = _tableNumber,
                     TotalAmount = total,
-                    OrderDate = DateTime.UtcNow,
+                    OrderDate = DateTime.UtcNow, // Сохраняем дату в UTC
                     StatusId = 1 // "Создан"
                 };
                 _context.Orders.Add(order);
@@ -185,7 +185,6 @@ namespace Kassa
                             DishId = dish.Id,
                             DishGroupId = dish.DishGroupId,
                             Price = dish.Price,
-
                             GuestNumber = guest.Number
                         });
                     }
