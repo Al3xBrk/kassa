@@ -96,7 +96,6 @@ namespace Kassa
         {
             AdminContentFrame.Navigate(new AdminReservationPage());
         }
-
         private void NavOrderHistoryButton_Click(object sender, RoutedEventArgs e)
         {
             AdminContentFrame.Navigate(new AdminOrderHistoryPage());

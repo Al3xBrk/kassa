@@ -1,43 +1,133 @@
 <Page x:Class="Kassa.AdminOrderHistoryPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:Kassa"
       Title="История заказов">
-    <StackPanel Margin="20">
-        <TextBlock Text="История заказов"
-                FontWeight="Bold"
-                FontSize="18"
-                Margin="0,0,0,10"/>
-        <StackPanel Orientation="Horizontal"
-                Margin="0,0,0,10">
-            <TextBlock Text="Год:"
-                    VerticalAlignment="Center"
-                    Margin="0,0,5,0"/>
-            <ComboBox x:Name="YearComboBox"
-                    Width="80"
-                    SelectionChanged="Filter_Changed"
-                    Margin="0,0,10,0"/>
-            <TextBlock Text="Дата:"
-                    VerticalAlignment="Center"
-                    Margin="0,0,5,0"/>
-            <DatePicker x:Name="DatePickerFilter"
-                    Width="140"
-                    SelectedDateChanged="DatePickerFilter_SelectedDateChanged"/>
-        </StackPanel>
-        <ListView x:Name="OrderHistoryListView"
-                Height="320">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Дата и время"
-                            Width="160"
-                            DisplayMemberBinding="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}"/>
-                    <GridViewColumn Header="Стоимость"
-                            Width="100"
-                            DisplayMemberBinding="{Binding TotalAmount, StringFormat=N2}"/>
-                    <GridViewColumn Header="Статус"
-                            Width="100"
-                            DisplayMemberBinding="{Binding StatusName}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </StackPanel>
+        <Grid Margin="20">
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Заголовок -->
+                <TextBlock Grid.Row="0"
+                           Text="История заказов"
+                           FontWeight="Bold"
+                           FontSize="18"
+                           Margin="0,0,0,10"/>
+
+                <!-- Фильтры -->
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal"
+                            Margin="0,0,0,10">
+                        <TextBlock Text="Год:"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"/>
+                        <ComboBox x:Name="YearComboBox"
+                                  Width="80"
+                                  SelectionChanged="Filter_Changed"
+                                  Margin="0,0,10,0"/>
+                        <TextBlock Text="Дата:"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"/>
+                        <DatePicker x:Name="DatePickerFilter"
+                                    Width="140"
+                                    SelectedDateChanged="DatePickerFilter_SelectedDateChanged"
+                                    Margin="0,0,10,0"/>
+                        <TextBlock Text="Кассир:"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"/>
+                        <ComboBox x:Name="CashierComboBox"
+                                  Width="150"
+                                  SelectionChanged="Filter_Changed"
+                                  DisplayMemberPath="FullName"/>
+                </StackPanel>
+
+                <!-- Группировка по кассирам и заказам -->
+                <Grid Grid.Row="2"
+                                Margin="0,10,0,0">
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Заголовки столбцов -->
+                        <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="160"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0"
+                                                Text="Кассир"
+                                                FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1"
+                                                Text="Дата и время"
+                                                FontWeight="Bold"/>
+                                <TextBlock Grid.Column="2"
+                                                Text="Стоимость"
+                                                FontWeight="Bold"/>
+                                <TextBlock Grid.Column="3"
+                                                Text="Статус"
+                                                FontWeight="Bold"/>
+                                <TextBlock Grid.Column="4"
+                                                Text="Способ оплаты"
+                                                FontWeight="Bold"/>
+                        </Grid>
+
+                        <!-- Список заказов с группировкой по кассирам -->
+                        <ListView Grid.Row="1"
+                                        x:Name="OrdersListView">
+                                <ListView.View>
+                                        <GridView>
+                                                <GridViewColumn Header="Кассир"
+                                                                Width="200"
+                                                                DisplayMemberBinding="{Binding CashierName}"/>
+                                                <GridViewColumn Header="Дата и время"
+                                                                Width="160"
+                                                                DisplayMemberBinding="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}"/>
+                                                <GridViewColumn Header="Стоимость"
+                                                                Width="100"
+                                                                DisplayMemberBinding="{Binding TotalAmount, StringFormat='{}{0:N2} BYN'}"/>
+                                                <GridViewColumn Header="Статус"
+                                                                Width="100"
+                                                                DisplayMemberBinding="{Binding StatusName}"/>
+                                                <GridViewColumn Header="Способ оплаты"
+                                                                Width="120"
+                                                                DisplayMemberBinding="{Binding PaymentMethod}"/>
+                                        </GridView>
+                                </ListView.View>
+                        </ListView>
+                </Grid>
+
+                <!-- Информация о сменах -->
+                <Expander Grid.Row="3"
+                                Header="Информация о сменах"
+                                Margin="0,10,0,0">
+                        <ListView x:Name="ShiftsListView"
+                                        Height="150">
+                                <ListView.View>
+                                        <GridView>
+                                                <GridViewColumn Header="Кассир"
+                                                                Width="150"
+                                                                DisplayMemberBinding="{Binding CashierName}"/>
+                                                <GridViewColumn Header="Открыта"
+                                                                Width="160"
+                                                                DisplayMemberBinding="{Binding OpenedAt, StringFormat=dd.MM.yyyy HH:mm}"/>
+                                                <GridViewColumn Header="Закрыта"
+                                                                Width="160"
+                                                                DisplayMemberBinding="{Binding ClosedAt, StringFormat=dd.MM.yyyy HH:mm}"/>
+                                                <GridViewColumn Header="Продолжительность"
+                                                                Width="120"
+                                                                DisplayMemberBinding="{Binding Duration}"/>
+                                        </GridView>
+                                </ListView.View>
+                        </ListView>
+                </Expander>
+        </Grid>
 </Page>
