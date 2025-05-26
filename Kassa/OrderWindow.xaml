@@ -47,28 +47,48 @@
                        FontWeight="Bold"
                        FontSize="16"
                        Margin="0,20,0,10"/>
-            <ListBox x:Name="OrderListBox"
-                     Height="100"
-                     SelectionChanged="OrderListBox_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding DisplayName}"
-                                    FontWeight="Bold"
-                                    FontSize="14"/>
-                            <ItemsControl ItemsSource="{Binding Dishes}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding NameAndPrice}"
-                                                FontSize="13"
-                                                Margin="10,0,0,0"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ScrollViewer Height="200"
+                    VerticalScrollBarVisibility="Auto">
+                <ListBox x:Name="OrderListBox"
+                         BorderThickness="0"
+                         SelectionChanged="OrderListBox_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding DisplayName}"
+                                           FontWeight="Bold"
+                                           FontSize="14"/>
+                                <ItemsControl ItemsSource="{Binding Dishes}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="80"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding NameAndPrice}"
+                                                           FontSize="13"
+                                                           Margin="10,0,0,0"
+                                                           VerticalAlignment="Center"/>
+                                                <Button Content="Удалить"
+                                                        Grid.Column="1"
+                                                        Margin="10,0,0,0"
+                                                        Click="RemoveDishFromOrder_Click"
+                                                        Tag="{Binding}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
             <Button x:Name="AddGuestButton"
                     Content="Добавить гостя"
                     Width="120"

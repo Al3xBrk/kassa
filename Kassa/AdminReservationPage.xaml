@@ -26,7 +26,7 @@
                       Margin="0,0,10,0"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
-                Margin="0,0,0,10">
+                    Margin="0,0,0,10">
             <TextBlock Text="Дата:"
                        VerticalAlignment="Center"
                        Margin="0,0,5,0"/>
@@ -51,7 +51,7 @@
                              Margin="0,0,10,0"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
-                Margin="0,0,0,10">
+                    Margin="0,0,0,10">
             <TextBlock Text="Имя:"
                        VerticalAlignment="Center"
                        Margin="0,0,5,0"/>
@@ -106,6 +106,16 @@
                     <GridViewColumn Header="Имя"
                                     Width="120"
                                     DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header=""
+                                    Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Отменить"
+                                        Click="CancelReservation_Click"
+                                        Tag="{Binding Id}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

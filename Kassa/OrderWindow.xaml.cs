@@ -125,6 +125,21 @@ namespace Kassa
             }
         }
 
+        private void RemoveDishFromOrder_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is DishViewModel dish)
+            {
+                // Найти гостя, которому принадлежит это блюдо
+                var guest = Guests.FirstOrDefault(g => g.Dishes.Contains(dish));
+                if (guest != null)
+                {
+                    guest.Dishes.Remove(dish);
+                    RefreshOrderListBox();
+                    UpdateTotalAmount();
+                }
+            }
+        }
+
         private void RefreshOrderListBox()
         {
             // Для отображения блюда с ценой
@@ -170,7 +185,7 @@ namespace Kassa
                             DishId = dish.Id,
                             DishGroupId = dish.DishGroupId,
                             Price = dish.Price,
-                         
+
                             GuestNumber = guest.Number
                         });
                     }

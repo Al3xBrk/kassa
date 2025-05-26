@@ -128,5 +128,22 @@ namespace Kassa
                 adminWindow.NavigateToDishesPage();
             }
         }
-    }    
+
+        private void CancelReservation_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int reservationId)
+            {
+                var reservation = _context.TableReservations.FirstOrDefault(r => r.Id == reservationId);
+                if (reservation != null)
+                {
+                    if (MessageBox.Show($"Отменить резерв для стола {reservation.TableNumber} ({reservation.Name})?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        _context.TableReservations.Remove(reservation);
+                        _context.SaveChanges();
+                        UpdateTimeline();
+                    }
+                }
+            }
+        }
+    }
 }

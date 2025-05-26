@@ -54,8 +54,10 @@ Kassa — это современное приложение для автома
    ```
 
 3. **Изменить строку подключения в соответствии со своим логином и паролем**
+
    - Путь: Kassa\KassaContext.cs
    - optionsBuilder.UseSqlServer("Server=localhost;Database=kassa;User Id=sa;Password=yourStrong(!)Password;TrustServerCertificate=True;");
+
 4. **Выполните миграции базы данных**
 
    ```sh
