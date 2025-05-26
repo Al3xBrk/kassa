@@ -20,7 +20,7 @@ namespace Kassa
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=kassa;User Id=sa;Password=yourStrong(!)Password;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=kassa;TrustServerCertificate=True;");
                 //optionsBuilder.UseNpgsql("Host=localhost;Database=kassa;Username=postgres;Password=manager");
             }
         }
