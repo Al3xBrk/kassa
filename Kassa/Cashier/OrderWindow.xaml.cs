@@ -244,7 +244,7 @@ namespace Kassa
             DishesListBox.IsEnabled = false;
             SaveOrderButton.IsEnabled = false;
             PayOrderButton.Visibility = Visibility.Visible;
-            PrintReceiptButton.Visibility = Visibility.Visible;
+
         }
         private void PayOrder_Click(object sender, RoutedEventArgs e)
         {
