@@ -11,6 +11,7 @@ namespace Kassa
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<Kassa.Models.TableReservation> TableReservations { get; set; }
+        public DbSet<Kassa.Models.User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -81,6 +82,26 @@ namespace Kassa
             modelBuilder.Entity<Order>()
                 .Property(o => o.OrderDate)
                 .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Kassa.Models.User>(entity =>
+            {
+                entity.HasIndex(u => u.FullName).IsUnique();
+                entity.Property(u => u.FullName).IsRequired();
+                entity.Property(u => u.Role).IsRequired();
+                entity.Property(u => u.PasswordHash).IsRequired();
+                entity.Property(u => u.AutoLogoutMinutes).IsRequired().HasDefaultValue(10);
+            });
+
+            modelBuilder.Entity<Kassa.Models.User>().HasData(
+                new Kassa.Models.User
+                {
+                    Id = 1,
+                    FullName = "АдминАА",
+                    Role = Kassa.Models.UserRole.Administrator,
+                    PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+                    AutoLogoutMinutes = 10
+                }
+            );
         }
     }
 }

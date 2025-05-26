@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.Models;
 
 namespace Kassa
 {
@@ -21,18 +22,35 @@ namespace Kassa
             InitializeComponent();
         }
 
+        private void ShowLogin(UserRole role)
+        {
+            var loginWindow = new LoginWindow(role) { Owner = this };
+            if (loginWindow.ShowDialog() == true)
+            {
+                var user = loginWindow.AuthenticatedUser;
+                if (user == null) return;
+                if (role == UserRole.Administrator)
+                {
+                    var adminWindow = new AdminWindow(user);
+                    adminWindow.Show();
+                }
+                else
+                {
+                    var cashierWindow = new CashierWindow(user);
+                    cashierWindow.Show();
+                }
+                this.Close();
+            }
+        }
+
         private void AdminButton_Click(object sender, RoutedEventArgs e)
         {
-            var adminWindow = new AdminWindow();
-            adminWindow.Show();
-            this.Close();
+            ShowLogin(UserRole.Administrator);
         }
 
         private void CashierButton_Click(object sender, RoutedEventArgs e)
         {
-            var cashierWindow = new CashierWindow();
-            cashierWindow.Show();
-            this.Close();
+            ShowLogin(UserRole.Cashier);
         }
     }
 }

@@ -13,12 +13,19 @@ namespace Kassa
         private readonly KassaContext _context = new KassaContext();
         private int? selectedTable = null;
 
-        public CashierWindow()
+        private System.Windows.Threading.DispatcherTimer _autoLogoutTimer;
+        private DateTime _lastActivityTime;
+        private int _autoLogoutMinutes = 10;
+        private User? _currentUser;
+
+        public CashierWindow(User? user = null)
         {
             InitializeComponent();
+            _currentUser = user;
             LoadHalls();
             if (HallComboBox.Items.Count > 0)
                 HallComboBox.SelectedIndex = 0;
+            InitAutoLogout();
         }
 
         private void LoadHalls()
@@ -160,6 +167,53 @@ namespace Kassa
             var mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();
+        }
+
+        private void InitAutoLogout()
+        {
+            if (_currentUser != null)
+                _autoLogoutMinutes = _currentUser.AutoLogoutMinutes;
+            else
+                _autoLogoutMinutes = 10;
+            _lastActivityTime = DateTime.Now;
+            _autoLogoutTimer = new System.Windows.Threading.DispatcherTimer();
+            _autoLogoutTimer.Interval = TimeSpan.FromSeconds(1);
+            _autoLogoutTimer.Tick += AutoLogoutTimer_Tick;
+            _autoLogoutTimer.Start();
+            this.PreviewKeyDown += ActivityDetected;
+            this.PreviewMouseDown += ActivityDetected; // Добавлено: только клик мыши сбрасывает таймер
+            UpdateLogoutTimerText();
+        }
+
+        private void ActivityDetected(object sender, EventArgs e)
+        {
+            _lastActivityTime = DateTime.Now;
+            UpdateLogoutTimerText();
+        }
+
+        private void AutoLogoutTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateLogoutTimerText();
+            if ((DateTime.Now - _lastActivityTime).TotalMinutes >= _autoLogoutMinutes)
+            {
+                _autoLogoutTimer.Stop();
+                MessageBox.Show("Время неактивности истекло. Возврат на главную страницу.", "Авто-выход", MessageBoxButton.OK, MessageBoxImage.Information);
+                var mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+            }
+        }
+
+        private void UpdateLogoutTimerText()
+        {
+            if (LogoutTimerTextBlock != null)
+            {
+                var left = _autoLogoutMinutes * 60 - (DateTime.Now - _lastActivityTime).TotalSeconds;
+                if (left < 0) left = 0;
+                var min = (int)left / 60;
+                var sec = (int)left % 60;
+                LogoutTimerTextBlock.Text = $"Автовыход через: {min:D2}:{sec:D2}";
+            }
         }
 
         protected override void OnClosed(EventArgs e)

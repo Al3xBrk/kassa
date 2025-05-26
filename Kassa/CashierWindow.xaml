@@ -38,8 +38,8 @@
                        Margin="0,0,0,10"
                        HorizontalAlignment="Left"/>
             <StackPanel Orientation="Horizontal"
-                    Grid.Row="2"
-                    Margin="0,0,0,0">
+                        Grid.Row="2"
+                        Margin="0,0,0,0">
                 <Button Content="Создать заказ"
                         Width="180"
                         Height="40"
@@ -53,5 +53,12 @@
                         Click="GoHome_Click"/>
             </StackPanel>
         </Grid>
+        <TextBlock x:Name="LogoutTimerTextBlock"
+                   Grid.Row="0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Margin="0,0,20,0"
+                   FontSize="16"
+                   Foreground="DarkRed"/>
     </Grid>
 </Window>

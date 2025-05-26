@@ -44,10 +44,27 @@
                                 Margin="10,0,10,10"
                                 Height="40"
                                 Click="NavOrderHistoryButton_Click"/>
+                        <Button x:Name="NavUsersButton"
+                                Content="Пользователи"
+                                Margin="10,0,10,10"
+                                Height="40"
+                                Click="NavUsersButton_Click"/>
+                        <!-- <Button x:Name="NavAutoLogoutButton"
+                                Content="Время авто-выхода"
+                                Margin="10,0,10,10"
+                                Height="40"
+                                Click="NavAutoLogoutButton_Click"/> -->
                 </StackPanel>
-                <!-- Контент -->
+                <!-- Контент -->                <TextBlock x:Name="LogoutTimerTextBlock"
+                           Grid.Column="1"
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,20,0"
+                           FontSize="16"
+                           Foreground="DarkRed"/>
                 <Frame x:Name="AdminContentFrame"
                        Grid.Column="1"
+                       Margin="0,40,0,0"
                        NavigationUIVisibility="Hidden"/>
         </Grid>
 </Window>
