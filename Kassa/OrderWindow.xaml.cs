@@ -170,7 +170,7 @@ namespace Kassa
                     HallId = _hallId,
                     TableNumber = _tableNumber,
                     TotalAmount = total,
-                    OrderDate = DateTime.UtcNow, // Сохраняем дату в UTC
+                    OrderDate = DateTime.Now, // Локальное время, без таймзоны
                     StatusId = 1 // "Создан"
                 };
                 _context.Orders.Add(order);
@@ -225,6 +225,7 @@ namespace Kassa
             DishesListBox.IsEnabled = false;
             SaveOrderButton.IsEnabled = false;
             PayOrderButton.Visibility = Visibility.Visible;
+            PrintReceiptButton.Visibility = Visibility.Visible;
         }
 
         private void PayOrder_Click(object sender, RoutedEventArgs e)
@@ -240,6 +241,16 @@ namespace Kassa
                     Close();
                 }
             }
+        }
+
+        private void PrintReceiptButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Для печати используем дату заказа и все блюда всех гостей
+            var orderDate = _viewOrder?.OrderDate ?? DateTime.Now;
+            var dishes = Guests.SelectMany(g => g.Dishes).ToList();
+            var total = dishes.Sum(d => d.Price);
+            var wnd = new PrintReceiptWindow(orderDate, dishes, total) { Owner = this };
+            wnd.ShowDialog();
         }
 
         protected override void OnClosed(EventArgs e)
