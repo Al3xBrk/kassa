@@ -3,6 +3,7 @@ using System;
 using Kassa;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Kassa.Migrations
 {
     [DbContext(typeof(KassaContext))]
-    partial class KassaContextModelSnapshot : ModelSnapshot
+    [Migration("20250526083123_FinalizeOrderUserAndShift")]
+    partial class FinalizeOrderUserAndShift
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,36 +168,6 @@ namespace Kassa.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Kassa.Models.PaymentMethod", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PaymentMethods");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Наличные"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Карта"
-                        });
-                });
-
             modelBuilder.Entity("Kassa.Models.Shift", b =>
                 {
                     b.Property<int>("Id")
@@ -207,10 +180,10 @@ namespace Kassa.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("ClosedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("OpenedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -307,9 +280,6 @@ namespace Kassa.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("PaymentMethodId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("StatusId")
                         .HasColumnType("integer");
 
@@ -325,8 +295,6 @@ namespace Kassa.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("HallId");
-
-                    b.HasIndex("PaymentMethodId");
 
                     b.HasIndex("StatusId");
 
@@ -428,10 +396,6 @@ namespace Kassa.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Kassa.Models.PaymentMethod", "PaymentMethod")
-                        .WithMany()
-                        .HasForeignKey("PaymentMethodId");
-
                     b.HasOne("Kassa.OrderStatus", "Status")
                         .WithMany("Orders")
                         .HasForeignKey("StatusId")
@@ -440,11 +404,10 @@ namespace Kassa.Migrations
 
                     b.HasOne("Kassa.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Hall");
-
-                    b.Navigation("PaymentMethod");
 
                     b.Navigation("Status");
 

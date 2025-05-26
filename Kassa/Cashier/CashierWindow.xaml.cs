@@ -17,15 +17,23 @@ namespace Kassa
         private DateTime _lastActivityTime;
         private int _autoLogoutMinutes = 10;
         private User? _currentUser;
-
-        public CashierWindow(User? user = null)
+        private Shift? _currentShift; public CashierWindow(User? user = null)
         {
             InitializeComponent();
             _currentUser = user;
+            CashierNameTextBlock.Text = _currentUser?.FullName ?? "";
             LoadHalls();
             if (HallComboBox.Items.Count > 0)
                 HallComboBox.SelectedIndex = 0;
+
+            // Загружаем текущую смену, если она есть
+            if (_currentUser != null)
+            {
+                _currentShift = _context.Shifts.FirstOrDefault(s => s.CashierId == _currentUser.Id && s.ClosedAt == null);
+            }
+
             InitAutoLogout();
+            UpdateShiftButtons();
         }
 
         private void LoadHalls()
@@ -114,7 +122,6 @@ namespace Kassa
         {
             UpdateTables();
         }
-
         private void TableCard_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             foreach (var child in TablesPanel.Children)
@@ -130,6 +137,14 @@ namespace Kassa
                     var order = _context.Orders.FirstOrDefault(o => o.HallId == hallObj.Id && o.TableNumber == selectedTable && o.StatusId == 1);
                     if (order != null)
                     {
+                        // Для просмотра существующего заказа также требуется открытая смена
+                        if (_currentUser == null || !_context.Shifts.Any(s => s.CashierId == _currentUser.Id && s.ClosedAt == null))
+                        {
+                            MessageBox.Show("Необходимо открыть смену для работы с заказами.",
+                                "Смена не открыта", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
                         var orderWindow = new OrderWindow(order) { Owner = this };
                         orderWindow.ShowDialog();
                         UpdateTables();
@@ -137,9 +152,15 @@ namespace Kassa
                 }
             }
         }
-
         private void CreateOrder_Click(object sender, RoutedEventArgs e)
         {
+            // Проверяем, открыта ли смена у текущего кассира
+            if (_currentUser == null || !_context.Shifts.Any(s => s.CashierId == _currentUser.Id && s.ClosedAt == null))
+            {
+                MessageBox.Show("Необходимо открыть смену перед созданием заказов.", "Смена не открыта", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (HallComboBox.SelectedItem is ComboBoxItem hallItem && hallItem.Tag is Hall hallObj && selectedTable != null)
             {
                 var order = _context.Orders.FirstOrDefault(o => o.HallId == hallObj.Id && o.TableNumber == selectedTable && o.StatusId == 1);
@@ -151,7 +172,7 @@ namespace Kassa
                 }
                 else
                 {
-                    var orderWindow = new OrderWindow(hallObj.Id, selectedTable.Value) { Owner = this };
+                    var orderWindow = new OrderWindow(hallObj.Id, selectedTable.Value, _currentUser?.Id) { Owner = this };
                     orderWindow.ShowDialog();
                     UpdateTables();
                 }
@@ -213,6 +234,73 @@ namespace Kassa
                 var min = (int)left / 60;
                 var sec = (int)left % 60;
                 LogoutTimerTextBlock.Text = $"Автовыход через: {min:D2}:{sec:D2}";
+            }
+        }
+
+        private void OpenShiftButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentUser == null) return;
+            if (_context.Shifts.Any(s => s.CashierId == _currentUser.Id && s.ClosedAt == null))
+            {
+                MessageBox.Show("Смена уже открыта.");
+                return;
+            }
+            var shift = new Shift
+            {
+                CashierId = _currentUser.Id,
+                OpenedAt = DateTime.Now
+            };
+            _context.Shifts.Add(shift);
+            _context.SaveChanges();
+            _currentShift = shift;
+            MessageBox.Show("Смена открыта.");
+            UpdateShiftButtons();
+        }
+        private void CloseShiftButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentUser == null) return;
+            var shift = _context.Shifts.FirstOrDefault(s => s.CashierId == _currentUser.Id && s.ClosedAt == null);
+            if (shift == null)
+            {
+                MessageBox.Show("Нет открытой смены.");
+                return;
+            }
+
+            // Проверяем, остались ли неоплаченные заказы, созданные этим кассиром
+            var unpaidOrders = _context.Orders
+                .Where(o => o.UserId == _currentUser.Id && o.StatusId == 1) // StatusId == 1 означает "Создан" и не оплачен
+                .ToList();
+
+            if (unpaidOrders.Any())
+            {
+                MessageBox.Show($"Невозможно закрыть смену. У вас есть {unpaidOrders.Count} неоплаченных заказов.",
+                    "Неоплаченные заказы", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            shift.ClosedAt = DateTime.Now;
+            _context.SaveChanges();
+            _currentShift = null;
+            MessageBox.Show("Смена закрыта.");
+            UpdateShiftButtons();
+        }
+        private void UpdateShiftButtons()
+        {
+            if (_currentUser == null) return;
+            var openShift = _context.Shifts.FirstOrDefault(s => s.CashierId == _currentUser.Id && s.ClosedAt == null);
+            OpenShiftButton.IsEnabled = openShift == null;
+            CloseShiftButton.IsEnabled = openShift != null;
+
+            // Обновляем текст статуса смены
+            if (openShift != null)
+            {
+                ShiftStatusTextBlock.Text = "Смена открыта";
+                ShiftStatusTextBlock.Foreground = Brushes.Green;
+            }
+            else
+            {
+                ShiftStatusTextBlock.Text = "Смена закрыта";
+                ShiftStatusTextBlock.Foreground = Brushes.Red;
             }
         }
 

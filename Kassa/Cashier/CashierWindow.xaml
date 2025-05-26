@@ -5,60 +5,83 @@
         Height="525"
         Width="900"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="Добро пожаловать, Кассир!"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Top"
-                   FontSize="24"
-                   Margin="0,0,0,20"/>
-        <Grid Margin="0,40,0,0"
-              Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="0"
-                        Margin="0,0,0,10">
-                <TextBlock Text="Зал:"
+        <Grid>
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="0"
+                            HorizontalAlignment="Center">
+                        <TextBlock Text="Добро пожаловать, Кассир!"
+                                   FontSize="24"
+                                   Margin="0,0,20,0"/>
+                        <TextBlock x:Name="CashierNameTextBlock"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="DarkBlue"
+                                   Margin="0,0,20,0"/>
+                        <TextBlock x:Name="ShiftStatusTextBlock"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Margin="0,0,20,0"/>
+                        <Button x:Name="OpenShiftButton"
+                                Content="Открыть смену"
+                                Width="140"
+                                Height="32"
+                                Margin="0,0,10,0"
+                                Click="OpenShiftButton_Click"/>
+                        <Button x:Name="CloseShiftButton"
+                                Content="Закрыть смену"
+                                Width="140"
+                                Height="32"
+                                Margin="0,0,0,0"
+                                Click="CloseShiftButton_Click"/>
+                </StackPanel>
+                <Grid Margin="0,40,0,0"
+                      Grid.Row="1">
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="0"
+                                    Margin="0,0,0,10">
+                                <TextBlock Text="Зал:"
+                                           FontSize="16"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <ComboBox x:Name="HallComboBox"
+                                          Width="180"
+                                          SelectionChanged="HallComboBox_SelectionChanged"/>
+                        </StackPanel>
+                        <WrapPanel x:Name="TablesPanel"
+                                   Grid.Row="1"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Left"/>
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="2"
+                                    Margin="0,0,0,0">
+                                <Button Content="Создать заказ"
+                                        Width="180"
+                                        Height="40"
+                                        HorizontalAlignment="Left"
+                                        Click="CreateOrder_Click"
+                                        Margin="0,0,10,0"/>
+                                <Button Content="На главную"
+                                        Width="140"
+                                        Height="40"
+                                        HorizontalAlignment="Left"
+                                        Click="GoHome_Click"/>
+                        </StackPanel>
+                </Grid>
+                <TextBlock x:Name="LogoutTimerTextBlock"
+                           Grid.Row="0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           Margin="0,0,20,0"
                            FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,0,8,0"/>
-                <ComboBox x:Name="HallComboBox"
-                          Width="180"
-                          SelectionChanged="HallComboBox_SelectionChanged"/>
-            </StackPanel>
-            <WrapPanel x:Name="TablesPanel"
-                       Grid.Row="1"
-                       Margin="0,0,0,10"
-                       HorizontalAlignment="Left"/>
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="2"
-                        Margin="0,0,0,0">
-                <Button Content="Создать заказ"
-                        Width="180"
-                        Height="40"
-                        HorizontalAlignment="Left"
-                        Click="CreateOrder_Click"
-                        Margin="0,0,10,0"/>
-                <Button Content="На главную"
-                        Width="140"
-                        Height="40"
-                        HorizontalAlignment="Left"
-                        Click="GoHome_Click"/>
-            </StackPanel>
+                           Foreground="DarkRed"/>
         </Grid>
-        <TextBlock x:Name="LogoutTimerTextBlock"
-                   Grid.Row="0"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Top"
-                   Margin="0,0,20,0"
-                   FontSize="16"
-                   Foreground="DarkRed"/>
-    </Grid>
 </Window>

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Kassa.Models;
 
 namespace Kassa
 {
@@ -10,8 +11,10 @@ namespace Kassa
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
-        public DbSet<Kassa.Models.TableReservation> TableReservations { get; set; }
-        public DbSet<Kassa.Models.User> Users { get; set; }
+        public DbSet<TableReservation> TableReservations { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -45,19 +48,22 @@ namespace Kassa
                 new Dish { Id = 4, Name = "Оливье", Price = 180, DishGroupId = 2 },
                 new Dish { Id = 5, Name = "Чай", Price = 50, DishGroupId = 3 },
                 new Dish { Id = 6, Name = "Кофе", Price = 100, DishGroupId = 3 }
-            );
-
-            modelBuilder.Entity<OrderStatus>().HasData(
+            ); modelBuilder.Entity<OrderStatus>().HasData(
                 new OrderStatus { Id = 1, Name = "Создан" },
                 new OrderStatus { Id = 2, Name = "Оплачен" }
             );
 
-            modelBuilder.Entity<Kassa.Models.TableReservation>(entity =>
+            modelBuilder.Entity<PaymentMethod>().HasData(
+                new PaymentMethod { Id = 1, Name = "Наличные" },
+                new PaymentMethod { Id = 2, Name = "Карта" }
+            );
+
+            modelBuilder.Entity<TableReservation>(entity =>
             {
                 // Удалено: HasConversion для DateTimeKind
             });
 
-            modelBuilder.Entity<Kassa.Models.TableReservation>()
+            modelBuilder.Entity<TableReservation>()
                 .Property(r => r.Date)
                 .HasColumnType("timestamp without time zone");
 
@@ -83,7 +89,16 @@ namespace Kassa
                 .Property(o => o.OrderDate)
                 .HasColumnType("timestamp without time zone");
 
-            modelBuilder.Entity<Kassa.Models.User>(entity =>
+            modelBuilder.Entity<Shift>()
+                .Property(o => o.OpenedAt)
+                .HasColumnType("timestamp without time zone");
+
+
+            modelBuilder.Entity<Shift>()
+                .Property(o => o.ClosedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<User>(entity =>
             {
                 entity.HasIndex(u => u.FullName).IsUnique();
                 entity.Property(u => u.FullName).IsRequired();
@@ -92,12 +107,12 @@ namespace Kassa
                 entity.Property(u => u.AutoLogoutMinutes).IsRequired().HasDefaultValue(10);
             });
 
-            modelBuilder.Entity<Kassa.Models.User>().HasData(
-                new Kassa.Models.User
+            modelBuilder.Entity<User>().HasData(
+                new User
                 {
                     Id = 1,
                     FullName = "АдминАА",
-                    Role = Kassa.Models.UserRole.Administrator,
+                    Role = UserRole.Administrator,
                     PasswordHash = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
                     AutoLogoutMinutes = 10
                 }

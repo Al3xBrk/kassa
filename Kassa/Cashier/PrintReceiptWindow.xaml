@@ -6,41 +6,47 @@
         Width="350"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
-    <Grid Margin="20">
-        <StackPanel>
-            <TextBlock Text="Чек заказа"
-                    FontWeight="Bold"
-                    FontSize="18"
-                    Margin="0,0,0,10"
-                    HorizontalAlignment="Center"/>
-            <TextBlock x:Name="OrderDateText"
-                    Margin="0,0,0,5"/>
-            <TextBlock x:Name="PrintDateText"
-                    Margin="0,0,0,15"/>
-            <ListView x:Name="DishesListView"
-                    Height="180"
-                    Margin="0,0,0,10">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Блюдо"
-                                Width="160"
-                                DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn Header="Цена"
-                                Width="80"
-                                DisplayMemberBinding="{Binding Price, StringFormat=N2}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <TextBlock x:Name="TotalText"
-                    FontWeight="Bold"
-                    FontSize="16"
-                    HorizontalAlignment="Right"/>
-            <Button Content="Закрыть"
-                    Width="100"
-                    Height="30"
-                    Margin="0,20,0,0"
-                    HorizontalAlignment="Center"
-                    Click="CloseButton_Click"/>
-        </StackPanel>
-    </Grid>
+        <Grid Margin="20">
+                <StackPanel>
+                        <TextBlock Text="Чек заказа"
+                                   FontWeight="Bold"
+                                   FontSize="18"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="OrderDateText"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock x:Name="PrintDateText"
+                                   Margin="0,0,0,15"/>
+                        <ListView x:Name="DishesListView"
+                                  Height="180"
+                                  Margin="0,0,0,10">
+                                <ListView.View>
+                                        <GridView>
+                                                <GridViewColumn Header="Блюдо"
+                                                                Width="160"
+                                                                DisplayMemberBinding="{Binding Name}"/>
+                                                <GridViewColumn Header="Цена"
+                                                                Width="80"
+                                                                DisplayMemberBinding="{Binding Price, StringFormat=N2}"/>
+                                        </GridView>
+                                </ListView.View>
+                        </ListView>
+                        <TextBlock x:Name="TotalText"
+                                   FontWeight="Bold"
+                                   FontSize="16"
+                                   HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="PaymentMethodText"
+                                   FontWeight="Bold"
+                                   FontSize="14"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,5,0,0"
+                                   Visibility="Collapsed"/>
+                        <Button Content="Закрыть"
+                                Width="100"
+                                Height="30"
+                                Margin="0,20,0,0"
+                                HorizontalAlignment="Center"
+                                Click="CloseButton_Click"/>
+                </StackPanel>
+        </Grid>
 </Window>

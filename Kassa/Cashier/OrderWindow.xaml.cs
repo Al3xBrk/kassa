@@ -1,3 +1,4 @@
+﻿// filepath: c:\repos\Work\Kassa\Kassa\Cashier\OrderWindow.xaml.cs
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,29 +16,31 @@ namespace Kassa
         private readonly List<DishViewModel> SelectedDishes = new();
         private readonly bool _viewMode = false;
         private readonly Order? _viewOrder;
+        private readonly int? _userId;
 
-        // Модель для гостя
+        // одель для гостя
         public class GuestViewModel
         {
             public int Number { get; set; }
-            public string DisplayName => $"Гость {Number}";
+            public string DisplayName => $"ость {Number}";
             public List<DishViewModel> Dishes { get; set; } = new();
         }
 
         private readonly List<GuestViewModel> Guests = new();
         private GuestViewModel? SelectedGuest;
 
-        // Конструктор для создания нового заказа
-        public OrderWindow(int hallId, int tableNumber)
+        // онструктор для создания нового заказа
+        public OrderWindow(int hallId, int tableNumber, int? userId = null)
         {
             InitializeComponent();
             _hallId = hallId;
             _tableNumber = tableNumber;
+            _userId = userId;
             LoadGroups();
             AddFirstGuest();
         }
 
-        // Конструктор для просмотра существующего заказа
+        // онструктор для просмотра существующего заказа
         public OrderWindow(Order order)
         {
             InitializeComponent();
@@ -129,7 +132,7 @@ namespace Kassa
         {
             if (sender is Button btn && btn.Tag is DishViewModel dish)
             {
-                // Найти гостя, которому принадлежит это блюдо
+                // айти гостя, которому принадлежит это блюдо
                 var guest = Guests.FirstOrDefault(g => g.Dishes.Contains(dish));
                 if (guest != null)
                 {
@@ -142,7 +145,7 @@ namespace Kassa
 
         private void RefreshOrderListBox()
         {
-            // Для отображения блюда с ценой
+            // ля отображения блюда с ценой
             foreach (var guest in Guests)
             {
                 foreach (var d in guest.Dishes)
@@ -170,8 +173,9 @@ namespace Kassa
                     HallId = _hallId,
                     TableNumber = _tableNumber,
                     TotalAmount = total,
-                    OrderDate = DateTime.Now, // Локальное время, без таймзоны
-                    StatusId = 1 // "Создан"
+                    OrderDate = DateTime.Now, // окальное время для PostgreSQL (timestamp without time zone)
+                    StatusId = 1, // "Создан"
+                    UserId = _userId
                 };
                 _context.Orders.Add(order);
                 _context.SaveChanges();
@@ -190,12 +194,12 @@ namespace Kassa
                     }
                 }
                 _context.SaveChanges();
-                MessageBox.Show("Заказ сохранён", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("аказ сохранён", "спех", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"шибка при сохранении: {ex.Message}", "шибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -207,7 +211,7 @@ namespace Kassa
                 .Include(oi => oi.Dish)
                 .ToList();
             Guests.Clear();
-            // Группируем блюда по номеру гостя
+            // руппируем блюда по номеру гостя
             var grouped = items.GroupBy(i => i.GuestNumber).OrderBy(g => g.Key);
             foreach (var group in grouped)
             {
@@ -227,29 +231,49 @@ namespace Kassa
             PayOrderButton.Visibility = Visibility.Visible;
             PrintReceiptButton.Visibility = Visibility.Visible;
         }
-
         private void PayOrder_Click(object sender, RoutedEventArgs e)
         {
             if (_viewOrder != null)
             {
-                var order = _context.Orders.FirstOrDefault(o => o.Id == _viewOrder.Id);
-                if (order != null)
+                // олучаем все доступные методы оплаты
+                var paymentMethods = _context.PaymentMethods.ToList();
+
+                // оказываем окно выбора способа оплаты
+                var paymentWindow = new PaymentMethodWindow(paymentMethods) { Owner = this };
+                var result = paymentWindow.ShowDialog();
+
+                if (result == true && paymentWindow.SelectedPaymentMethod != null)
                 {
-                    order.StatusId = 2; // "Оплачен"
-                    _context.SaveChanges();
-                    MessageBox.Show("Заказ оплачен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Close();
+                    var order = _context.Orders.FirstOrDefault(o => o.Id == _viewOrder.Id);
+                    if (order != null)
+                    {
+                        order.StatusId = 2; // "плачен"
+                        order.PaymentMethodId = paymentWindow.SelectedPaymentMethod.Id;
+                        _context.SaveChanges();
+                        MessageBox.Show($"аказ оплачен ({paymentWindow.SelectedPaymentMethod.Name})",
+                            "спех", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Close();
+                    }
                 }
             }
         }
 
         private void PrintReceiptButton_Click(object sender, RoutedEventArgs e)
         {
-            // Для печати используем дату заказа и все блюда всех гостей
+            // ля печати используем дату заказа и все блюда всех гостей
             var orderDate = _viewOrder?.OrderDate ?? DateTime.Now;
             var dishes = Guests.SelectMany(g => g.Dishes).ToList();
             var total = dishes.Sum(d => d.Price);
-            var wnd = new PrintReceiptWindow(orderDate, dishes, total) { Owner = this };
+
+            // олучаем метод оплаты, если заказ уже оплачен
+            string? paymentMethodName = null;
+            if (_viewOrder != null && _viewOrder.PaymentMethodId.HasValue)
+            {
+                var paymentMethod = _context.PaymentMethods.FirstOrDefault(p => p.Id == _viewOrder.PaymentMethodId);
+                paymentMethodName = paymentMethod?.Name;
+            }
+
+            var wnd = new PrintReceiptWindow(orderDate, dishes, total, paymentMethodName) { Owner = this };
             wnd.ShowDialog();
         }
 
