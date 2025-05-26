@@ -137,15 +137,13 @@ namespace Kassa
                     var order = _context.Orders.FirstOrDefault(o => o.HallId == hallObj.Id && o.TableNumber == selectedTable && o.StatusId == 1);
                     if (order != null)
                     {
-                        // Для просмотра существующего заказа также требуется открытая смена
                         if (_currentUser == null || !_context.Shifts.Any(s => s.CashierId == _currentUser.Id && s.ClosedAt == null))
                         {
                             MessageBox.Show("Необходимо открыть смену для работы с заказами.",
                                 "Смена не открыта", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
-
-                        var orderWindow = new OrderWindow(order) { Owner = this };
+                        var orderWindow = new OrderWindow(order, ResetAutoLogout) { Owner = this };
                         orderWindow.ShowDialog();
                         UpdateTables();
                     }
@@ -166,13 +164,13 @@ namespace Kassa
                 var order = _context.Orders.FirstOrDefault(o => o.HallId == hallObj.Id && o.TableNumber == selectedTable && o.StatusId == 1);
                 if (order != null)
                 {
-                    var orderWindow = new OrderWindow(order) { Owner = this };
+                    var orderWindow = new OrderWindow(order, ResetAutoLogout) { Owner = this };
                     orderWindow.ShowDialog();
                     UpdateTables();
                 }
                 else
                 {
-                    var orderWindow = new OrderWindow(hallObj.Id, selectedTable.Value, _currentUser?.Id) { Owner = this };
+                    var orderWindow = new OrderWindow(hallObj.Id, selectedTable.Value, _currentUser?.Id, ResetAutoLogout) { Owner = this };
                     orderWindow.ShowDialog();
                     UpdateTables();
                 }
@@ -302,6 +300,11 @@ namespace Kassa
                 ShiftStatusTextBlock.Text = "Смена закрыта";
                 ShiftStatusTextBlock.Foreground = Brushes.Red;
             }
+        }
+
+        public void ResetAutoLogout()
+        {
+            ActivityDetected(this, EventArgs.Empty);
         }
 
         protected override void OnClosed(EventArgs e)

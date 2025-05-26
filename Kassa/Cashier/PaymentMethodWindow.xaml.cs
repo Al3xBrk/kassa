@@ -12,15 +12,17 @@ namespace Kassa
     {
         private readonly List<PaymentMethod> _paymentMethods;
         private readonly Order _order;
+        private readonly Action? _resetAutoLogoutAction;
         public PaymentMethod? SelectedPaymentMethod { get; private set; }
         public decimal? CashGiven { get; private set; }
         public decimal? Change { get; private set; }
 
-        public PaymentMethodWindow(List<PaymentMethod> paymentMethods, Order order)
+        public PaymentMethodWindow(List<PaymentMethod> paymentMethods, Order order, Action? resetAutoLogoutAction = null)
         {
             InitializeComponent();
             _paymentMethods = paymentMethods;
             _order = order;
+            _resetAutoLogoutAction = resetAutoLogoutAction;
 
             // Заполнение информации о заказе
             HallTextBlock.Text = order.Hall?.Name ?? "Неизвестный зал";
@@ -30,6 +32,7 @@ namespace Kassa
 
         private void CardPaymentButton_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             // Выбираем метод оплаты "Карта" (Id = 2)
             SelectedPaymentMethod = _paymentMethods.FirstOrDefault(p => p.Id == 2);
 
@@ -46,6 +49,7 @@ namespace Kassa
 
         private void CashPaymentButton_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             // Выбираем метод оплаты "Наличные" (Id = 1)
             SelectedPaymentMethod = _paymentMethods.FirstOrDefault(p => p.Id == 1);
 
@@ -65,6 +69,7 @@ namespace Kassa
 
         private void CashGivenTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             // Проверяем корректность ввода и рассчитываем сдачу
             if (decimal.TryParse(CashGivenTextBox.Text, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal cashGiven))
             {
@@ -98,6 +103,7 @@ namespace Kassa
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             if (SelectedPaymentMethod == null)
             {
                 MessageBox.Show("Пожалуйста, выберите способ оплаты", "Внимание",
@@ -121,6 +127,7 @@ namespace Kassa
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             DialogResult = false;
         }
     }

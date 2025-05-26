@@ -17,6 +17,7 @@ namespace Kassa
         private readonly bool _viewMode = false;
         private readonly Order? _viewOrder;
         private readonly int? _userId;
+        private readonly Action? _resetAutoLogoutAction;
 
         // одель для гостя
         public class GuestViewModel
@@ -30,25 +31,33 @@ namespace Kassa
         private GuestViewModel? SelectedGuest;
 
         // онструктор для создания нового заказа
-        public OrderWindow(int hallId, int tableNumber, int? userId = null)
+        public OrderWindow(int hallId, int tableNumber, int? userId = null, Action? resetAutoLogoutAction = null)
         {
             InitializeComponent();
             _hallId = hallId;
             _tableNumber = tableNumber;
             _userId = userId;
+            _resetAutoLogoutAction = resetAutoLogoutAction;
             LoadGroups();
             AddFirstGuest();
+            // Глобальный сброс таймера при любом клике мыши или нажатии клавиши
+            this.PreviewMouseDown += (s, e) => _resetAutoLogoutAction?.Invoke();
+            this.PreviewKeyDown += (s, e) => _resetAutoLogoutAction?.Invoke();
         }
 
         // онструктор для просмотра существующего заказа
-        public OrderWindow(Order order)
+        public OrderWindow(Order order, Action? resetAutoLogoutAction = null)
         {
             InitializeComponent();
             _viewMode = true;
             _viewOrder = order;
             _hallId = order.HallId;
             _tableNumber = order.TableNumber;
+            _resetAutoLogoutAction = resetAutoLogoutAction;
             LoadOrderInfo();
+            // Глобальный сброс таймера при любом клике мыши или нажатии клавиши
+            this.PreviewMouseDown += (s, e) => _resetAutoLogoutAction?.Invoke();
+            this.PreviewKeyDown += (s, e) => _resetAutoLogoutAction?.Invoke();
         }
 
         private void LoadGroups()
@@ -76,6 +85,7 @@ namespace Kassa
 
         private void GroupsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             if (GroupsListBox.SelectedItem is string groupName && GroupsListBox.Tag is Dictionary<string, List<DishViewModel>> groupDictionary && groupDictionary.TryGetValue(groupName, out var dishes))
             {
                 Console.WriteLine($"Selected group: {groupName}, Dishes: {dishes.Count}");
@@ -98,6 +108,7 @@ namespace Kassa
 
         private void AddGuestButton_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             var guest = new GuestViewModel { Number = Guests.Count + 1 };
             Guests.Add(guest);
             SelectedGuest = guest;
@@ -107,6 +118,7 @@ namespace Kassa
 
         private void OrderListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             if (OrderListBox.SelectedIndex >= 0 && OrderListBox.SelectedIndex < Guests.Count)
             {
                 SelectedGuest = Guests[OrderListBox.SelectedIndex];
@@ -115,6 +127,7 @@ namespace Kassa
 
         private void AddDishToOrder_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             if (sender is Button btn && btn.DataContext is DishViewModel dish)
             {
                 if (SelectedGuest == null)
@@ -130,6 +143,7 @@ namespace Kassa
 
         private void RemoveDishFromOrder_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             if (sender is Button btn && btn.Tag is DishViewModel dish)
             {
                 // айти гостя, которому принадлежит это блюдо
@@ -165,6 +179,7 @@ namespace Kassa
 
         private void SaveOrder_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             try
             {
                 var total = Guests.SelectMany(g => g.Dishes).Sum(d => d.Price);
@@ -233,6 +248,7 @@ namespace Kassa
         }
         private void PayOrder_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             if (_viewOrder != null)
             {
                 // Получаем все доступные методы оплаты
@@ -279,6 +295,7 @@ namespace Kassa
 
         private void PrintReceiptButton_Click(object sender, RoutedEventArgs e)
         {
+            _resetAutoLogoutAction?.Invoke();
             // ля печати используем дату заказа и все блюда всех гостей
             var orderDate = _viewOrder?.OrderDate ?? DateTime.Now;
             var dishes = Guests.SelectMany(g => g.Dishes).ToList();
