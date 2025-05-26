@@ -22,7 +22,7 @@ namespace Kassa
         public class GuestViewModel
         {
             public int Number { get; set; }
-            public string DisplayName => $"ость {Number}";
+            public string DisplayName => $"Гость {Number}";
             public List<DishViewModel> Dishes { get; set; } = new();
         }
 
@@ -194,12 +194,12 @@ namespace Kassa
                     }
                 }
                 _context.SaveChanges();
-                MessageBox.Show("аказ сохранён", "спех", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Заказ сохранён", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"шибка при сохранении: {ex.Message}", "шибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -235,25 +235,44 @@ namespace Kassa
         {
             if (_viewOrder != null)
             {
-                // олучаем все доступные методы оплаты
+                // Получаем все доступные методы оплаты
                 var paymentMethods = _context.PaymentMethods.ToList();
 
-                // оказываем окно выбора способа оплаты
-                var paymentWindow = new PaymentMethodWindow(paymentMethods) { Owner = this };
+                // Подгружаем актуальную информацию о заказе, включая зал
+                var order = _context.Orders
+                    .Include(o => o.Hall)
+                    .FirstOrDefault(o => o.Id == _viewOrder.Id);
+
+                if (order == null)
+                {
+                    MessageBox.Show("Заказ не найден", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Показываем окно выбора способа оплаты
+                var paymentWindow = new PaymentMethodWindow(paymentMethods, order) { Owner = this };
                 var result = paymentWindow.ShowDialog();
 
                 if (result == true && paymentWindow.SelectedPaymentMethod != null)
                 {
-                    var order = _context.Orders.FirstOrDefault(o => o.Id == _viewOrder.Id);
-                    if (order != null)
+                    // Устанавливаем статус и способ оплаты
+                    order.StatusId = 2; // "Оплачен"
+                    order.PaymentMethodId = paymentWindow.SelectedPaymentMethod.Id;
+
+                    // Устанавливаем время оплаты (без timezone)
+                    order.PaymentTime = DateTime.Now;
+
+                    // Если оплата наличными, сохраняем сумму и сдачу
+                    if (paymentWindow.SelectedPaymentMethod.Id == 1 && paymentWindow.CashGiven.HasValue)
                     {
-                        order.StatusId = 2; // "плачен"
-                        order.PaymentMethodId = paymentWindow.SelectedPaymentMethod.Id;
-                        _context.SaveChanges();
-                        MessageBox.Show($"аказ оплачен ({paymentWindow.SelectedPaymentMethod.Name})",
-                            "спех", MessageBoxButton.OK, MessageBoxImage.Information);
-                        Close();
+                        order.CashGiven = paymentWindow.CashGiven;
+                        order.Change = paymentWindow.Change;
                     }
+
+                    _context.SaveChanges();
+                    MessageBox.Show($"Заказ оплачен ({paymentWindow.SelectedPaymentMethod.Name})",
+                        "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
                 }
             }
         }

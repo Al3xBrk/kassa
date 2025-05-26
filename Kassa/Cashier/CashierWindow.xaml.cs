@@ -21,7 +21,7 @@ namespace Kassa
         {
             InitializeComponent();
             _currentUser = user;
-            CashierNameTextBlock.Text = _currentUser?.FullName ?? "";
+            UserFullNameTextBlock.Text = _currentUser?.FullName ?? "";
             LoadHalls();
             if (HallComboBox.Items.Count > 0)
                 HallComboBox.SelectedIndex = 0;

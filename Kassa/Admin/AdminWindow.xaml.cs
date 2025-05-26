@@ -24,6 +24,7 @@ namespace Kassa
         {
             InitializeComponent();
             _currentUser = user;
+            AdminFullNameTextBlock.Text = _currentUser?.FullName ?? "";
             NavDishesButton.Click += NavDishesButton_Click;
             NavProfitButton.Click += NavProfitButton_Click;
             NavReservationButton.Click += NavReservationButton_Click;

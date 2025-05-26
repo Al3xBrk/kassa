@@ -10,8 +10,13 @@
                         <ColumnDefinition Width="180"/>
                         <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 <!-- Панель управления -->
                 <StackPanel Grid.Column="0"
+                            Grid.Row="0"
                             Background="#f3f3f3"
                             Margin="0,0,12,0"
                             VerticalAlignment="Stretch">
@@ -55,16 +60,34 @@
                                 Height="40"
                                 Click="NavAutoLogoutButton_Click"/> -->
                 </StackPanel>
-                <!-- Контент -->                <TextBlock x:Name="LogoutTimerTextBlock"
-                           Grid.Column="1"
-                           VerticalAlignment="Top"
-                           HorizontalAlignment="Right"
-                           Margin="0,0,20,0"
-                           FontSize="16"
-                           Foreground="DarkRed"/>
+                <!-- Контент -->
+                <Border Grid.Column="1"
+                        Grid.Row="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="0,5,10,5"
+                        Background="#EEEEEE"
+                        BorderBrush="#CCCCCC"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <WrapPanel VerticalAlignment="Center"
+                                        Margin="8,0,8,0">
+                                <TextBlock x:Name="AdminFullNameTextBlock"
+                                           FontSize="14"
+                                           Foreground="DarkSlateGray"
+                                           Padding="0,4,12,4"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock x:Name="LogoutTimerTextBlock"
+                                           FontSize="14"
+                                           Foreground="DarkRed"
+                                           Padding="0,4,0,4"
+                                           VerticalAlignment="Center"/>
+                        </WrapPanel>
+                </Border>
                 <Frame x:Name="AdminContentFrame"
                        Grid.Column="1"
-                       Margin="0,40,0,0"
+                       Grid.Row="0"
+                       Margin="0,0,0,0"
                        NavigationUIVisibility="Hidden"/>
         </Grid>
 </Window>

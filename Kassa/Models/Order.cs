@@ -15,4 +15,7 @@ public class Order
     public Kassa.Models.User? User { get; set; }
     public int? PaymentMethodId { get; set; }
     public Kassa.Models.PaymentMethod? PaymentMethod { get; set; }
+    public DateTime? PaymentTime { get; set; }
+    public decimal? CashGiven { get; set; }
+    public decimal? Change { get; set; }
 }

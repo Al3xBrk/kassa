@@ -83,16 +83,17 @@ namespace Kassa
                 .HasOne(oi => oi.DishGroup)
                 .WithMany()
                 .HasForeignKey(oi => oi.DishGroupId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict); modelBuilder.Entity<Order>()
+                .Property(o => o.OrderDate)
+                .HasColumnType("timestamp without time zone");
 
             modelBuilder.Entity<Order>()
-                .Property(o => o.OrderDate)
+                .Property(o => o.PaymentTime)
                 .HasColumnType("timestamp without time zone");
 
             modelBuilder.Entity<Shift>()
                 .Property(o => o.OpenedAt)
                 .HasColumnType("timestamp without time zone");
-
 
             modelBuilder.Entity<Shift>()
                 .Property(o => o.ClosedAt)
