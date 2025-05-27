@@ -1,43 +1,272 @@
 <Window x:Class="Kassa.AddCashierWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Добавить кассира"
-        Height="220"
-        Width="400"
+        Title="👤 Добавить кассира - Ресторанная система"
+        Height="340"
+        Width="480"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="ФИО:"
-                Grid.Row="0"
-                VerticalAlignment="Center"/>
-        <TextBox x:Name="FullNameTextBox"
-                Grid.Row="0"
-                Margin="60,0,0,0"
-                Height="30"/>
-        <TextBlock Text="Пароль:"
-                Grid.Row="1"
-                VerticalAlignment="Center"
-                Margin="0,10,0,0"/>
-        <PasswordBox x:Name="PasswordBox"
-                Grid.Row="1"
-                Margin="60,10,0,0"
-                Height="30"/>
-        <TextBlock x:Name="ErrorTextBlock"
-                Grid.Row="2"
-                Foreground="Red"
-                Margin="0,10,0,0"/>
-        <Button Content="Добавить"
-                Grid.Row="3"
-                Height="35"
-                Width="100"
-                HorizontalAlignment="Right"
-                Margin="0,20,0,0"
-                Click="AddButton_Click"/>
-    </Grid>
+        ResizeMode="NoResize"
+        Background="#F5F7FA"
+        FontFamily="Segoe UI">
+
+        <Window.Resources>
+                <!-- Стиль для карточки контента -->
+                <Style x:Key="DialogCardStyle"
+                                TargetType="Border">
+                        <Setter Property="Background"
+                                        Value="White"/>
+                        <Setter Property="CornerRadius"
+                                        Value="15"/>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect BlurRadius="15"
+                                                        ShadowDepth="3"
+                                                        Color="#40000000"
+                                                        Opacity="0.3"/>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для заголовка -->
+                <Style x:Key="HeaderTextStyle"
+                                TargetType="TextBlock">
+                        <Setter Property="FontSize"
+                                        Value="24"/>
+                        <Setter Property="FontWeight"
+                                        Value="Bold"/>
+                        <Setter Property="Foreground"
+                                        Value="#2C3E50"/>
+                        <Setter Property="HorizontalAlignment"
+                                        Value="Center"/>
+                        <Setter Property="Margin"
+                                        Value="0,0,0,25"/>
+                </Style>
+
+                <!-- Стиль для меток полей -->
+                <Style x:Key="FieldLabelStyle"
+                                TargetType="TextBlock">
+                        <Setter Property="FontSize"
+                                        Value="14"/>
+                        <Setter Property="FontWeight"
+                                        Value="SemiBold"/>
+                        <Setter Property="Foreground"
+                                        Value="#34495E"/>
+                        <Setter Property="Margin"
+                                        Value="0,0,0,5"/>
+                </Style>
+
+                <!-- Стиль для текстовых полей -->
+                <Style x:Key="ModernTextBoxStyle"
+                                TargetType="TextBox">
+                        <Setter Property="Height"
+                                        Value="40"/>
+                        <Setter Property="Padding"
+                                        Value="12,10"/>
+                        <Setter Property="FontSize"
+                                        Value="14"/>
+                        <Setter Property="BorderThickness"
+                                        Value="2"/>
+                        <Setter Property="BorderBrush"
+                                        Value="#BDC3C7"/>
+                        <Setter Property="Background"
+                                        Value="White"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="TextBox">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="8">
+                                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                                      Margin="{TemplateBinding Padding}"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsFocused"
+                                                                        Value="True">
+                                                                <Setter Property="BorderBrush"
+                                                                                Value="#3498DB"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver"
+                                                                        Value="True">
+                                                                <Setter Property="BorderBrush"
+                                                                                Value="#5DADE2"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для PasswordBox -->
+                <Style x:Key="ModernPasswordBoxStyle"
+                                TargetType="PasswordBox">
+                        <Setter Property="Height"
+                                        Value="40"/>
+                        <Setter Property="Padding"
+                                        Value="12,10"/>
+                        <Setter Property="FontSize"
+                                        Value="14"/>
+                        <Setter Property="BorderThickness"
+                                        Value="2"/>
+                        <Setter Property="BorderBrush"
+                                        Value="#BDC3C7"/>
+                        <Setter Property="Background"
+                                        Value="White"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="PasswordBox">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="8">
+                                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                                      Margin="{TemplateBinding Padding}"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsFocused"
+                                                                        Value="True">
+                                                                <Setter Property="BorderBrush"
+                                                                                Value="#3498DB"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver"
+                                                                        Value="True">
+                                                                <Setter Property="BorderBrush"
+                                                                                Value="#5DADE2"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для кнопки -->
+                <Style x:Key="PrimaryButtonStyle"
+                                TargetType="Button">
+                        <Setter Property="Background"
+                                        Value="#27AE60"/>
+                        <Setter Property="Foreground"
+                                        Value="White"/>
+                        <Setter Property="BorderThickness"
+                                        Value="0"/>
+                        <Setter Property="Height"
+                                        Value="45"/>
+                        <Setter Property="Width"
+                                        Value="130"/>
+                        <Setter Property="FontSize"
+                                        Value="16"/>
+                        <Setter Property="FontWeight"
+                                        Value="SemiBold"/>
+                        <Setter Property="Cursor"
+                                        Value="Hand"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="8"
+                                                        Padding="20,0">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#229954"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#1E8449"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для сообщения об ошибке -->
+                <Style x:Key="ErrorTextStyle"
+                                TargetType="TextBlock">
+                        <Setter Property="Foreground"
+                                        Value="#E74C3C"/>
+                        <Setter Property="FontSize"
+                                        Value="12"/>
+                        <Setter Property="FontWeight"
+                                        Value="SemiBold"/>
+                        <Setter Property="Margin"
+                                        Value="0,5,0,0"/>
+                </Style>
+        </Window.Resources>
+
+        <Border Style="{StaticResource DialogCardStyle}"
+                Margin="20">
+                <StackPanel Margin="30">
+                        <!-- Заголовок с иконкой -->
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,0,0,25">
+                                <TextBlock Text="👤"
+                                           FontSize="28"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,15,0"/>
+                                <TextBlock Text="Добавить кассира"
+                                           Style="{StaticResource HeaderTextStyle}"
+                                           Margin="0"/>
+                        </StackPanel>
+
+                        <!-- Поле ФИО -->
+                        <StackPanel Margin="0,0,0,20">
+                                <StackPanel Orientation="Horizontal"
+                                                Margin="0,0,0,5">
+                                        <TextBlock Text="👨‍💼"
+                                                        FontSize="16"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,8,0"/>
+                                        <TextBlock Text="Полное имя сотрудника"
+                                                        Style="{StaticResource FieldLabelStyle}"/>
+                                </StackPanel>
+                                <TextBox x:Name="FullNameTextBox"
+                                         Style="{StaticResource ModernTextBoxStyle}"
+                                         ToolTip="Введите полное имя кассира"/>
+                        </StackPanel>
+
+                        <!-- Поле пароля -->
+                        <StackPanel Margin="0,0,0,20">
+                                <StackPanel Orientation="Horizontal"
+                                                Margin="0,0,0,5">
+                                        <TextBlock Text="🔒"
+                                                        FontSize="16"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,8,0"/>
+                                        <TextBlock Text="Пароль для входа"
+                                                        Style="{StaticResource FieldLabelStyle}"/>
+                                </StackPanel>
+                                <PasswordBox x:Name="PasswordBox"
+                                             Style="{StaticResource ModernPasswordBoxStyle}"
+                                             ToolTip="Введите пароль для кассира"/>
+                        </StackPanel>
+
+                        <!-- Сообщение об ошибке -->
+                        <TextBlock x:Name="ErrorTextBlock"
+                                   Style="{StaticResource ErrorTextStyle}"
+                                   TextWrapping="Wrap"/>
+
+                        <!-- Кнопка добавления -->
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,25,0,0">
+                                <Button Style="{StaticResource PrimaryButtonStyle}"
+                                        Click="AddButton_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="➕"
+                                                                FontSize="16"
+                                                                VerticalAlignment="Center"
+                                                                Margin="0,0,8,0"/>
+                                                <TextBlock Text="Добавить"
+                                                                VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                </Button>
+                        </StackPanel>
+                </StackPanel>
+        </Border>
 </Window>

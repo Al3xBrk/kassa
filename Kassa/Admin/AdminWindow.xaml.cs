@@ -64,7 +64,7 @@ namespace Kassa
             if ((DateTime.Now - _lastActivityTime).TotalMinutes >= _autoLogoutMinutes)
             {
                 _autoLogoutTimer.Stop();
-                MessageBox.Show("Время неактивности истекло. Возврат на главную страницу.", "Авто-выход", MessageBoxButton.OK, MessageBoxImage.Information);
+                ModernMessageBox.ShowInformation("Время неактивности истекло. Возврат на главную страницу.", "Авто-выход");
                 var mainWindow = new MainWindow();
                 mainWindow.Show();
                 this.Close();
@@ -86,25 +86,30 @@ namespace Kassa
         private void NavDishesButton_Click(object sender, RoutedEventArgs e)
         {
             AdminContentFrame.Navigate(new AdminDishesPage());
+            SetActiveNavButton(NavDishesButton);
         }
 
         private void NavProfitButton_Click(object sender, RoutedEventArgs e)
         {
             AdminContentFrame.Navigate(new AdminProfitChartPage());
+            SetActiveNavButton(NavProfitButton);
         }
 
         private void NavReservationButton_Click(object sender, RoutedEventArgs e)
         {
             AdminContentFrame.Navigate(new AdminReservationPage());
+            SetActiveNavButton(NavReservationButton);
         }
         private void NavOrderHistoryButton_Click(object sender, RoutedEventArgs e)
         {
             AdminContentFrame.Navigate(new AdminOrderHistoryPage());
+            SetActiveNavButton(NavOrderHistoryButton);
         }
 
         private void NavUsersButton_Click(object sender, RoutedEventArgs e)
         {
             AdminContentFrame.Navigate(new AdminUsersPage());
+            SetActiveNavButton(NavUsersButton);
         }
 
         private void NavHomeButton_Click(object sender, RoutedEventArgs e)
@@ -117,6 +122,21 @@ namespace Kassa
         public void NavigateToDishesPage()
         {
             AdminContentFrame.Navigate(new AdminDishesPage());
+        }
+
+        private void SetActiveNavButton(Button activeButton)
+        {
+            // Сброс стилей всех кнопок навигации
+            var navButtons = new[] { NavHomeButton, NavDishesButton, NavProfitButton,
+                                   NavReservationButton, NavOrderHistoryButton, NavUsersButton };
+
+            foreach (var button in navButtons)
+            {
+                button.Style = (Style)FindResource("NavButtonStyle");
+            }
+
+            // Установка активного стиля для выбранной кнопки
+            activeButton.Style = (Style)FindResource("ActiveNavButtonStyle");
         }
 
         protected override void OnClosed(EventArgs e)

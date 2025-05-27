@@ -132,7 +132,7 @@ namespace Kassa
             {
                 if (SelectedGuest == null)
                 {
-                    MessageBox.Show("Сначала добавьте гостя.");
+                    ModernMessageBox.ShowWarning("Сначала добавьте гостя.");
                     return;
                 }
                 SelectedGuest.Dishes.Add(dish);
@@ -209,12 +209,12 @@ namespace Kassa
                     }
                 }
                 _context.SaveChanges();
-                MessageBox.Show("Заказ сохранён", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                ModernMessageBox.ShowSuccess("Заказ сохранён", "Успех");
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                ModernMessageBox.ShowError($"Ошибка при сохранении: {ex.Message}", "Ошибка");
             }
         }
 
@@ -261,7 +261,7 @@ namespace Kassa
 
                 if (order == null)
                 {
-                    MessageBox.Show("Заказ не найден", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ModernMessageBox.ShowError("Заказ не найден", "Ошибка");
                     return;
                 }
 
@@ -286,8 +286,7 @@ namespace Kassa
                     }
 
                     _context.SaveChanges();
-                    MessageBox.Show($"Заказ оплачен ({paymentWindow.SelectedPaymentMethod.Name})",
-                        "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ModernMessageBox.ShowSuccess($"Заказ оплачен ({paymentWindow.SelectedPaymentMethod.Name})", "Успех");
                     Close();
                 }
             }

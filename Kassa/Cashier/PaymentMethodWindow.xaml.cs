@@ -29,7 +29,6 @@ namespace Kassa
             TableNumberTextBlock.Text = order.TableNumber.ToString();
             TotalAmountTextBlock.Text = $"{order.TotalAmount:N2} BYN";
         }
-
         private void CardPaymentButton_Click(object sender, RoutedEventArgs e)
         {
             _resetAutoLogoutAction?.Invoke();
@@ -42,9 +41,9 @@ namespace Kassa
             // Активируем кнопку подтверждения
             ConfirmButton.IsEnabled = true;
 
-            // Визуально отмечаем выбранную кнопку
-            CardPaymentButton.Background = System.Windows.Media.Brushes.DarkGreen;
-            CashPaymentButton.Background = System.Windows.Media.Brushes.DodgerBlue;
+            // Применяем стили для выбранной кнопки
+            CardPaymentButton.Style = (Style)FindResource("SelectedPaymentButtonStyle");
+            CashPaymentButton.Style = (Style)FindResource("PaymentButtonStyle");
         }
 
         private void CashPaymentButton_Click(object sender, RoutedEventArgs e)
@@ -59,9 +58,9 @@ namespace Kassa
             // Активируем кнопку подтверждения только если введена сумма
             ConfirmButton.IsEnabled = !string.IsNullOrWhiteSpace(CashGivenTextBox.Text);
 
-            // Визуально отмечаем выбранную кнопку
-            CashPaymentButton.Background = System.Windows.Media.Brushes.DarkBlue;
-            CardPaymentButton.Background = System.Windows.Media.Brushes.LimeGreen;
+            // Применяем стили для выбранной кнопки
+            CashPaymentButton.Style = (Style)FindResource("SelectedPaymentButtonStyle");
+            CardPaymentButton.Style = (Style)FindResource("PaymentButtonStyle");
 
             // Фокус на поле ввода
             CashGivenTextBox.Focus();
@@ -103,11 +102,9 @@ namespace Kassa
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            _resetAutoLogoutAction?.Invoke();
-            if (SelectedPaymentMethod == null)
+            _resetAutoLogoutAction?.Invoke(); if (SelectedPaymentMethod == null)
             {
-                MessageBox.Show("Пожалуйста, выберите способ оплаты", "Внимание",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                ModernMessageBox.ShowWarning("Пожалуйста, выберите способ оплаты", "Внимание");
                 return;
             }
 
@@ -116,8 +113,7 @@ namespace Kassa
             {
                 if (!CashGiven.HasValue || CashGiven.Value < _order.TotalAmount)
                 {
-                    MessageBox.Show("Внесенная сумма должна быть не меньше суммы заказа", "Внимание",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ModernMessageBox.ShowWarning("Внесенная сумма должна быть не меньше суммы заказа", "Внимание");
                     return;
                 }
             }

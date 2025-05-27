@@ -21,7 +21,7 @@ namespace Kassa
             }
             else
             {
-                MessageBox.Show("Введите положительное целое число.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ModernMessageBox.ShowWarning("Введите положительное целое число.", "Ошибка");
             }
         }
     }

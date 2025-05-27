@@ -1,0 +1,193 @@
+<Window x:Class="Kassa.ModernMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Сообщение"
+        Height="300"
+        Width="400"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        FontFamily="Segoe UI"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Window.Resources>
+        <!-- Стиль для основной карточки -->
+        <Style x:Key="MessageCardStyle"
+               TargetType="Border">
+            <Setter Property="Background"
+                    Value="White"/>
+            <Setter Property="CornerRadius"
+                    Value="15"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="20"
+                                      ShadowDepth="5"
+                                      Color="#40000000"
+                                      Opacity="0.4"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для заголовка -->
+        <Style x:Key="MessageHeaderStyle"
+               TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="20"/>
+            <Setter Property="FontWeight"
+                    Value="Bold"/>
+            <Setter Property="Foreground"
+                    Value="#2C3E50"/>
+            <Setter Property="HorizontalAlignment"
+                    Value="Left"/>
+            <Setter Property="Margin"
+                    Value="0,0,0,15"/>
+        </Style>
+
+        <!-- Стиль для текста сообщения -->
+        <Style x:Key="MessageTextStyle"
+               TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="16"/>
+            <Setter Property="Foreground"
+                    Value="#34495E"/>
+            <Setter Property="TextWrapping"
+                    Value="Wrap"/>
+            <Setter Property="LineHeight"
+                    Value="22"/>
+            <Setter Property="Margin"
+                    Value="0,0,0,25"/>
+        </Style>
+
+        <!-- Стиль для кнопок -->
+        <Style x:Key="ModernButtonStyle"
+               TargetType="Button">
+            <Setter Property="FontSize"
+                    Value="14"/>
+            <Setter Property="FontWeight"
+                    Value="SemiBold"/>
+            <Setter Property="BorderThickness"
+                    Value="0"/>
+            <Setter Property="Height"
+                    Value="40"/>
+            <Setter Property="MinWidth"
+                    Value="100"/>
+            <Setter Property="Margin"
+                    Value="5,0"/>
+            <Setter Property="Cursor"
+                    Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="20,0">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Opacity"
+                                        Value="0.8"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Setter Property="Opacity"
+                                        Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стили для разных типов кнопок -->
+        <Style x:Key="PrimaryButtonStyle"
+               BasedOn="{StaticResource ModernButtonStyle}"
+               TargetType="Button">
+            <Setter Property="Background"
+                    Value="#3498DB"/>
+            <Setter Property="Foreground"
+                    Value="White"/>
+        </Style>
+
+        <Style x:Key="SuccessButtonStyle"
+               BasedOn="{StaticResource ModernButtonStyle}"
+               TargetType="Button">
+            <Setter Property="Background"
+                    Value="#27AE60"/>
+            <Setter Property="Foreground"
+                    Value="White"/>
+        </Style>
+
+        <Style x:Key="DangerButtonStyle"
+               BasedOn="{StaticResource ModernButtonStyle}"
+               TargetType="Button">
+            <Setter Property="Background"
+                    Value="#E74C3C"/>
+            <Setter Property="Foreground"
+                    Value="White"/>
+        </Style>
+
+        <Style x:Key="SecondaryButtonStyle"
+               BasedOn="{StaticResource ModernButtonStyle}"
+               TargetType="Button">
+            <Setter Property="Background"
+                    Value="#95A5A6"/>
+            <Setter Property="Foreground"
+                    Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Style="{StaticResource MessageCardStyle}"
+            Margin="10">
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок с иконкой -->
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal"
+                        Margin="0,0,0,20">
+                <TextBlock x:Name="IconTextBlock"
+                           FontSize="24"
+                           VerticalAlignment="Center"
+                           Margin="0,0,15,0"/>
+                <TextBlock x:Name="TitleTextBlock"
+                           Style="{StaticResource MessageHeaderStyle}"
+                           Margin="0"/>
+            </StackPanel>
+
+            <!-- Текст сообщения -->
+            <TextBlock x:Name="MessageTextBlock"
+                       Grid.Row="1"
+                       Style="{StaticResource MessageTextStyle}"/>
+
+            <!-- Пространство для расширения -->
+            <Border Grid.Row="2"/>
+
+            <!-- Кнопки -->
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button x:Name="Button1"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Click="Button1_Click"
+                        Visibility="Collapsed"/>
+                <Button x:Name="Button2"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Click="Button2_Click"
+                        Visibility="Collapsed"/>
+                <Button x:Name="Button3"
+                        Style="{StaticResource DangerButtonStyle}"
+                        Click="Button3_Click"
+                        Visibility="Collapsed"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

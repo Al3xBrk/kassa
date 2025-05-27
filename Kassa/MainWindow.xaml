@@ -5,26 +5,163 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kassa"
         mc:Ignorable="d"
-        Title="MainWindow"
-        Height="450"
-        Width="800"
-        WindowStartupLocation="CenterScreen">
+        Title="🏪 Ресторанная система - Выбор роли"
+        Height="600"
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F7FA"
+        FontFamily="Segoe UI">
+
+        <!-- Современные стили для MainWindow -->
+        <Window.Resources>
+                <!-- Стиль для главных кнопок -->
+                <Style x:Key="RoleButtonStyle"
+                                TargetType="Button">
+                        <Setter Property="Background"
+                                        Value="White"/>
+                        <Setter Property="Foreground"
+                                        Value="#2C3E50"/>
+                        <Setter Property="BorderThickness"
+                                        Value="0"/>
+                        <Setter Property="FontSize"
+                                        Value="20"/>
+                        <Setter Property="FontWeight"
+                                        Value="SemiBold"/>
+                        <Setter Property="Cursor"
+                                        Value="Hand"/>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect BlurRadius="15"
+                                                        ShadowDepth="3"
+                                                        Color="#40000000"
+                                                        Opacity="0.3"/>
+                                </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="15"
+                                                        Padding="25,20">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#3498DB"/>
+                                                                <Setter Property="Foreground"
+                                                                                Value="White"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для карточки -->
+                <Style x:Key="MainCardStyle"
+                                TargetType="Border">
+                        <Setter Property="Background"
+                                        Value="White"/>
+                        <Setter Property="CornerRadius"
+                                        Value="20"/>
+                        <Setter Property="Padding"
+                                        Value="40"/>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect BlurRadius="20"
+                                                        ShadowDepth="5"
+                                                        Color="#40000000"
+                                                        Opacity="0.2"/>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+        </Window.Resources>
+
         <Grid>
-                <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                        <TextBlock Text="Выберите роль"
-                                   FontSize="28"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,20"/>
-                        <Button Content="Администратор"
-                                Width="200"
-                                Height="50"
-                                Click="AdminButton_Click"
-                                Margin="0,0,0,10"/>
-                        <Button Content="Кассир"
-                                Width="200"
-                                Height="50"
-                                Click="CashierButton_Click"/>
-                </StackPanel>
+                <!-- Фоновый градиент -->
+                <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0"
+                                        EndPoint="1,1">
+                                <GradientStop Color="#F5F7FA"
+                                                Offset="0"/>
+                                <GradientStop Color="#E8F4FD"
+                                                Offset="1"/>
+                        </LinearGradientBrush>
+                </Grid.Background>
+
+                <!-- Главная карточка -->
+                <Border Style="{StaticResource MainCardStyle}"
+                        MaxWidth="500"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <StackPanel>
+                                <!-- Заголовок с иконкой -->
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,0,0,40">
+                                        <TextBlock Text="🏪"
+                                                   FontSize="48"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,20,0"/>
+                                        <StackPanel>
+                                                <TextBlock Text="Ресторанная система"
+                                                           FontSize="32"
+                                                           FontWeight="Bold"
+                                                           Foreground="#2C3E50"
+                                                           HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Выберите свою роль"
+                                                           FontSize="16"
+                                                           Foreground="#7F8C8D"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,5,0,0"/>
+                                        </StackPanel>
+                                </StackPanel>
+
+                                <!-- Кнопки ролей -->
+                                <Button Style="{StaticResource RoleButtonStyle}"
+                                        Width="350"
+                                        Height="80"
+                                        Click="AdminButton_Click"
+                                        Margin="0,0,0,20">
+                                        <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="👑"
+                                                                FontSize="24"
+                                                                Margin="0,0,15,0"
+                                                                VerticalAlignment="Center"/>
+                                                <StackPanel>
+                                                        <TextBlock Text="Администратор"
+                                                                        FontSize="20"
+                                                                        FontWeight="Bold"/>
+                                                        <TextBlock Text="Управление рестораном"
+                                                                        FontSize="14"
+                                                                        Opacity="0.7"/>
+                                                </StackPanel>
+                                        </StackPanel>
+                                </Button>
+
+                                <Button Style="{StaticResource RoleButtonStyle}"
+                                        Width="350"
+                                        Height="80"
+                                        Click="CashierButton_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="💰"
+                                                                FontSize="24"
+                                                                Margin="0,0,15,0"
+                                                                VerticalAlignment="Center"/>
+                                                <StackPanel>
+                                                        <TextBlock Text="Кассир"
+                                                                        FontSize="20"
+                                                                        FontWeight="Bold"/>
+                                                        <TextBlock Text="Обслуживание клиентов"
+                                                                        FontSize="14"
+                                                                        Opacity="0.7"/>
+                                                </StackPanel>
+                                        </StackPanel>
+                                </Button>
+                        </StackPanel>
+                </Border>
         </Grid>
 </Window>

@@ -1,187 +1,405 @@
 <Window x:Class="Kassa.PaymentMethodWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Выбор способа оплаты"
-        Height="650"
-        Width="600"
+        Title="💳 Выбор способа оплаты - Ресторанная система"
+        Height="700"
+        Width="650"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
-    <Grid Margin="15">
+        ResizeMode="NoResize"
+        Background="#F5F7FA"
+        FontFamily="Segoe UI">
+
+    <!-- Современные стили для PaymentMethodWindow -->
+    <Window.Resources>
+        <!-- Стиль для информационной карточки -->
+        <Style x:Key="InfoCardStyle"
+                TargetType="Border">
+            <Setter Property="Background"
+                    Value="White"/>
+            <Setter Property="CornerRadius"
+                    Value="15"/>
+            <Setter Property="Padding"
+                    Value="25"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10"
+                            ShadowDepth="2"
+                            Color="#40000000"
+                            Opacity="0.3"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопок способов оплаты -->
+        <Style x:Key="PaymentButtonStyle"
+                TargetType="Button">
+            <Setter Property="Background"
+                    Value="White"/>
+            <Setter Property="BorderThickness"
+                    Value="2"/>
+            <Setter Property="BorderBrush"
+                    Value="#E9ECEF"/>
+            <Setter Property="FontSize"
+                    Value="18"/>
+            <Setter Property="FontWeight"
+                    Value="SemiBold"/>
+            <Setter Property="Cursor"
+                    Value="Hand"/>
+            <Setter Property="Height"
+                    Value="80"/>
+            <Setter Property="Margin"
+                    Value="0,0,0,15"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="15"
+                                Padding="20">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8"
+                                        ShadowDepth="2"
+                                        Color="#20000000"
+                                        Opacity="0.2"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                    Value="True">
+                                <Setter Property="BorderBrush"
+                                        Value="#3498DB"/>
+                                <Setter Property="Background"
+                                        Value="#F8FCFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                    Value="True">
+                                <Setter Property="Background"
+                                        Value="#E8F4FD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для выбранной кнопки оплаты -->
+        <Style x:Key="SelectedPaymentButtonStyle"
+                TargetType="Button"
+                BasedOn="{StaticResource PaymentButtonStyle}">
+            <Setter Property="Background"
+                    Value="#E8F5E8"/>
+            <Setter Property="BorderBrush"
+                    Value="#27AE60"/>
+            <Setter Property="BorderThickness"
+                    Value="3"/>
+        </Style>
+
+        <!-- Стиль для основных кнопок действий -->
+        <Style x:Key="ActionButtonStyle"
+                TargetType="Button">
+            <Setter Property="FontSize"
+                    Value="16"/>
+            <Setter Property="FontWeight"
+                    Value="Bold"/>
+            <Setter Property="Cursor"
+                    Value="Hand"/>
+            <Setter Property="Height"
+                    Value="50"/>
+            <Setter Property="MinWidth"
+                    Value="120"/>
+            <Setter Property="BorderThickness"
+                    Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="12"
+                                Padding="20,10">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8"
+                                        ShadowDepth="3"
+                                        Color="#40000000"
+                                        Opacity="0.4"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                    Value="True">
+                                <Setter Property="Background"
+                                        Value="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                    Value="True">
+                                <Setter Property="Background"
+                                        Value="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для поля ввода -->
+        <Style x:Key="ModernTextBoxStyle"
+                TargetType="TextBox">
+            <Setter Property="FontSize"
+                    Value="18"/>
+            <Setter Property="Padding"
+                    Value="15,12"/>
+            <Setter Property="BorderThickness"
+                    Value="2"/>
+            <Setter Property="BorderBrush"
+                    Value="#E9ECEF"/>
+            <Setter Property="Background"
+                    Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="False"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused"
+                                    Value="True">
+                                <Setter Property="BorderBrush"
+                                        Value="#3498DB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="25">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"
-                    MinHeight="300"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Информация о заказе -->
-        <StackPanel Grid.Row="0"
-                    Margin="0,0,0,15">
-            <TextBlock Text="Информация о заказе:"
-                       FontSize="16"
-                       FontWeight="Bold"
-                       Margin="0,0,0,10"/>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0"
-                           Grid.Column="0"
-                           Text="Зал:"
+        <!-- Заголовок окна -->
+        <Border Grid.Row="0"
+                Style="{StaticResource InfoCardStyle}"
+                Margin="0,0,0,25">
+            <StackPanel>
+                <TextBlock Text="💳 Оплата заказа"
+                           FontSize="28"
                            FontWeight="Bold"
-                           Margin="0,0,10,5"/>
-                <TextBlock Grid.Row="0"
-                           Grid.Column="1"
-                           x:Name="HallTextBlock"
-                           Text="[Имя зала]"/>
+                           Foreground="#2C3E50"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
 
-                <TextBlock Grid.Row="1"
-                           Grid.Column="0"
-                           Text="Стол №:"
-                           FontWeight="Bold"
-                           Margin="0,0,10,5"/>
-                <TextBlock Grid.Row="1"
-                           Grid.Column="1"
-                           x:Name="TableNumberTextBlock"
-                           Text="[Номер]"/>
+                <!-- Информация о заказе -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="2"
-                           Grid.Column="0"
-                           Text="Сумма к оплате:"
-                           FontWeight="Bold"
-                           FontSize="16"
-                           Margin="0,0,10,0"/>
-                <TextBlock Grid.Row="2"
-                           Grid.Column="1"
-                           x:Name="TotalAmountTextBlock"
-                           Text="0.00 BYN"
-                           FontSize="16"
-                           FontWeight="Bold"
-                           Foreground="#007acc"/>
-            </Grid>
-        </StackPanel>
+                    <StackPanel Grid.Column="0"
+                            Margin="0,0,15,0">
+                        <TextBlock Text="🏢 Зал:"
+                                   FontWeight="SemiBold"
+                                   FontSize="14"
+                                   Foreground="#7F8C8D"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock x:Name="HallTextBlock"
+                                   Text="[Имя зала]"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Foreground="#2C3E50"/>
 
+                        <TextBlock Text="🪑 Стол №:"
+                                   FontWeight="SemiBold"
+                                   FontSize="14"
+                                   Foreground="#7F8C8D"
+                                   Margin="0,15,0,5"/>
+                        <TextBlock x:Name="TableNumberTextBlock"
+                                   Text="[Номер]"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Foreground="#2C3E50"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="💰 Сумма к оплате:"
+                                   FontWeight="SemiBold"
+                                   FontSize="16"
+                                   Foreground="#7F8C8D"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,0,8"/>
+                        <TextBlock x:Name="TotalAmountTextBlock"
+                                   Text="0.00 BYN"
+                                   FontSize="32"
+                                   FontWeight="Bold"
+                                   Foreground="#27AE60"
+                                   HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Заголовок выбора способа оплаты -->
         <TextBlock Grid.Row="1"
-                   Text="Выберите способ оплаты:"
-                   FontSize="16"
+                   Text="💳 Выберите способ оплаты:"
+                   FontSize="20"
                    FontWeight="Bold"
-                   Margin="0,0,0,10"/>
+                   Foreground="#2C3E50"
+                   Margin="0,0,0,20"/>
 
-        <!-- Кнопки выбора способа оплаты вместо ListBox -->
-        <StackPanel Grid.Row="2">
-            <Button x:Name="CardPaymentButton"
-                    Content="Оплата картой"
-                    Height="70"
-                    Margin="0,0,0,20"
-                    Background="#4CAF50"
-                    Foreground="White"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    BorderThickness="0"
-                    Click="CardPaymentButton_Click">
-                <Button.Effect>
-                    <DropShadowEffect Color="Gray"
-                            Direction="320"
-                            ShadowDepth="3"
-                            Opacity="0.5"/>
-                </Button.Effect>
-            </Button>
+        <!-- Способы оплаты и панель ввода -->
+        <Border Grid.Row="2"
+                Style="{StaticResource InfoCardStyle}">
+            <StackPanel>
+                <!-- Кнопки выбора способа оплаты -->
+                <Button x:Name="CardPaymentButton"
+                        Style="{StaticResource PaymentButtonStyle}"
+                        Click="CardPaymentButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="💳"
+                                FontSize="32"
+                                VerticalAlignment="Center"
+                                Margin="0,0,15,0"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Оплата картой"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="#2C3E50"/>
+                            <TextBlock Text="Безналичная оплата"
+                                    FontSize="14"
+                                    Foreground="#7F8C8D"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Button>
 
-            <Button x:Name="CashPaymentButton"
-                    Content="Оплата наличными"
-                    Height="70"
-                    Background="#2196F3"
-                    Foreground="White"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    BorderThickness="0"
-                    Click="CashPaymentButton_Click">
-                <Button.Effect>
-                    <DropShadowEffect Color="Gray"
-                            Direction="320"
-                            ShadowDepth="3"
-                            Opacity="0.5"/>
-                </Button.Effect>
-            </Button>
-            <!-- Панель ввода наличных -->
-            <Border Background="#F0F8FF"
-                    BorderBrush="#2196F3"
-                    BorderThickness="2"
-                    CornerRadius="5"
-                    Margin="0,20,0,0"
-                    Padding="0"
-                    Visibility="Collapsed"
-                    x:Name="CashInputPanel">
-                <StackPanel Margin="15">
-                    <TextBlock Text="Внесено наличными:"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Margin="0,5,0,10"/>
-                    <TextBox x:Name="CashGivenTextBox"
-                             FontSize="22"
-                             Height="50"
-                             Padding="15,8"
-                             BorderThickness="2"
-                             TextChanged="CashGivenTextBox_TextChanged"/>
-                    <Border Margin="0,20,0,5"
-                            Background="#E3F2FD"
-                            BorderBrush="#1E88E5"
-                            BorderThickness="0,0,0,2"
-                            Padding="10">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                <Button x:Name="CashPaymentButton"
+                        Style="{StaticResource PaymentButtonStyle}"
+                        Click="CashPaymentButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="💵"
+                                FontSize="32"
+                                VerticalAlignment="Center"
+                                Margin="0,0,15,0"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Оплата наличными"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="#2C3E50"/>
+                            <TextBlock Text="Наличные средства"
+                                    FontSize="14"
+                                    Foreground="#7F8C8D"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Button>
 
-                            <TextBlock Grid.Column="0"
-                                       Text="Сдача:"
-                                       FontWeight="Bold"
-                                       FontSize="22"
-                                       Margin="0,0,15,0"/>
-                            <TextBlock Grid.Column="1"
-                                       x:Name="ChangeTextBlock"
-                                       Text="0.00 BYN"
-                                       FontSize="22"
-                                       FontWeight="Bold"
-                                       Foreground="#007acc"/>
-                        </Grid>
-                    </Border>
-                </StackPanel>
-            </Border>
-        </StackPanel>
+                <!-- Панель ввода наличных -->
+                <Border x:Name="CashInputPanel"
+                        Background="#F8F9FA"
+                        BorderBrush="#3498DB"
+                        BorderThickness="2"
+                        CornerRadius="15"
+                        Padding="25"
+                        Margin="0,20,0,0"
+                        Visibility="Collapsed">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="5"
+                                ShadowDepth="1"
+                                Color="#20000000"
+                                Opacity="0.2"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <TextBlock Text="💵 Внесено наличными:"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,15"/>
 
-        <Border Grid.Row="3"
-                BorderBrush="#CCCCCC"
-                BorderThickness="0,1,0,0"
-                Margin="0,15,0,15"/>
-        <StackPanel Grid.Row="4"
+                        <TextBox x:Name="CashGivenTextBox"
+                                 Style="{StaticResource ModernTextBoxStyle}"
+                                 Height="50"
+                                 TextChanged="CashGivenTextBox_TextChanged"
+                                 FontSize="20"/>
+
+                        <!-- Информация о сдаче -->
+                        <Border Background="White"
+                                CornerRadius="12"
+                                Padding="20"
+                                Margin="0,20,0,0">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="3"
+                                        ShadowDepth="1"
+                                        Color="#10000000"
+                                        Opacity="0.1"/>
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="💰"
+                                            FontSize="24"
+                                            Margin="0,0,15,0"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Сдача:"
+                                               FontWeight="SemiBold"
+                                               FontSize="16"
+                                               Foreground="#7F8C8D"
+                                               Margin="0,0,0,5"/>
+                                    <TextBlock x:Name="ChangeTextBlock"
+                                               Text="0.00 BYN"
+                                               FontSize="24"
+                                               FontWeight="Bold"
+                                               Foreground="#E67E22"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!-- Кнопки действий -->
+        <StackPanel Grid.Row="3"
                     Orientation="Horizontal"
-                    HorizontalAlignment="Right">
-            <Button Content="Отмена"
-                    Width="120"
-                    Height="45"
-                    FontSize="16"
+                    HorizontalAlignment="Right"
+                    Margin="0,25,0,0">
+            <Button Content="❌ Отмена"
+                    Style="{StaticResource ActionButtonStyle}"
+                    Background="#E74C3C"
+                    Foreground="White"
+                    Tag="#C0392B"
+                    Width="140"
                     Margin="0,0,15,0"
                     Click="CancelButton_Click"/>
+
             <Button x:Name="ConfirmButton"
-                    Content="Подтвердить"
-                    Width="150"
-                    Height="45"
-                    FontSize="16"
-                    FontWeight="Bold"
-                    Background="#4CAF50"
+                    Content="✅ Подтвердить"
+                    Style="{StaticResource ActionButtonStyle}"
+                    Background="#27AE60"
                     Foreground="White"
+                    Tag="#2ECC71"
+                    Width="160"
                     IsEnabled="False"
                     Click="ConfirmButton_Click"/>
         </StackPanel>

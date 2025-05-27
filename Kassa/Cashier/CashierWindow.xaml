@@ -1,42 +1,90 @@
 <Window x:Class="Kassa.CashierWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Кассир"
-        Height="525"
-        Width="900"
-        WindowStartupLocation="CenterScreen">
-        <Grid>
+        Title="Кассир - Система управления рестораном"
+        Height="750"
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F7FA"
+        FontFamily="Segoe UI"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize"
+        MinHeight="700"
+        MinWidth="1100">
+        <Grid Margin="10">
                 <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal"
-                            Grid.Row="0"
-                            HorizontalAlignment="Center">
-                        <TextBlock Text="Добро пожаловать, Кассир!"
-                                   FontSize="24"
-                                   Margin="0,0,20,0"/>
-                        <TextBlock x:Name="ShiftStatusTextBlock"
-                                   FontSize="16"
-                                   FontWeight="Bold"
-                                   Margin="0,0,20,0"/>
-                        <Button x:Name="OpenShiftButton"
-                                Content="Открыть смену"
-                                Width="140"
-                                Height="32"
-                                Margin="0,0,10,0"
-                                Click="OpenShiftButton_Click"/>
-                        <Button x:Name="CloseShiftButton"
-                                Content="Закрыть смену"
-                                Width="140"
-                                Height="32"
-                                Margin="0,0,0,0"
-                                Click="CloseShiftButton_Click"/>
-                </StackPanel>
+
+                <!-- Заголовок и управление сменой -->
+                <Border Grid.Row="0"
+                        Background="White"
+                        CornerRadius="12"
+                        Padding="20,15"
+                        Margin="0,0,0,15">
+                        <Border.Effect>
+                                <DropShadowEffect BlurRadius="10"
+                                                ShadowDepth="2"
+                                                Color="#40000000"
+                                                Opacity="0.3"/>
+                        </Border.Effect>
+                        <Grid>
+                                <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="🏪 Касса ресторана"
+                                                   FontSize="28"
+                                                   FontWeight="Bold"
+                                                   Foreground="#2C3E50"/>
+                                        <TextBlock x:Name="ShiftStatusTextBlock"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+                                        <Button x:Name="OpenShiftButton"
+                                                Width="180"
+                                                Height="45"
+                                                Margin="0,0,15,0"
+                                                Click="OpenShiftButton_Click"
+                                                Style="{DynamicResource ModernButtonStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                        <Ellipse Width="12"
+                                                                        Height="12"
+                                                                        Fill="#2ECC71"
+                                                                        Margin="0,0,8,0"/>
+                                                        <TextBlock Text="Открыть смену"
+                                                                        FontWeight="SemiBold"/>
+                                                </StackPanel>
+                                        </Button>
+                                        <Button x:Name="CloseShiftButton"
+                                                Width="180"
+                                                Height="45"
+                                                Click="CloseShiftButton_Click"
+                                                Style="{DynamicResource ModernButtonStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                        <Ellipse Width="12"
+                                                                        Height="12"
+                                                                        Fill="#E74C3C"
+                                                                        Margin="0,0,8,0"/>
+                                                        <TextBlock Text="Закрыть смену"
+                                                                        FontWeight="SemiBold"/>
+                                                </StackPanel>
+                                        </Button>
+                                </StackPanel>
+                        </Grid>
+                </Border>
                 <!-- Контейнер для рабочих элементов (показывается при открытой смене) -->
                 <Grid x:Name="WorkAreaGrid"
-                      Margin="0,20,0,10"
                       Grid.Row="1">
                         <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -46,149 +94,756 @@
 
                         <!-- Hall Selection Container -->
                         <GroupBox x:Name="HallSelectionContainer"
-                                  Header="Выбор зала"
                                   Grid.Row="0"
                                   Margin="0,0,0,15"
-                                  Padding="10">
+                                  Style="{DynamicResource ModernGroupBoxStyle}">
+                                <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                                <Rectangle Width="16"
+                                                                Height="16"
+                                                                Fill="#3498DB"
+                                                                Margin="0,0,8,0"/>
+                                                <TextBlock Text="Выбор зала"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#34495E"/>
+                                        </StackPanel>
+                                </GroupBox.Header>
                                 <StackPanel x:Name="HallSelectionPanel"
-                                            Orientation="Horizontal">
+                                            Orientation="Horizontal"
+                                            Margin="10">
                                         <TextBlock Text="Зал:"
-                                                   FontSize="16"
+                                                   FontSize="14"
                                                    VerticalAlignment="Center"
-                                                   Margin="0,0,8,0"/>
+                                                   Margin="0,0,10,0"
+                                                   FontWeight="Medium"/>
                                         <ComboBox x:Name="HallComboBox"
-                                                  Width="180"
-                                                  SelectionChanged="HallComboBox_SelectionChanged"/>
+                                                  Width="250"
+                                                  Height="35"
+                                                  SelectionChanged="HallComboBox_SelectionChanged"
+                                                  Style="{DynamicResource ModernComboBoxStyle}"/>
                                 </StackPanel>
                         </GroupBox>
-
                         <!-- Table Selection Container -->
                         <GroupBox x:Name="TableSelectionContainer"
-                                  Header="Выбор стола"
                                   Grid.Row="1"
                                   Margin="0,0,0,15"
-                                  Padding="10">
-                                <WrapPanel x:Name="TablesPanel"
-                                           HorizontalAlignment="Left"/>
+                                  Style="{DynamicResource ModernGroupBoxStyle}">
+                                <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                                <Rectangle Width="16"
+                                                                Height="16"
+                                                                Fill="#E67E22"
+                                                                Margin="0,0,8,0"/>
+                                                <TextBlock Text="Выбор стола"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#34495E"/>
+                                                <TextBlock x:Name="TableCountTextBlock"
+                                                           Text=""
+                                                           FontSize="14"
+                                                           FontWeight="Normal"
+                                                           Foreground="#7F8C8D"
+                                                           Margin="10,0,0,0"/>
+                                        </StackPanel>
+                                </GroupBox.Header>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                              MaxHeight="220"
+                                              Margin="10"
+                                              Background="Transparent">
+                                        <WrapPanel x:Name="TablesPanel"
+                                                   HorizontalAlignment="Left"
+                                                   Orientation="Horizontal"/>
+                                </ScrollViewer>
                         </GroupBox>
 
                         <!-- Order Creation Container -->
                         <GroupBox x:Name="OrderCreationContainer"
-                                  Header="Управление заказами"
                                   Grid.Row="2"
-                                  Padding="10">
+                                  Style="{DynamicResource ModernGroupBoxStyle}">
+                                <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                                <Rectangle Width="16"
+                                                                Height="16"
+                                                                Fill="#9B59B6"
+                                                                Margin="0,0,8,0"/>
+                                                <TextBlock Text="Управление заказами"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#34495E"/>
+                                        </StackPanel>
+                                </GroupBox.Header>
                                 <StackPanel x:Name="OrderButtonsPanel"
-                                            Orientation="Horizontal">
-                                        <Button Content="Создать заказ"
-                                                Width="180"
-                                                Height="40"
-                                                HorizontalAlignment="Left"
+                                            Orientation="Horizontal"
+                                            Margin="10">
+                                        <Button Width="220"
+                                                Height="55"
                                                 Click="CreateOrder_Click"
-                                                Margin="0,0,10,0"/>
-                                        <Button Content="На главную"
-                                                Width="140"
-                                                Height="40"
-                                                HorizontalAlignment="Left"
-                                                Click="GoHome_Click"/>
+                                                Margin="0,0,20,0"
+                                                Style="{DynamicResource PrimaryButtonStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                        <Ellipse Width="14"
+                                                                        Height="14"
+                                                                        Fill="White"
+                                                                        Margin="0,0,10,0"/>
+                                                        <TextBlock Text="Создать заказ"
+                                                                        FontWeight="Bold"
+                                                                        FontSize="16"/>
+                                                </StackPanel>
+                                        </Button>
+                                        <Button Width="180"
+                                                Height="55"
+                                                Click="GoHome_Click"
+                                                Style="{DynamicResource SecondaryButtonStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                        <Rectangle Width="14"
+                                                                        Height="14"
+                                                                        Fill="White"
+                                                                        Margin="0,0,10,0"/>
+                                                        <TextBlock Text="На главную"
+                                                                        FontWeight="SemiBold"
+                                                                        FontSize="14"/>
+                                                </StackPanel>
+                                        </Button>
                                 </StackPanel>
                         </GroupBox>
                 </Grid>
-
                 <!-- Панель истории заказов (показывается при закрытой смене) -->
-                <Grid x:Name="ShiftHistoryGrid"
-                      Margin="0,20,0,10"
-                      Grid.Row="1"
-                      Visibility="Collapsed">
-                        <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="История заказов последней смены"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Grid.Row="0"
-                                   Margin="0,0,0,15"
-                                   HorizontalAlignment="Center"/>
-                        <ScrollViewer Grid.Row="1"
-                                      VerticalScrollBarVisibility="Auto">
-                                <ListView x:Name="OrderHistoryListView"
-                                          Background="Transparent"
-                                          BorderThickness="0">
-                                        <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                        <Border Background="White"
-                                                                BorderBrush="#E0E0E0"
-                                                                BorderThickness="1"
-                                                                CornerRadius="8"
-                                                                Margin="0,0,0,8"
-                                                                Padding="15">
-                                                                <Grid>
-                                                                        <Grid.ColumnDefinitions>
-                                                                                <ColumnDefinition Width="*"/>
-                                                                                <ColumnDefinition Width="Auto"/>
-                                                                        </Grid.ColumnDefinitions>
-                                                                        <StackPanel Grid.Column="0">
-                                                                                <TextBlock FontWeight="Bold"
-                                                                                           FontSize="14"
-                                                                                           Margin="0,0,0,5">
-                                                                                        <Run Text="Заказ #"/>
-                                                                                        <Run Text="{Binding Id, Mode=OneWay}"/>
-                                                                                        <Run Text=" - Зал: "/>
-                                                                                        <Run Text="{Binding HallName, Mode=OneWay}"/>
-                                                                                        <Run Text=", Стол: "/>
-                                                                                        <Run Text="{Binding TableNumber, Mode=OneWay}"/>
-                                                                                </TextBlock>
-                                                                                <TextBlock FontSize="12"
-                                                                                           Foreground="Gray"
-                                                                                           Margin="0,0,0,5">
-                                                                                        <Run Text="Создан: "/>
-                                                                                        <Run Text="{Binding CreatedAt, StringFormat='dd.MM.yyyy HH:mm', Mode=OneWay}"/>
-                                                                                        <Run Text=" | Завершен: "/>
-                                                                                        <Run Text="{Binding CompletedAt, StringFormat='dd.MM.yyyy HH:mm', Mode=OneWay}"/>
-                                                                                </TextBlock>
-                                                                                <TextBlock FontSize="12"
-                                                                                           Foreground="DarkGray">
-                                                                                        <Run Text="Статус: "/>
-                                                                                        <Run Text="{Binding StatusName, Mode=OneWay}"/>
-                                                                                </TextBlock>
-                                                                        </StackPanel>
-                                                                        <StackPanel Grid.Column="1"
-                                                                                    VerticalAlignment="Center"
-                                                                                    HorizontalAlignment="Right">
-                                                                                <TextBlock Text="{Binding TotalAmount, StringFormat='{}{0:N2} BYN', Mode=OneWay}"
-                                                                                           FontSize="16"
-                                                                                           FontWeight="Bold"
-                                                                                           Foreground="DarkGreen"
-                                                                                           HorizontalAlignment="Right"/>
-                                                                        </StackPanel>
-                                                                </Grid>
-                                                        </Border>
-                                                </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                </ListView>
-                        </ScrollViewer>
-                </Grid>
+                <Border x:Name="ShiftHistoryGrid"
+                        Grid.Row="1"
+                        Visibility="Collapsed"
+                        Background="White"
+                        CornerRadius="12"
+                        Padding="20">
+                        <Border.Effect>
+                                <DropShadowEffect BlurRadius="10"
+                                                ShadowDepth="2"
+                                                Color="#40000000"
+                                                Opacity="0.3"/>
+                        </Border.Effect>
+                        <Grid>
+                                <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0"
+                                                Margin="0,0,0,20">
+                                        <TextBlock Text="📊 История заказов последней смены"
+                                                   FontSize="24"
+                                                   FontWeight="Bold"
+                                                   Foreground="#2C3E50"
+                                                   HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Просмотр всех заказов из закрытой смены"
+                                                   FontSize="14"
+                                                   Foreground="#7F8C8D"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <ScrollViewer Grid.Row="1"
+                                              VerticalScrollBarVisibility="Auto"
+                                              HorizontalScrollBarVisibility="Disabled">
+                                        <ListView x:Name="OrderHistoryListView"
+                                                  Background="Transparent"
+                                                  BorderThickness="0"
+                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                                <Border CornerRadius="12"
+                                                                        Margin="0,0,0,15"
+                                                                        Padding="20"
+                                                                        BorderBrush="#E9ECEF"
+                                                                        BorderThickness="1">
+                                                                        <Border.Background>
+                                                                                <LinearGradientBrush StartPoint="0,0"
+                                                                                                EndPoint="0,1">
+                                                                                        <GradientStop Color="#FFFFFF"
+                                                                                                        Offset="0"/>
+                                                                                        <GradientStop Color="#F8F9FA"
+                                                                                                        Offset="1"/>
+                                                                                </LinearGradientBrush>
+                                                                        </Border.Background>
+                                                                        <Border.Effect>
+                                                                                <DropShadowEffect BlurRadius="5"
+                                                                                                ShadowDepth="1"
+                                                                                                Color="#20000000"
+                                                                                                Opacity="0.2"/>
+                                                                        </Border.Effect>
+                                                                        <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                        <ColumnDefinition Width="*"/>
+                                                                                        <ColumnDefinition Width="Auto"/>
+                                                                                </Grid.ColumnDefinitions>
+
+                                                                                <StackPanel Grid.Column="0">
+                                                                                        <TextBlock FontWeight="Bold"
+                                                                                                   FontSize="16"
+                                                                                                   Margin="0,0,0,8"
+                                                                                                   Foreground="#2C3E50">
+                                                        <Run Text="📝 Заказ #"/>
+                                                        <Run Text="{Binding Id, Mode=OneWay}"/>
+                                                        <Run Text=" • 🏛️ "/>
+                                                        <Run Text="{Binding HallName, Mode=OneWay}"/>
+                                                        <Run Text=" • 🪑 Стол "/>
+                                                        <Run Text="{Binding TableNumber, Mode=OneWay}"/>
+                                                                                        </TextBlock>
+
+                                                                                        <TextBlock FontSize="13"
+                                                                                                   Foreground="#6C757D"
+                                                                                                   Margin="0,0,0,5">
+                                                        <Run Text="🕒 Создан: "/>
+                                                        <Run Text="{Binding CreatedAt, StringFormat='dd.MM.yyyy HH:mm', Mode=OneWay}"
+                                                                                                                FontWeight="Medium"/>
+                                                        <Run Text=" • ✅ Завершен: "/>
+                                                        <Run Text="{Binding CompletedAt, StringFormat='dd.MM.yyyy HH:mm', Mode=OneWay}"
+                                                                                                                FontWeight="Medium"/>
+                                                                                        </TextBlock>
+
+                                                                                        <Border Background="#E8F5E8"
+                                                                                                CornerRadius="15"
+                                                                                                Padding="10,5"
+                                                                                                HorizontalAlignment="Left">
+                                                                                                <TextBlock FontSize="12"
+                                                                                                           FontWeight="SemiBold"
+                                                                                                           Foreground="#27AE60">
+                                                            <Run Text="📊 "/>
+                                                            <Run Text="{Binding StatusName, Mode=OneWay}"/>
+                                                                                                </TextBlock>
+                                                                                        </Border>
+                                                                                </StackPanel>
+
+                                                                                <StackPanel Grid.Column="1"
+                                                                                            VerticalAlignment="Center"
+                                                                                            HorizontalAlignment="Right">
+                                                                                        <Border CornerRadius="8"
+                                                                                                Padding="15,10">
+                                                                                                <Border.Background>
+                                                                                                        <LinearGradientBrush StartPoint="0,0"
+                                                                                                                        EndPoint="0,1">
+                                                                                                                <GradientStop Color="#27AE60"
+                                                                                                                                Offset="0"/>
+                                                                                                                <GradientStop Color="#2ECC71"
+                                                                                                                                Offset="1"/>
+                                                                                                        </LinearGradientBrush>
+                                                                                                </Border.Background>
+                                                                                                <TextBlock Text="{Binding TotalAmount, StringFormat='{}{0:N2} BYN', Mode=OneWay}"
+                                                                                                           FontSize="18"
+                                                                                                           FontWeight="Bold"
+                                                                                                           Foreground="White"
+                                                                                                           HorizontalAlignment="Center"/>
+                                                                                        </Border>
+                                                                                </StackPanel>
+                                                                        </Grid>
+                                                                </Border>
+                                                        </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                        </ListView>
+                                </ScrollViewer>
+                        </Grid>
+                </Border>
+                <!-- Панель пользователя и статуса -->
                 <Border Grid.Row="2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Margin="0,5,10,5"
-                        Background="#EEEEEE"
-                        BorderBrush="#CCCCCC"
-                        BorderThickness="1"
-                        CornerRadius="4">
-                        <WrapPanel VerticalAlignment="Center"
-                                   Margin="8,0,8,0">
+                        Margin="0,15,0,0"
+                        CornerRadius="20"
+                        Padding="15,8">
+                        <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0"
+                                                EndPoint="0,1">
+                                        <GradientStop Color="#34495E"
+                                                        Offset="0"/>
+                                        <GradientStop Color="#2C3E50"
+                                                        Offset="1"/>
+                                </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.Effect>
+                                <DropShadowEffect BlurRadius="5"
+                                                ShadowDepth="1"
+                                                Color="#40000000"
+                                                Opacity="0.3"/>
+                        </Border.Effect>
+                        <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="👤"
+                                           FontSize="16"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
                                 <TextBlock x:Name="UserFullNameTextBlock"
                                            FontSize="14"
-                                           Foreground="DarkSlateGray"
-                                           Padding="0,4,12,4"
-                                           VerticalAlignment="Center"/>
+                                           Foreground="White"
+                                           FontWeight="Medium"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,15,0"/>
+                                <TextBlock Text="⏰"
+                                           FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,5,0"/>
                                 <TextBlock x:Name="LogoutTimerTextBlock"
                                            FontSize="14"
-                                           Foreground="DarkRed"
-                                           Padding="0,4,0,4"
+                                           Foreground="#E74C3C"
+                                           FontWeight="SemiBold"
                                            VerticalAlignment="Center"/>
-                        </WrapPanel>
+                        </StackPanel>
                 </Border>
         </Grid>
+
+        <!-- Стили для современного дизайна -->
+        <Window.Resources>
+                <!-- Стиль для современных кнопок -->
+                <Style x:Key="ModernButtonStyle"
+                                TargetType="Button">
+                        <Setter Property="Background"
+                                        Value="#3498DB"/>
+                        <Setter Property="Foreground"
+                                        Value="White"/>
+                        <Setter Property="BorderThickness"
+                                        Value="0"/>
+                        <Setter Property="FontWeight"
+                                        Value="SemiBold"/>
+                        <Setter Property="FontSize"
+                                        Value="14"/>
+                        <Setter Property="Cursor"
+                                        Value="Hand"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="8"
+                                                        Padding="10,5">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#2980B9"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#21618C"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для основных кнопок -->
+                <Style x:Key="PrimaryButtonStyle"
+                                TargetType="Button">
+                        <Setter Property="Background"
+                                        Value="#27AE60"/>
+                        <Setter Property="Foreground"
+                                        Value="White"/>
+                        <Setter Property="BorderThickness"
+                                        Value="0"/>
+                        <Setter Property="FontWeight"
+                                        Value="Bold"/>
+                        <Setter Property="FontSize"
+                                        Value="16"/>
+                        <Setter Property="Cursor"
+                                        Value="Hand"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="12"
+                                                        Padding="15,10">
+                                                        <Border.Effect>
+                                                                <DropShadowEffect BlurRadius="5"
+                                                                                ShadowDepth="2"
+                                                                                Color="#40000000"
+                                                                                Opacity="0.3"/>
+                                                        </Border.Effect>
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#2ECC71"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#229954"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для вторичных кнопок -->
+                <Style x:Key="SecondaryButtonStyle"
+                                TargetType="Button">
+                        <Setter Property="Background"
+                                        Value="#95A5A6"/>
+                        <Setter Property="Foreground"
+                                        Value="White"/>
+                        <Setter Property="BorderThickness"
+                                        Value="0"/>
+                        <Setter Property="FontWeight"
+                                        Value="SemiBold"/>
+                        <Setter Property="FontSize"
+                                        Value="14"/>
+                        <Setter Property="Cursor"
+                                        Value="Hand"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="12"
+                                                        Padding="15,10">
+                                                        <Border.Effect>
+                                                                <DropShadowEffect BlurRadius="5"
+                                                                                ShadowDepth="2"
+                                                                                Color="#40000000"
+                                                                                Opacity="0.3"/>
+                                                        </Border.Effect>
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#7F8C8D"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#5D6D7E"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для GroupBox -->
+                <Style x:Key="ModernGroupBoxStyle"
+                                TargetType="GroupBox">
+                        <Setter Property="Background"
+                                        Value="White"/>
+                        <Setter Property="BorderThickness"
+                                        Value="0"/>
+                        <Setter Property="Padding"
+                                        Value="15"/>
+                        <Setter Property="Margin"
+                                        Value="0"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="GroupBox">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="12"
+                                                        Padding="{TemplateBinding Padding}">
+                                                        <Border.Effect>
+                                                                <DropShadowEffect BlurRadius="8"
+                                                                                ShadowDepth="2"
+                                                                                Color="#40000000"
+                                                                                Opacity="0.2"/>
+                                                        </Border.Effect>
+                                                        <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="*"/>
+                                                                </Grid.RowDefinitions>
+                                                                <ContentPresenter Grid.Row="0"
+                                                                                  ContentSource="Header"
+                                                                                  Margin="0,0,0,10"/>
+                                                                <ContentPresenter Grid.Row="1"/>
+                                                        </Grid>
+                                                </Border>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+                <!-- Стиль для ComboBox -->
+                <Style x:Key="ModernComboBoxStyle"
+                                TargetType="ComboBox">
+                        <Setter Property="Background"
+                                        Value="#F8F9FA"/>
+                        <Setter Property="BorderBrush"
+                                        Value="#DEE2E6"/>
+                        <Setter Property="BorderThickness"
+                                        Value="2"/>
+                        <Setter Property="Padding"
+                                        Value="12,10"/>
+                        <Setter Property="FontSize"
+                                        Value="14"/>
+                        <Setter Property="Height"
+                                        Value="45"/>
+                        <Setter Property="MaxDropDownHeight"
+                                        Value="200"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="ComboBox">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="8"
+                                                        Height="{TemplateBinding Height}">
+                                                        <Border.Effect>
+                                                                <DropShadowEffect BlurRadius="5"
+                                                                                ShadowDepth="1"
+                                                                                Color="#20000000"
+                                                                                Opacity="0.3"/>
+                                                        </Border.Effect>
+                                                        <Grid>
+                                                                <ToggleButton x:Name="ToggleButton"
+                                                                              Background="Transparent"
+                                                                              BorderThickness="0"
+                                                                              Focusable="False"
+                                                                              IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                              ClickMode="Press"
+                                                                              Grid.ColumnSpan="2">
+                                                                        <ToggleButton.Template>
+                                                                                <ControlTemplate TargetType="ToggleButton">
+                                                                                        <Border Background="Transparent">
+                                                                                                <Grid>
+                                                                                                        <Grid.ColumnDefinitions>
+                                                                                                                <ColumnDefinition/>
+                                                                                                                <ColumnDefinition Width="30"/>
+                                                                                                        </Grid.ColumnDefinitions>
+                                                                                                        <Border Grid.Column="1"
+                                                                                                                Background="#E9ECEF"
+                                                                                                                CornerRadius="0,6,6,0">
+                                                                                                                <Path Data="M 0 0 L 4 4 L 8 0 Z"
+                                                                                                                      Fill="#495057"
+                                                                                                                      HorizontalAlignment="Center"
+                                                                                                                      VerticalAlignment="Center"/>
+                                                                                                        </Border>
+                                                                                                </Grid>
+                                                                                        </Border>
+                                                                                </ControlTemplate>
+                                                                        </ToggleButton.Template>
+                                                                </ToggleButton>
+                                                                <ContentPresenter x:Name="ContentSite"
+                                                                                  IsHitTestVisible="False"
+                                                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                                                  Margin="{TemplateBinding Padding}"
+                                                                                  VerticalAlignment="Center"
+                                                                                  HorizontalAlignment="Left"/>
+                                                                <Popup x:Name="Popup"
+                                                                       Placement="Bottom"
+                                                                       IsOpen="{TemplateBinding IsDropDownOpen}"
+                                                                       AllowsTransparency="True"
+                                                                       Focusable="False"
+                                                                       PopupAnimation="Slide">
+                                                                        <Border Background="White"
+                                                                                BorderBrush="#DEE2E6"
+                                                                                BorderThickness="2"
+                                                                                CornerRadius="8"
+                                                                                MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                                                                MinWidth="{TemplateBinding ActualWidth}">
+                                                                                <Border.Effect>
+                                                                                        <DropShadowEffect BlurRadius="8"
+                                                                                                        ShadowDepth="2"
+                                                                                                        Color="#40000000"
+                                                                                                        Opacity="0.4"/>
+                                                                                </Border.Effect>
+                                                                                <ScrollViewer Margin="0"
+                                                                                              SnapsToDevicePixels="True"
+                                                                                              VerticalScrollBarVisibility="Auto"
+                                                                                              HorizontalScrollBarVisibility="Disabled">
+                                                                                        <StackPanel IsItemsHost="True"
+                                                                                                    KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                                                                </ScrollViewer>
+                                                                        </Border>
+                                                                </Popup>
+                                                        </Grid>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                        Value="True">
+                                                                <Setter Property="BorderBrush"
+                                                                                Value="#ADB5BD"/>
+                                                                <Setter Property="Background"
+                                                                                Value="#FFFFFF"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsFocused"
+                                                                        Value="True">
+                                                                <Setter Property="BorderBrush"
+                                                                                Value="#3498DB"/>
+                                                                <Setter Property="Background"
+                                                                                Value="#FFFFFF"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsDropDownOpen"
+                                                                        Value="True">
+                                                                <Setter Property="BorderBrush"
+                                                                                Value="#3498DB"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+                <!-- Стиль для элементов ComboBox -->
+                <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background"
+                                        Value="Transparent"/>
+                        <Setter Property="BorderThickness"
+                                        Value="0"/>
+                        <Setter Property="Padding"
+                                        Value="12,8"/>
+                        <Setter Property="FontSize"
+                                        Value="14"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="ComboBoxItem">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsHighlighted"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#E3F2FD"/>
+                                                                <Setter Property="Foreground"
+                                                                                Value="#1976D2"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsSelected"
+                                                                        Value="True">
+                                                                <Setter Property="Background"
+                                                                                Value="#2196F3"/>
+                                                                <Setter Property="Foreground"
+                                                                                Value="White"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для карточек столов -->
+                <Style x:Key="TableCardStyle"
+                                TargetType="Border">
+                        <Setter Property="Background">
+                                <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1"
+                                                        StartPoint="0.5,0">
+                                                <GradientStop Color="#FFFFFF"
+                                                                Offset="0"/>
+                                                <GradientStop Color="#F8F9FA"
+                                                                Offset="1"/>
+                                        </LinearGradientBrush>
+                                </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush"
+                                        Value="#DEE2E6"/>
+                        <Setter Property="BorderThickness"
+                                        Value="2"/>
+                        <Setter Property="CornerRadius"
+                                        Value="12"/>
+                        <Setter Property="Width"
+                                        Value="160"/>
+                        <Setter Property="Height"
+                                        Value="100"/>
+                        <Setter Property="Margin"
+                                        Value="8"/>
+                        <Setter Property="Cursor"
+                                        Value="Hand"/>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect BlurRadius="8"
+                                                        ShadowDepth="2"
+                                                        Color="#20000000"
+                                                        Opacity="0.3"/>
+                                </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                                Value="True">
+                                        <Setter Property="BorderBrush"
+                                                        Value="#3498DB"/>
+                                        <Setter Property="Background">
+                                                <Setter.Value>
+                                                        <LinearGradientBrush EndPoint="0.5,1"
+                                                                        StartPoint="0.5,0">
+                                                                <GradientStop Color="#EBF3FD"
+                                                                                Offset="0"/>
+                                                                <GradientStop Color="#D6E9FC"
+                                                                                Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Effect">
+                                                <Setter.Value>
+                                                        <DropShadowEffect BlurRadius="12"
+                                                                        ShadowDepth="3"
+                                                                        Color="#30000000"
+                                                                        Opacity="0.4"/>
+                                                </Setter.Value>
+                                        </Setter>
+                                </Trigger>
+                        </Style.Triggers>
+                </Style>
+
+                <!-- Стиль для выбранной карточки стола -->
+                <Style x:Key="SelectedTableCardStyle"
+                                TargetType="Border"
+                                BasedOn="{StaticResource TableCardStyle}">
+                        <Setter Property="Background">
+                                <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1"
+                                                        StartPoint="0.5,0">
+                                                <GradientStop Color="#3498DB"
+                                                                Offset="0"/>
+                                                <GradientStop Color="#2980B9"
+                                                                Offset="1"/>
+                                        </LinearGradientBrush>
+                                </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush"
+                                        Value="#2C3E50"/>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect BlurRadius="15"
+                                                        ShadowDepth="4"
+                                                        Color="#40000000"
+                                                        Opacity="0.5"/>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для текста столов -->
+                <Style x:Key="TableTextStyle"
+                                TargetType="TextBlock">
+                        <Setter Property="FontSize"
+                                        Value="14"/>
+                        <Setter Property="FontWeight"
+                                        Value="SemiBold"/>
+                        <Setter Property="Foreground"
+                                        Value="#2C3E50"/>
+                        <Setter Property="TextAlignment"
+                                        Value="Center"/>
+                        <Setter Property="VerticalAlignment"
+                                        Value="Center"/>
+                        <Setter Property="HorizontalAlignment"
+                                        Value="Center"/>
+                        <Setter Property="LineHeight"
+                                        Value="18"/>
+                </Style>
+
+                <!-- Стиль для текста выбранного стола -->
+                <Style x:Key="SelectedTableTextStyle"
+                                TargetType="TextBlock"
+                                BasedOn="{StaticResource TableTextStyle}">
+                        <Setter Property="Foreground"
+                                        Value="White"/>
+                        <Setter Property="FontWeight"
+                                        Value="Bold"/>
+                </Style>
+        </Window.Resources>
 </Window>
