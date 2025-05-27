@@ -194,6 +194,9 @@ namespace Kassa
                         }
                         var orderWindow = new OrderWindow(order, ResetAutoLogout) { Owner = this };
                         orderWindow.ShowDialog();
+
+                        // Обновляем контекст базы данных, чтобы увидеть изменения
+                        _context.ChangeTracker.Clear();
                         UpdateTables();
                     }
                 }
