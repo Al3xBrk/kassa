@@ -12,12 +12,18 @@ namespace Kassa
     public partial class AdminOrderHistoryPage : Page
     {
         private readonly KassaContext _context = new KassaContext();
+
         public AdminOrderHistoryPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             LoadFilters();
             LoadOrdersByCashier();
             LoadShifts();
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
         }
 
         private void LoadFilters()
@@ -27,7 +33,11 @@ namespace Kassa
                 .Distinct().OrderByDescending(y => y).ToList();
             YearComboBox.ItemsSource = years;
             if (years.Count > 0) YearComboBox.SelectedItem = years[0];
-            DatePickerFilter.SelectedDate = DateTime.Today;
+            // Инициализируем диапазон дат
+            if (DateFromPicker != null)
+                DateFromPicker.SelectedDate = DateTime.Today.AddDays(-7);
+            if (DateToPicker != null)
+                DateToPicker.SelectedDate = DateTime.Today;
 
             // Загрузка кассиров
             var cashiers = _context.Users
@@ -43,13 +53,12 @@ namespace Kassa
             CashierComboBox.SelectedIndex = 0;
         }
 
-        private void DatePickerFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void Filter_Changed(object sender, SelectionChangedEventArgs e)
         {
             LoadOrdersByCashier();
             LoadShifts();
         }
-
-        private void Filter_Changed(object sender, SelectionChangedEventArgs e)
+        private void DateRangeFilter_Changed(object sender, SelectionChangedEventArgs e)
         {
             LoadOrdersByCashier();
             LoadShifts();
@@ -63,9 +72,10 @@ namespace Kassa
             if (YearComboBox.SelectedItem is int year)
                 shifts = shifts.Where(s => s.OpenedAt.Year == year);
 
-            if (DatePickerFilter.SelectedDate is DateTime date)
-                shifts = shifts.Where(s => s.OpenedAt.Date == date.Date ||
-                                        (s.ClosedAt.HasValue && s.ClosedAt.Value.Date == date.Date));
+            if (DateFromPicker.SelectedDate is DateTime dateFrom)
+                shifts = shifts.Where(s => s.OpenedAt.Date >= dateFrom.Date || (s.ClosedAt.HasValue && s.ClosedAt.Value.Date >= dateFrom.Date));
+            if (DateToPicker.SelectedDate is DateTime dateTo)
+                shifts = shifts.Where(s => s.OpenedAt.Date <= dateTo.Date || (s.ClosedAt.HasValue && s.ClosedAt.Value.Date <= dateTo.Date));
 
             if (CashierComboBox.SelectedItem is User selectedCashier && selectedCashier.Id != -1)
                 shifts = shifts.Where(s => s.CashierId == selectedCashier.Id);
@@ -107,10 +117,10 @@ namespace Kassa
             // Применяем фильтры
             if (YearComboBox.SelectedItem is int year)
                 ordersQuery = ordersQuery.Where(o => o.OrderDate.Year == year);
-
-            if (DatePickerFilter.SelectedDate is DateTime date)
-                ordersQuery = ordersQuery.Where(o => o.OrderDate.Date == date.Date);
-
+            if (DateFromPicker.SelectedDate is DateTime dateFrom)
+                ordersQuery = ordersQuery.Where(o => o.OrderDate.Date >= dateFrom.Date);
+            if (DateToPicker.SelectedDate is DateTime dateTo)
+                ordersQuery = ordersQuery.Where(o => o.OrderDate.Date <= dateTo.Date);
             if (CashierComboBox.SelectedItem is User selectedCashier && selectedCashier.Id != -1)
                 ordersQuery = ordersQuery.Where(o => o.UserId == selectedCashier.Id);
 
@@ -139,6 +149,116 @@ namespace Kassa
             }
 
             OrdersListView.ItemsSource = ordersList;
+        }
+
+        private void SaveReceiptsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Получаем заказы с учётом текущих фильтров
+            var ordersQuery = _context.Orders
+                .Include(o => o.Status)
+                .Include(o => o.User)
+                .Include(o => o.Hall)
+                .Include(o => o.PaymentMethod)
+                .Include(o => o.Items).ThenInclude(i => i.Dish)
+                .Where(o => o.StatusId == 2)
+                .AsQueryable();
+
+            if (YearComboBox.SelectedItem is int year)
+                ordersQuery = ordersQuery.Where(o => o.OrderDate.Year == year);
+            if (DateFromPicker.SelectedDate is DateTime dateFrom)
+                ordersQuery = ordersQuery.Where(o => o.OrderDate.Date >= dateFrom.Date);
+            if (DateToPicker.SelectedDate is DateTime dateTo)
+                ordersQuery = ordersQuery.Where(o => o.OrderDate.Date <= dateTo.Date);
+            if (CashierComboBox.SelectedItem is User selectedCashier && selectedCashier.Id != -1)
+                ordersQuery = ordersQuery.Where(o => o.UserId == selectedCashier.Id);
+
+            var orders = ordersQuery.OrderBy(o => o.OrderDate).ToList();
+            if (orders.Count == 0)
+            {
+                MessageBox.Show("Нет заказов для сохранения.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Формируем текст чеков
+            var lines = new List<string>();
+            foreach (var order in orders)
+            {
+                lines.Add($"Чек заказа #{order.Id}");
+                lines.Add($"Время заказа: {order.OrderDate:dd.MM.yyyy HH:mm}");
+                lines.Add($"Время оплаты: {order.PaymentTime:dd.MM.yyyy HH:mm}");
+                lines.Add($"Кассир: {order.User?.FullName ?? "-"}");
+                lines.Add($"Зал: {order.Hall?.Name ?? "-"}");
+                lines.Add($"Стол: {order.TableNumber}");
+                lines.Add($"Статус: {order.Status?.Name ?? "-"}");
+                lines.Add($"Сумма заказа: {order.TotalAmount:N2} BYN");
+                lines.Add($"Способ оплаты: {order.PaymentMethod?.Name ?? "-"}");
+                if (order.PaymentMethodId == 1 && order.CashGiven.HasValue)
+                {
+                    lines.Add($"Получено: {order.CashGiven:N2} BYN");
+                    lines.Add($"Сдача: {order.Change:N2} BYN");
+                }
+
+
+                lines.Add("Блюда:");
+                foreach (var item in order.Items)
+                    lines.Add($"  - {item.Dish?.Name ?? "-"} ({item.Price:N2} BYN)");
+                lines.Add(new string('-', 40));
+            }
+
+            // Сохраняем в файл
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = "Сохранить чеки",
+                Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+                FileName = $"receipts_{DateTime.Now:yyyyMMdd_HHmmss}.txt"
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                System.IO.File.WriteAllLines(dialog.FileName, lines);
+                MessageBox.Show($"Чеки успешно сохранены в файл:\n{dialog.FileName}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void SaveShiftsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Получаем данные о сменах, отображаемых в ListView
+            var shifts = ShiftsListView.ItemsSource as IEnumerable<ShiftViewModel>;
+            if (shifts == null || !shifts.Any())
+            {
+                MessageBox.Show("Нет данных о сменах для сохранения.", "Сохранение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                FileName = $"shifts_{DateTime.Now:yyyyMMdd_HHmmss}.txt",
+                Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*"
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                try
+                {
+                    using (var writer = new System.IO.StreamWriter(dialog.FileName, false, System.Text.Encoding.UTF8))
+                    {
+                        writer.WriteLine("Информация о сменах");
+                        writer.WriteLine($"Экспортировано: {DateTime.Now:dd.MM.yyyy HH:mm}");
+                        writer.WriteLine();
+                        foreach (var shift in shifts)
+                        {
+                            writer.WriteLine($"Кассир: {shift.CashierName}");
+                            writer.WriteLine($"Открыта: {shift.OpenedAt:dd.MM.yyyy HH:mm}");
+                            writer.WriteLine($"Закрыта: {(shift.ClosedAt.HasValue ? shift.ClosedAt.Value.ToString("dd.MM.yyyy HH:mm") : "-")}");
+                            writer.WriteLine($"Продолжительность: {shift.Duration}");
+                            writer.WriteLine(new string('-', 40));
+                        }
+                    }
+                    MessageBox.Show("Информация о сменах успешно сохранена.", "Сохранение", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
         public class CashierWithOrdersViewModel
