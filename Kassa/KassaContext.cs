@@ -42,11 +42,11 @@ namespace Kassa
                 new DishGroup { Id = 6, Name = "Десерты" },
                 new DishGroup { Id = 7, Name = "Пицца" },
                 new DishGroup { Id = 8, Name = "Паста" },
-                new DishGroup { Id = 9, Name = "Гриль" }
-            );
-
-            modelBuilder.Entity<Dish>().HasData(
+                new DishGroup { Id = 9, Name = "Гриль" },
+                new DishGroup { Id = 10, Name = "Алкогольные напитки" }
+            ); modelBuilder.Entity<Dish>().HasData(
                 // Супы
+                new Dish { Id = 1, Name = "Борщ", Price = 150, DishGroupId = 1 },
                 new Dish { Id = 2, Name = "Солянка мясная", Price = 200, DishGroupId = 1 },
                 new Dish { Id = 3, Name = "Крем-суп грибной", Price = 180, DishGroupId = 1 },
                 new Dish { Id = 4, Name = "Суп-лапша куриная", Price = 120, DishGroupId = 1 },
@@ -102,13 +102,21 @@ namespace Kassa
                 new Dish { Id = 38, Name = "Куриные крылышки", Price = 220, DishGroupId = 9 },
                 new Dish { Id = 39, Name = "Семга на гриле", Price = 480, DishGroupId = 9 },
 
-            ); modelBuilder.Entity<OrderStatus>().HasData(
+                // Алкогольные напитки
+                new Dish { Id = 40, Name = "Пиво светлое", Price = 120, DishGroupId = 10 },
+                new Dish { Id = 41, Name = "Вино красное сухое", Price = 200, DishGroupId = 10 },
+                new Dish { Id = 42, Name = "Водка", Price = 150, DishGroupId = 10 },
+                new Dish { Id = 43, Name = "Коньяк", Price = 300, DishGroupId = 10 }
+            );
+            modelBuilder.Entity<OrderStatus>().HasData(
                 new OrderStatus { Id = 1, Name = "Создан" },
                 new OrderStatus { Id = 2, Name = "Оплачен" }
-            ); modelBuilder.Entity<PaymentMethod>().HasData(
+            );
+            modelBuilder.Entity<PaymentMethod>().HasData(
                 new PaymentMethod { Id = 1, Name = "Наличные" },
                 new PaymentMethod { Id = 2, Name = "Карта" }
-            );            // Создаем несколько тестовых заказов
+            );
+            // Создаем несколько тестовых заказов
             modelBuilder.Entity<Order>().HasData(
                 new Order
                 {
