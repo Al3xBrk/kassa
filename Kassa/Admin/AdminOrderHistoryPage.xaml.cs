@@ -96,7 +96,7 @@ namespace Kassa
             })
                 .ToList();
 
-            ShiftsListView.ItemsSource = shiftsVm;
+            ShiftsDataGrid.ItemsSource = shiftsVm;
         }
 
         // Сделаем метод статическим для избежания захвата контекста экземпляра в LINQ-запросе
@@ -148,7 +148,7 @@ namespace Kassa
                 });
             }
 
-            OrdersListView.ItemsSource = ordersList;
+            OrdersDataGrid.ItemsSource = ordersList;
         }
 
         private void SaveReceiptsButton_Click(object sender, RoutedEventArgs e)
@@ -218,11 +218,10 @@ namespace Kassa
                 MessageBox.Show($"Чеки успешно сохранены в файл:\n{dialog.FileName}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
         private void SaveShiftsButton_Click(object sender, RoutedEventArgs e)
         {
-            // Получаем данные о сменах, отображаемых в ListView
-            var shifts = ShiftsListView.ItemsSource as IEnumerable<ShiftViewModel>;
+            // Получаем данные о сменах, отображаемых в DataGrid
+            var shifts = ShiftsDataGrid.ItemsSource as IEnumerable<ShiftViewModel>;
             if (shifts == null || !shifts.Any())
             {
                 MessageBox.Show("Нет данных о сменах для сохранения.", "Сохранение", MessageBoxButton.OK, MessageBoxImage.Information);

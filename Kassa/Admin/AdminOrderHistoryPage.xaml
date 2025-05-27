@@ -160,6 +160,74 @@
                                 </Setter.Value>
                         </Setter>
                 </Style>
+
+                <!-- Стиль для современной таблицы -->
+                <Style x:Key="ModernDataGridStyle"
+                       TargetType="DataGrid">
+                        <Setter Property="Background"
+                                Value="#F8F9FA"/>
+                        <Setter Property="BorderThickness"
+                                Value="0"/>
+                        <Setter Property="GridLinesVisibility"
+                                Value="None"/>
+                        <Setter Property="HeadersVisibility"
+                                Value="Column"/>
+                        <Setter Property="CanUserReorderColumns"
+                                Value="False"/>
+                        <Setter Property="CanUserSortColumns"
+                                Value="True"/>
+                        <Setter Property="AlternationCount"
+                                Value="2"/>
+                        <Setter Property="FontSize"
+                                Value="14"/>
+                        <Setter Property="RowHeight"
+                                Value="45"/>
+                </Style>
+
+                <!-- Стиль для заголовков колонок -->
+                <Style x:Key="DataGridColumnHeaderStyle"
+                       TargetType="DataGridColumnHeader">
+                        <Setter Property="Background"
+                                Value="#3498DB"/>
+                        <Setter Property="Foreground"
+                                Value="White"/>
+                        <Setter Property="FontWeight"
+                                Value="SemiBold"/>
+                        <Setter Property="FontSize"
+                                Value="14"/>
+                        <Setter Property="Padding"
+                                Value="15,12"/>
+                        <Setter Property="BorderThickness"
+                                Value="0"/>
+                        <Setter Property="Height"
+                                Value="40"/>
+                </Style>
+
+                <!-- Стиль для строк таблицы -->
+                <Style x:Key="DataGridRowStyle"
+                       TargetType="DataGridRow">
+                        <Setter Property="Background"
+                                Value="White"/>
+                        <Setter Property="Margin"
+                                Value="0,2"/>
+                        <Style.Triggers>
+                                <Trigger Property="AlternationIndex"
+                                         Value="1">
+                                        <Setter Property="Background"
+                                                Value="#F8F9FA"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                        <Setter Property="Background"
+                                                Value="#E3F2FD"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                        <Setter Property="Background"
+                                                Value="#BBDEFB"/>
+                                </Trigger>
+                        </Style.Triggers>
+                </Style>
         </Page.Resources>
 
         <Border Style="{StaticResource MainCardStyle}"
@@ -255,32 +323,34 @@
                                                                    VerticalAlignment="Center"/>
                                                 </StackPanel>
                                         </TabItem.Header>
-
                                         <Border Background="White"
                                                 CornerRadius="0,10,10,10"
                                                 Padding="15">
-                                                <ListView x:Name="OrdersListView"
-                                                          Style="{StaticResource ModernListViewStyle}">
-                                                        <ListView.View>
-                                                                <GridView>
-                                                                        <GridViewColumn Header="👤 Кассир"
-                                                                                        Width="200"
-                                                                                        DisplayMemberBinding="{Binding CashierName}"/>
-                                                                        <GridViewColumn Header="📅 Дата и время"
-                                                                                        Width="160"
-                                                                                        DisplayMemberBinding="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}"/>
-                                                                        <GridViewColumn Header="💰 Стоимость"
-                                                                                        Width="100"
-                                                                                        DisplayMemberBinding="{Binding TotalAmount, StringFormat='{}{0:N2} BYN'}"/>
-                                                                        <GridViewColumn Header="📊 Статус"
-                                                                                        Width="100"
-                                                                                        DisplayMemberBinding="{Binding StatusName}"/>
-                                                                        <GridViewColumn Header="💳 Способ оплаты"
-                                                                                        Width="150"
-                                                                                        DisplayMemberBinding="{Binding PaymentMethod}"/>
-                                                                </GridView>
-                                                        </ListView.View>
-                                                </ListView>
+                                                <DataGrid x:Name="OrdersDataGrid"
+                                                          Style="{StaticResource ModernDataGridStyle}"
+                                                          ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                                                          RowStyle="{StaticResource DataGridRowStyle}"
+                                                          AutoGenerateColumns="False"
+                                                          IsReadOnly="True"
+                                                          SelectionMode="Single">
+                                                        <DataGrid.Columns>
+                                                                <DataGridTextColumn Header="👤 Кассир"
+                                                                                    Binding="{Binding CashierName}"
+                                                                                    Width="200"/>
+                                                                <DataGridTextColumn Header="📅 Дата и время"
+                                                                                    Binding="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}"
+                                                                                    Width="160"/>
+                                                                <DataGridTextColumn Header="💰 Стоимость"
+                                                                                    Binding="{Binding TotalAmount, StringFormat='{}{0:N2} BYN'}"
+                                                                                    Width="100"/>
+                                                                <DataGridTextColumn Header="📊 Статус"
+                                                                                    Binding="{Binding StatusName}"
+                                                                                    Width="100"/>
+                                                                <DataGridTextColumn Header="💳 Способ оплаты"
+                                                                                    Binding="{Binding PaymentMethod}"
+                                                                                    Width="150"/>
+                                                        </DataGrid.Columns>
+                                                </DataGrid>
                                         </Border>
                                 </TabItem>
 
@@ -296,29 +366,31 @@
                                                                    VerticalAlignment="Center"/>
                                                 </StackPanel>
                                         </TabItem.Header>
-
                                         <Border Background="White"
                                                 CornerRadius="0,10,10,10"
                                                 Padding="15">
-                                                <ListView x:Name="ShiftsListView"
-                                                          Style="{StaticResource ModernListViewStyle}">
-                                                        <ListView.View>
-                                                                <GridView>
-                                                                        <GridViewColumn Header="👤 Кассир"
-                                                                                        Width="150"
-                                                                                        DisplayMemberBinding="{Binding CashierName}"/>
-                                                                        <GridViewColumn Header="🔓 Открыта"
-                                                                                        Width="160"
-                                                                                        DisplayMemberBinding="{Binding OpenedAt, StringFormat=dd.MM.yyyy HH:mm}"/>
-                                                                        <GridViewColumn Header="🔒 Закрыта"
-                                                                                        Width="160"
-                                                                                        DisplayMemberBinding="{Binding ClosedAt, StringFormat=dd.MM.yyyy HH:mm}"/>
-                                                                        <GridViewColumn Header="⏱️ Продолжительность"
-                                                                                        Width="150"
-                                                                                        DisplayMemberBinding="{Binding Duration}"/>
-                                                                </GridView>
-                                                        </ListView.View>
-                                                </ListView>
+                                                <DataGrid x:Name="ShiftsDataGrid"
+                                                          Style="{StaticResource ModernDataGridStyle}"
+                                                          ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                                                          RowStyle="{StaticResource DataGridRowStyle}"
+                                                          AutoGenerateColumns="False"
+                                                          IsReadOnly="True"
+                                                          SelectionMode="Single">
+                                                        <DataGrid.Columns>
+                                                                <DataGridTextColumn Header="👤 Кассир"
+                                                                                    Binding="{Binding CashierName}"
+                                                                                    Width="150"/>
+                                                                <DataGridTextColumn Header="🔓 Открыта"
+                                                                                    Binding="{Binding OpenedAt, StringFormat=dd.MM.yyyy HH:mm}"
+                                                                                    Width="160"/>
+                                                                <DataGridTextColumn Header="🔒 Закрыта"
+                                                                                    Binding="{Binding ClosedAt, StringFormat=dd.MM.yyyy HH:mm}"
+                                                                                    Width="160"/>
+                                                                <DataGridTextColumn Header="⏱️ Продолжительность"
+                                                                                    Binding="{Binding Duration}"
+                                                                                    Width="150"/>
+                                                        </DataGrid.Columns>
+                                                </DataGrid>
                                         </Border>
                                 </TabItem>
                         </TabControl>
