@@ -108,7 +108,6 @@ namespace Kassa
         {
             UpdateTimeline();
         }
-
         private void UpdateTimeline()
         {
             if (TimelineHallComboBox.SelectedItem is Hall hall && TimelineDatePicker.SelectedDate is DateTime date)
@@ -116,7 +115,7 @@ namespace Kassa
                 var reservations = _context.TableReservations
                     .Where(r => r.HallId == hall.Id && r.Date == date.Date)
                     .ToList();
-                TimelineListView.ItemsSource = reservations;
+                TimelineDataGrid.ItemsSource = reservations;
             }
         }
 

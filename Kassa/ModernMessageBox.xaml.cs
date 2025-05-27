@@ -83,16 +83,26 @@ namespace Kassa
             messageBox.ShowDialog();
             return messageBox.Result;
         }
-
         public static ModernMessageBoxResult Show(string message, string title, ModernMessageBoxType type, ModernMessageBoxResult buttons)
         {
             var messageBox = new ModernMessageBox();
             messageBox.SetupMessageBox(message, title, type, buttons);
 
-            var owner = Application.Current.MainWindow;
-            if (owner?.IsLoaded == true)
+            // Пытаемся найти активное окно для центрирования
+            var owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
+            if (owner == null)
+            {
+                owner = Application.Current.MainWindow;
+            }
+
+            if (owner?.IsLoaded == true && owner.IsVisible)
             {
                 messageBox.Owner = owner;
+                messageBox.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            else
+            {
+                messageBox.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
 
             messageBox.ShowDialog();

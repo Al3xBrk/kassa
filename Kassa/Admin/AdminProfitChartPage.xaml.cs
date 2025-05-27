@@ -32,7 +32,6 @@ namespace Kassa
         {
             UpdateProfitChart();
         }
-
         private void UpdateProfitChart()
         {
             if (YearComboBox.SelectedItem == null || MonthComboBox.SelectedIndex == -1)
@@ -58,6 +57,21 @@ namespace Kassa
                 }
             };
             ProfitChart.AxisX[0].Labels = Enumerable.Range(1, daysInMonth).Select(d => d.ToString()).ToArray();
+
+            // Устанавливаем диапазон Y-оси для корректного отображения
+            var maxValue = dailySums.Max();
+            if (maxValue == 0)
+            {
+                // Если нет данных, устанавливаем диапазон 0-1000
+                ProfitChart.AxisY[0].MinValue = 0;
+                ProfitChart.AxisY[0].MaxValue = 1000;
+            }
+            else
+            {
+                // Если есть данные, устанавливаем автоматический диапазон
+                ProfitChart.AxisY[0].MinValue = double.NaN;
+                ProfitChart.AxisY[0].MaxValue = double.NaN;
+            }
         }
     }
 }

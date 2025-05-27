@@ -225,7 +225,7 @@ namespace Kassa
                         HallId = _hallId,
                         TableNumber = _tableNumber,
                         TotalAmount = total,
-                        OrderDate = DateTime.Now, // Локальное время для PostgreSQL (timestamp without time zone)
+                        OrderDate = DateTime.Now, // Локальное время для PostgreSQL (datetime2)
                         StatusId = 1, // "Создан"
                         UserId = _userId
                     };
