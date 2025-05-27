@@ -13,11 +13,12 @@ namespace Kassa
         private readonly KassaContext _context = new KassaContext();
         private int? selectedTable = null;
 
-        private System.Windows.Threading.DispatcherTimer _autoLogoutTimer;
+        private System.Windows.Threading.DispatcherTimer? _autoLogoutTimer;
         private DateTime _lastActivityTime;
-        private int _autoLogoutMinutes = 10;
-        private User? _currentUser;
-        private Shift? _currentShift; public CashierWindow(User? user = null)
+        private int _autoLogoutMinutes = 10; private User? _currentUser;
+        private Shift? _currentShift;
+
+        public CashierWindow(User? user = null)
         {
             InitializeComponent();
             _currentUser = user;
@@ -209,13 +210,12 @@ namespace Kassa
             _lastActivityTime = DateTime.Now;
             UpdateLogoutTimerText();
         }
-
-        private void AutoLogoutTimer_Tick(object sender, EventArgs e)
+        private void AutoLogoutTimer_Tick(object? sender, EventArgs e)
         {
             UpdateLogoutTimerText();
             if ((DateTime.Now - _lastActivityTime).TotalMinutes >= _autoLogoutMinutes)
             {
-                _autoLogoutTimer.Stop();
+                _autoLogoutTimer?.Stop();
                 MessageBox.Show("Время неактивности истекло. Возврат на главную страницу.", "Авто-выход", MessageBoxButton.OK, MessageBoxImage.Information);
                 var mainWindow = new MainWindow();
                 mainWindow.Show();
@@ -294,12 +294,56 @@ namespace Kassa
             {
                 ShiftStatusTextBlock.Text = "Смена открыта";
                 ShiftStatusTextBlock.Foreground = Brushes.Green;
+                // Показываем рабочую область, скрываем историю
+                WorkAreaGrid.Visibility = Visibility.Visible;
+                ShiftHistoryGrid.Visibility = Visibility.Collapsed;
             }
             else
             {
                 ShiftStatusTextBlock.Text = "Смена закрыта";
                 ShiftStatusTextBlock.Foreground = Brushes.Red;
+                // Скрываем рабочую область, показываем историю последней смены
+                WorkAreaGrid.Visibility = Visibility.Collapsed;
+                ShiftHistoryGrid.Visibility = Visibility.Visible;
+                ShowLastShiftOrders();
             }
+        }
+        private void ShowLastShiftOrders()
+        {
+            if (_currentUser == null) return;
+
+            // Получаем последнюю закрытую смену текущего кассира
+            var lastClosedShift = _context.Shifts
+                .Where(s => s.CashierId == _currentUser.Id && s.ClosedAt != null)
+                .OrderByDescending(s => s.ClosedAt)
+                .FirstOrDefault();
+
+            if (lastClosedShift == null)
+            {
+                OrderHistoryListView.ItemsSource = null;
+                return;
+            }
+
+            // Получаем заказы за эту смену
+            var shiftOrders = _context.Orders
+                .Where(o => o.UserId == _currentUser.Id &&
+                           o.OrderDate >= lastClosedShift.OpenedAt &&
+                           o.OrderDate <= lastClosedShift.ClosedAt &&
+                           o.StatusId >= 2) // Только завершенные/оплаченные заказы
+                .Select(o => new
+                {
+                    Id = o.Id,
+                    HallName = o.Hall.Name,
+                    TableNumber = o.TableNumber,
+                    CreatedAt = o.OrderDate,
+                    CompletedAt = o.PaymentTime ?? o.OrderDate, // Используем время оплаты или время создания
+                    StatusName = o.Status.Name,
+                    TotalAmount = o.TotalAmount
+                })
+                .OrderByDescending(o => o.CreatedAt)
+                .ToList();
+
+            OrderHistoryListView.ItemsSource = shiftOrders;
         }
 
         public void ResetAutoLogout()
