@@ -29,14 +29,17 @@ namespace Kassa
             TableNumberTextBlock.Text = order.TableNumber.ToString();
             TotalAmountTextBlock.Text = $"{order.TotalAmount:N2} BYN";
         }
+
         private void CardPaymentButton_Click(object sender, RoutedEventArgs e)
         {
             _resetAutoLogoutAction?.Invoke();
-            // Выбираем метод оплаты "Карта" (Id = 2)
-            SelectedPaymentMethod = _paymentMethods.FirstOrDefault(p => p.Id == 2);
 
-            // Скрываем панель ввода наличных
+            // Выбираем метод оплаты "Карта" (Id = 2)
+            SelectedPaymentMethod = _paymentMethods.FirstOrDefault(p => p.Id == 2);            // Скрываем панель ввода наличных
             CashInputPanel.Visibility = Visibility.Collapsed;
+
+            // Уменьшаем размер окна при скрытии панели наличных
+            this.Height = 620;
 
             // Активируем кнопку подтверждения
             ConfirmButton.IsEnabled = true;
@@ -45,32 +48,51 @@ namespace Kassa
             CardPaymentButton.Style = (Style)FindResource("SelectedPaymentButtonStyle");
             CashPaymentButton.Style = (Style)FindResource("PaymentButtonStyle");
         }
-
         private void CashPaymentButton_Click(object sender, RoutedEventArgs e)
         {
             _resetAutoLogoutAction?.Invoke();
-            // Выбираем метод оплаты "Наличные" (Id = 1)
-            SelectedPaymentMethod = _paymentMethods.FirstOrDefault(p => p.Id == 1);
 
-            // Показываем панель ввода наличных
+            // Выбираем метод оплаты "Наличные" (Id = 1)
+            SelectedPaymentMethod = _paymentMethods.FirstOrDefault(p => p.Id == 1);            // Показываем панель ввода наличных
             CashInputPanel.Visibility = Visibility.Visible;
 
-            // Активируем кнопку подтверждения только если введена сумма
-            ConfirmButton.IsEnabled = !string.IsNullOrWhiteSpace(CashGivenTextBox.Text);
+            // Увеличиваем размер окна для отображения панели наличных
+            this.Height = 860;
+
+            // Деактивируем кнопку подтверждения до ввода суммы
+            ConfirmButton.IsEnabled = false;
+
+            // Очищаем поля
+            CashGivenTextBox.Text = "";
+            ChangeTextBlock.Text = "0.00 BYN";
 
             // Применяем стили для выбранной кнопки
             CashPaymentButton.Style = (Style)FindResource("SelectedPaymentButtonStyle");
             CardPaymentButton.Style = (Style)FindResource("PaymentButtonStyle");
 
-            // Фокус на поле ввода
+            // Фокусируемся на поле ввода
             CashGivenTextBox.Focus();
-        }
-
-        private void CashGivenTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        }        private void CashGivenTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             _resetAutoLogoutAction?.Invoke();
+            
             // Проверяем корректность ввода и рассчитываем сдачу
-            if (decimal.TryParse(CashGivenTextBox.Text, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal cashGiven))
+            if (string.IsNullOrWhiteSpace(CashGivenTextBox.Text))
+            {
+                CashGiven = null;
+                Change = null;
+                ChangeTextBlock.Text = "0.00 BYN";
+                ChangeTextBlock.Foreground = System.Windows.Media.Brushes.Gray;
+                ConfirmButton.IsEnabled = false;
+                return;
+            }
+
+            // Нормализуем ввод, поддерживая оба разделителя
+            string input = CashGivenTextBox.Text.Trim();
+            input = input.Replace(',', '.');
+            
+            // Пытаемся распарсить введенную сумму
+            if (decimal.TryParse(input, NumberStyles.Currency | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimal cashGiven))
             {
                 CashGiven = cashGiven;
 
@@ -99,10 +121,11 @@ namespace Kassa
                 Change = null;
             }
         }
-
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            _resetAutoLogoutAction?.Invoke(); if (SelectedPaymentMethod == null)
+            _resetAutoLogoutAction?.Invoke();
+
+            if (SelectedPaymentMethod == null)
             {
                 ModernMessageBox.ShowWarning("Пожалуйста, выберите способ оплаты", "Внимание");
                 return;

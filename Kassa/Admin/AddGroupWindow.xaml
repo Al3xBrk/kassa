@@ -155,7 +155,7 @@
         </Window.Resources>
 
         <Border Style="{StaticResource DialogCardStyle}"
-                Margin="20">
+                Margin="20,20,20,12">
                 <StackPanel Margin="30">
                         <!-- Заголовок с иконкой -->
                         <StackPanel Orientation="Horizontal"
@@ -191,7 +191,7 @@
                                     HorizontalAlignment="Right"
                                     Margin="0,25,0,0">
                                 <Button Style="{StaticResource PrimaryButtonStyle}"
-                                        Click="SaveButton_Click">
+                                        Click="SaveButton_Click" Width="167">
                                         <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="💾"
                                                            FontSize="16"

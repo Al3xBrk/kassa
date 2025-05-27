@@ -132,7 +132,7 @@
                                                    FontWeight="Medium"/>
                                         <ComboBox x:Name="HallComboBox"
                                                   Width="250"
-                                                  Height="35"
+                                                  Height="42"
                                                   SelectionChanged="HallComboBox_SelectionChanged"
                                                   Style="{DynamicResource ModernComboBoxStyle}"/>
                                 </StackPanel>
@@ -283,7 +283,7 @@
                                                         <Run Text="{Binding Id, Mode=OneWay}"/>
                                                         <Run Text=" • 🏛️ "/>
                                                         <Run Text="{Binding HallName, Mode=OneWay}"/>
-                                                        <Run Text=" • 🪑 Стол "/>
+                                                        <Run Text=" • Стол "/>
                                                         <Run Text="{Binding TableNumber, Mode=OneWay}"/>
                                                                                         </TextBlock>
 

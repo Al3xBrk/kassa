@@ -39,7 +39,7 @@ namespace Kassa
                 }
                 else
                 {
-                    MessageBox.Show("Группа с таким названием уже существует.");
+                    ModernMessageBox.Show("Группа с таким названием уже существует.");
                 }
             }
         }
@@ -81,7 +81,7 @@ namespace Kassa
             }
             else
             {
-                MessageBox.Show("Сначала выберите группу.");
+                ModernMessageBox.Show("Сначала выберите группу.");
             }
         }
 
@@ -103,7 +103,7 @@ namespace Kassa
                         {
                             if (_context.DishGroups.Any(g => g.Name == newName))
                             {
-                                MessageBox.Show("Группа с таким названием уже существует.");
+                                ModernMessageBox.Show("Группа с таким названием уже существует.");
                                 return;
                             }
                             group.Name = newName;
@@ -125,7 +125,7 @@ namespace Kassa
                 var group = _context.DishGroups.Include(g => g.Dishes).FirstOrDefault(g => g.Name == groupName);
                 if (group != null)
                 {
-                    if (MessageBox.Show($"Удалить группу '{group.Name}' и все её блюда?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    if (ModernMessageBox.ShowQuestion($"Удалить группу '{group.Name}' и все её блюда?", "Подтверждение") == ModernMessageBoxResult.Yes)
                     {
                         _context.Dishes.RemoveRange(group.Dishes);
                         _context.DishGroups.Remove(group);
@@ -182,7 +182,7 @@ namespace Kassa
                     var dish = group.Dishes.FirstOrDefault(d => d.Name == dishName);
                     if (dish != null)
                     {
-                        if (MessageBox.Show($"Удалить блюдо '{dish.Name}'?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                        if (ModernMessageBox.ShowQuestion($"Удалить блюдо '{dish.Name}'?", "Подтверждение") == ModernMessageBoxResult.Yes)
                         {
                             _context.Dishes.Remove(dish);
                             _context.SaveChanges();

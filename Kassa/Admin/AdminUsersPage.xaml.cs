@@ -40,10 +40,10 @@ namespace Kassa
             {
                 if (user.Role == UserRole.Administrator)
                 {
-                    MessageBox.Show("Нельзя удалить администратора.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ModernMessageBox.ShowWarning("Нельзя удалить администратора.", "Ошибка");
                     return;
                 }
-                if (MessageBox.Show($"Удалить пользователя {user.FullName}?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (ModernMessageBox.ShowQuestion($"Удалить пользователя {user.FullName}?", "Подтверждение") == ModernMessageBoxResult.Yes)
                 {
                     using (var db = new KassaContext())
                     {

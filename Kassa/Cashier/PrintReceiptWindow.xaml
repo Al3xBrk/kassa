@@ -178,7 +178,7 @@
         </Window.Resources>
 
         <Border Style="{StaticResource ReceiptCardStyle}"
-                Margin="20">
+                Margin="20,20,20,5">
                 <StackPanel Margin="25">
                         <!-- Заголовок чека с иконкой -->
                         <StackPanel Orientation="Horizontal"

@@ -41,19 +41,19 @@ namespace Kassa
             {
                 if (string.IsNullOrWhiteSpace(NameTextBox.Text))
                 {
-                    MessageBox.Show("Введите имя для резервации.");
+                    ModernMessageBox.Show("Введите имя для резервации.");
                     return;
                 }
                 if (FromTimePicker.Value == null || ToTimePicker.Value == null)
                 {
-                    MessageBox.Show("Выберите время начала и конца.");
+                    ModernMessageBox.Show("Выберите время начала и конца.");
                     return;
                 }
                 var fromTime = TimeOnly.FromDateTime(FromTimePicker.Value.Value);
                 var toTime = TimeOnly.FromDateTime(ToTimePicker.Value.Value);
                 if (fromTime >= toTime)
                 {
-                    MessageBox.Show("Время начала должно быть меньше времени конца.");
+                    ModernMessageBox.Show("Время начала должно быть меньше времени конца.");
                     return;
                 }
                 // Проверка на пересечение с существующими бронями
@@ -67,7 +67,7 @@ namespace Kassa
                 );
                 if (overlaps)
                 {
-                    MessageBox.Show("В это время стол уже зарезервирован.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ModernMessageBox.ShowError("В это время стол уже зарезервирован.", "Ошибка");
                     return;
                 }
                 var reservation = new TableReservation
@@ -81,7 +81,7 @@ namespace Kassa
                 };
                 _context.TableReservations.Add(reservation);
                 _context.SaveChanges();
-                MessageBox.Show("Стол успешно зарезервирован!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                ModernMessageBox.ShowInformation("Стол успешно зарезервирован!", "Успех");
                 UpdateTimeline();
             }
             else
@@ -136,7 +136,7 @@ namespace Kassa
                 var reservation = _context.TableReservations.FirstOrDefault(r => r.Id == reservationId);
                 if (reservation != null)
                 {
-                    if (MessageBox.Show($"Отменить резерв для стола {reservation.TableNumber} ({reservation.Name})?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    if (ModernMessageBox.ShowQuestion($"Отменить резерв для стола {reservation.TableNumber} ({reservation.Name})?", "Подтверждение") == ModernMessageBoxResult.Yes)
                     {
                         _context.TableReservations.Remove(reservation);
                         _context.SaveChanges();

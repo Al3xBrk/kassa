@@ -504,7 +504,7 @@
                                                                            Foreground="#34495E"/>
 
                                                                 <Button Grid.Column="1"
-                                                                        Content="❌"
+                                                                        Content="-"
                                                                         Style="{StaticResource RemoveButtonStyle}"
                                                                         FontSize="10"
                                                                         Width="25"
