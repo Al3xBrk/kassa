@@ -123,7 +123,7 @@
                                 <!-- Кнопки ролей -->
                                 <Button Style="{StaticResource RoleButtonStyle}"
                                         Width="350"
-                                        Height="80"
+                                        Height="88"
                                         Click="AdminButton_Click"
                                         Margin="0,0,0,20">
                                         <StackPanel Orientation="Horizontal">
@@ -137,14 +137,14 @@
                                                                         FontWeight="Bold"/>
                                                         <TextBlock Text="Управление рестораном"
                                                                         FontSize="14"
-                                                                        Opacity="0.7"/>
+                                                                        Opacity="0.7" Height="26"/>
                                                 </StackPanel>
                                         </StackPanel>
                                 </Button>
 
                                 <Button Style="{StaticResource RoleButtonStyle}"
                                         Width="350"
-                                        Height="80"
+                                        Height="88"
                                         Click="CashierButton_Click">
                                         <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="💰"
