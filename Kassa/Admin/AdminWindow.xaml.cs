@@ -79,7 +79,7 @@ namespace Kassa
                 if (left < 0) left = 0;
                 var min = (int)left / 60;
                 var sec = (int)left % 60;
-                LogoutTimerTextBlock.Text = $"Автовыход через: {min:D2}:{sec:D2}";
+                LogoutTimerTextBlock.Text = $"{min:D2}:{sec:D2}";
             }
         }
 
