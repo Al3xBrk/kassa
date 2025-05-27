@@ -201,7 +201,8 @@ namespace Kassa
         }
         private void CreateOrder_Click(object sender, RoutedEventArgs e)
         {
-            // Проверяем, открыта ли смена у текущего кассира            if (_currentUser == null || !_context.Shifts.Any(s => s.CashierId == _currentUser.Id && s.ClosedAt == null))
+            // Проверяем, открыта ли смена у текущего кассира
+            if (_currentUser == null || !_context.Shifts.Any(s => s.CashierId == _currentUser.Id && s.ClosedAt == null))
             {
                 ModernMessageBox.ShowWarning("Необходимо открыть смену перед созданием заказов.", "Смена не открыта");
                 return;

@@ -8,68 +8,9 @@
         ResizeMode="NoResize"
         Background="#F5F7FA"
         FontFamily="Segoe UI">
-
         <Window.Resources>
-                <!-- Стиль для карточки контента -->
-                <Style x:Key="DialogCardStyle"
-                                TargetType="Border">
-                        <Setter Property="Background"
-                                        Value="White"/>
-                        <Setter Property="CornerRadius"
-                                        Value="15"/>
-                        <Setter Property="Effect">
-                                <Setter.Value>
-                                        <DropShadowEffect BlurRadius="15"
-                                                        ShadowDepth="3"
-                                                        Color="#40000000"
-                                                        Opacity="0.3"/>
-                                </Setter.Value>
-                        </Setter>
-                </Style>
-
-                <!-- Стиль для заголовка -->
-                <Style x:Key="HeaderTextStyle"
-                                TargetType="TextBlock">
-                        <Setter Property="FontSize"
-                                        Value="24"/>
-                        <Setter Property="FontWeight"
-                                        Value="Bold"/>
-                        <Setter Property="Foreground"
-                                        Value="#2C3E50"/>
-                        <Setter Property="HorizontalAlignment"
-                                        Value="Center"/>
-                        <Setter Property="Margin"
-                                        Value="0,0,0,25"/>
-                </Style>
-
-                <!-- Стиль для меток полей -->
-                <Style x:Key="FieldLabelStyle"
-                                TargetType="TextBlock">
-                        <Setter Property="FontSize"
-                                        Value="14"/>
-                        <Setter Property="FontWeight"
-                                        Value="SemiBold"/>
-                        <Setter Property="Foreground"
-                                        Value="#34495E"/>
-                        <Setter Property="Margin"
-                                        Value="0,0,0,5"/>
-                </Style>
-
-                <!-- Стиль для текстовых полей -->
-                <Style x:Key="ModernTextBoxStyle"
-                                TargetType="TextBox">
-                        <Setter Property="Height"
-                                        Value="40"/>
-                        <Setter Property="Padding"
-                                        Value="12,10"/>
-                        <Setter Property="FontSize"
-                                        Value="14"/>
-                        <Setter Property="BorderThickness"
-                                        Value="2"/>
-                        <Setter Property="BorderBrush"
-                                        Value="#BDC3C7"/>
-                        <Setter Property="Background"
-                                        Value="White"/>
+                <!-- Глобальный стиль для всех TextBox -->
+                <Style TargetType="TextBox">
                         <Setter Property="Template">
                                 <Setter.Value>
                                         <ControlTemplate TargetType="TextBox">
@@ -78,44 +19,114 @@
                                                         BorderThickness="{TemplateBinding BorderThickness}"
                                                         CornerRadius="8">
                                                         <ScrollViewer x:Name="PART_ContentHost"
-                                                                      Margin="{TemplateBinding Padding}"/>
+                                                                      Margin="{TemplateBinding Padding}"
+                                                                      Focusable="False"
+                                                                      HorizontalScrollBarVisibility="Hidden"
+                                                                      VerticalScrollBarVisibility="Hidden"/>
                                                 </Border>
-                                                <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsFocused"
-                                                                        Value="True">
-                                                                <Setter Property="BorderBrush"
-                                                                                Value="#3498DB"/>
-                                                        </Trigger>
-                                                        <Trigger Property="IsMouseOver"
-                                                                        Value="True">
-                                                                <Setter Property="BorderBrush"
-                                                                                Value="#5DADE2"/>
-                                                        </Trigger>
-                                                </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                 </Setter.Value>
                         </Setter>
                 </Style>
 
+                <!-- Стиль для карточки контента -->
+                <Style x:Key="DialogCardStyle"
+                       TargetType="Border">
+                        <Setter Property="Background"
+                                Value="White"/>
+                        <Setter Property="CornerRadius"
+                                Value="15"/>
+                        <Setter Property="Effect">
+                                <Setter.Value>
+                                        <DropShadowEffect BlurRadius="15"
+                                                          ShadowDepth="3"
+                                                          Color="#40000000"
+                                                          Opacity="0.3"/>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <!-- Стиль для заголовка -->
+                <Style x:Key="HeaderTextStyle"
+                       TargetType="TextBlock">
+                        <Setter Property="FontSize"
+                                Value="24"/>
+                        <Setter Property="FontWeight"
+                                Value="Bold"/>
+                        <Setter Property="Foreground"
+                                Value="#2C3E50"/>
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center"/>
+                        <Setter Property="Margin"
+                                Value="0,0,0,25"/>
+                </Style>
+
+                <!-- Стиль для меток полей -->
+                <Style x:Key="FieldLabelStyle"
+                       TargetType="TextBlock">
+                        <Setter Property="FontSize"
+                                Value="14"/>
+                        <Setter Property="FontWeight"
+                                Value="SemiBold"/>
+                        <Setter Property="Foreground"
+                                Value="#34495E"/>
+                        <Setter Property="Margin"
+                                Value="0,0,0,5"/>
+                </Style>
+                <!-- Стиль для текстовых полей -->
+                <Style x:Key="ModernTextBoxStyle"
+                       TargetType="TextBox">
+                        <Setter Property="Height"
+                                Value="40"/>
+                        <Setter Property="Padding"
+                                Value="12,10"/>
+                        <Setter Property="FontSize"
+                                Value="14"/>
+                        <Setter Property="BorderThickness"
+                                Value="2"/>
+                        <Setter Property="BorderBrush"
+                                Value="#BDC3C7"/>
+                        <Setter Property="Background"
+                                Value="White"/>
+                        <Setter Property="Foreground"
+                                Value="#2C3E50"/>
+                        <Setter Property="CaretBrush"
+                                Value="#2C3E50"/>
+                        <Setter Property="SelectionBrush"
+                                Value="#3498DB"/>
+                        <Style.Triggers>
+                                <Trigger Property="IsFocused"
+                                         Value="True">
+                                        <Setter Property="BorderBrush"
+                                                Value="#3498DB"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver"
+                                         Value="True">
+                                        <Setter Property="BorderBrush"
+                                                Value="#5DADE2"/>
+                                </Trigger>
+                        </Style.Triggers>
+                </Style>
+
                 <!-- Стиль для кнопки -->
                 <Style x:Key="PrimaryButtonStyle"
-                                TargetType="Button">
+                       TargetType="Button">
                         <Setter Property="Background"
-                                        Value="#27AE60"/>
+                                Value="#27AE60"/>
                         <Setter Property="Foreground"
-                                        Value="White"/>
+                                Value="White"/>
                         <Setter Property="BorderThickness"
-                                        Value="0"/>
+                                Value="0"/>
                         <Setter Property="Height"
-                                        Value="45"/>
+                                Value="45"/>
                         <Setter Property="Width"
-                                        Value="140"/>
+                                Value="140"/>
                         <Setter Property="FontSize"
-                                        Value="16"/>
+                                Value="16"/>
                         <Setter Property="FontWeight"
-                                        Value="SemiBold"/>
+                                Value="SemiBold"/>
                         <Setter Property="Cursor"
-                                        Value="Hand"/>
+                                Value="Hand"/>
                         <Setter Property="Template">
                                 <Setter.Value>
                                         <ControlTemplate TargetType="Button">
@@ -127,14 +138,14 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                         <Trigger Property="IsMouseOver"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#229954"/>
+                                                                        Value="#229954"/>
                                                         </Trigger>
                                                         <Trigger Property="IsPressed"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#1E8449"/>
+                                                                        Value="#1E8449"/>
                                                         </Trigger>
                                                 </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -162,13 +173,13 @@
                         <!-- Поле названия блюда -->
                         <StackPanel Margin="0,0,0,20">
                                 <StackPanel Orientation="Horizontal"
-                                                Margin="0,0,0,5">
+                                            Margin="0,0,0,5">
                                         <TextBlock Text="📝"
-                                                        FontSize="16"
-                                                        VerticalAlignment="Center"
-                                                        Margin="0,0,8,0"/>
+                                                   FontSize="16"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,8,0"/>
                                         <TextBlock Text="Название блюда"
-                                                        Style="{StaticResource FieldLabelStyle}"/>
+                                                   Style="{StaticResource FieldLabelStyle}"/>
                                 </StackPanel>
                                 <TextBox x:Name="DishNameTextBox"
                                          Style="{StaticResource ModernTextBoxStyle}"
@@ -178,13 +189,13 @@
                         <!-- Поле цены -->
                         <StackPanel Margin="0,0,0,20">
                                 <StackPanel Orientation="Horizontal"
-                                                Margin="0,0,0,5">
+                                            Margin="0,0,0,5">
                                         <TextBlock Text="💰"
-                                                        FontSize="16"
-                                                        VerticalAlignment="Center"
-                                                        Margin="0,0,8,0"/>
+                                                   FontSize="16"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,8,0"/>
                                         <TextBlock Text="Цена (руб.)"
-                                                        Style="{StaticResource FieldLabelStyle}"/>
+                                                   Style="{StaticResource FieldLabelStyle}"/>
                                 </StackPanel>
                                 <TextBox x:Name="DishPriceTextBox"
                                          Style="{StaticResource ModernTextBoxStyle}"
@@ -199,11 +210,11 @@
                                         Click="SaveButton_Click">
                                         <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="💾"
-                                                                FontSize="16"
-                                                                VerticalAlignment="Center"
-                                                                Margin="0,0,8,0"/>
+                                                           FontSize="16"
+                                                           VerticalAlignment="Center"
+                                                           Margin="0,0,8,0"/>
                                                 <TextBlock Text="Сохранить"
-                                                                VerticalAlignment="Center"/>
+                                                           VerticalAlignment="Center"/>
                                         </StackPanel>
                                 </Button>
                         </StackPanel>

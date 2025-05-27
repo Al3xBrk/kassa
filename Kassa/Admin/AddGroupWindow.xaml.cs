@@ -4,9 +4,7 @@ namespace Kassa
 {
     public partial class AddGroupWindow : Window
     {
-        public string GroupName => GroupNameTextBox.Text.Trim();
-
-        public AddGroupWindow(string? initialName = null)
+        public string GroupName => GroupNameTextBox.Text.Trim(); public AddGroupWindow(string? initialName = null)
         {
             InitializeComponent();
             if (!string.IsNullOrWhiteSpace(initialName))
@@ -17,7 +15,7 @@ namespace Kassa
         {
             if (string.IsNullOrWhiteSpace(GroupName))
             {
-                MessageBox.Show("Введите название группы.");
+                ModernMessageBox.ShowWarning("Введите название группы.", "Ошибка");
                 return;
             }
             DialogResult = true;

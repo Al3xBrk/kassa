@@ -26,9 +26,9 @@
                         Margin="0,0,0,15">
                         <Border.Effect>
                                 <DropShadowEffect BlurRadius="10"
-                                                ShadowDepth="2"
-                                                Color="#40000000"
-                                                Opacity="0.3"/>
+                                                  ShadowDepth="2"
+                                                  Color="#40000000"
+                                                  Opacity="0.3"/>
                         </Border.Effect>
                         <Grid>
                                 <Grid.ColumnDefinitions>
@@ -37,7 +37,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0"
-                                                VerticalAlignment="Center">
+                                            VerticalAlignment="Center">
                                         <TextBlock Text="🏪 Касса ресторана"
                                                    FontSize="28"
                                                    FontWeight="Bold"
@@ -47,7 +47,6 @@
                                                    FontWeight="SemiBold"
                                                    Margin="0,5,0,0"/>
                                 </StackPanel>
-
                                 <StackPanel Grid.Column="1"
                                             Orientation="Horizontal"
                                             VerticalAlignment="Center">
@@ -59,25 +58,39 @@
                                                 Style="{DynamicResource ModernButtonStyle}">
                                                 <StackPanel Orientation="Horizontal">
                                                         <Ellipse Width="12"
-                                                                        Height="12"
-                                                                        Fill="#2ECC71"
-                                                                        Margin="0,0,8,0"/>
+                                                                 Height="12"
+                                                                 Fill="#2ECC71"
+                                                                 Margin="0,0,8,0"/>
                                                         <TextBlock Text="Открыть смену"
-                                                                        FontWeight="SemiBold"/>
+                                                                   FontWeight="SemiBold"/>
                                                 </StackPanel>
                                         </Button>
                                         <Button x:Name="CloseShiftButton"
                                                 Width="180"
                                                 Height="45"
+                                                Margin="0,0,15,0"
                                                 Click="CloseShiftButton_Click"
                                                 Style="{DynamicResource ModernButtonStyle}">
                                                 <StackPanel Orientation="Horizontal">
                                                         <Ellipse Width="12"
-                                                                        Height="12"
-                                                                        Fill="#E74C3C"
-                                                                        Margin="0,0,8,0"/>
+                                                                 Height="12"
+                                                                 Fill="#E74C3C"
+                                                                 Margin="0,0,8,0"/>
                                                         <TextBlock Text="Закрыть смену"
-                                                                        FontWeight="SemiBold"/>
+                                                                   FontWeight="SemiBold"/>
+                                                </StackPanel>
+                                        </Button>
+                                        <Button Width="160"
+                                                Height="45"
+                                                Click="GoHome_Click"
+                                                Style="{DynamicResource SecondaryButtonStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                        <Rectangle Width="12"
+                                                                   Height="12"
+                                                                   Fill="White"
+                                                                   Margin="0,0,8,0"/>
+                                                        <TextBlock Text="На главную"
+                                                                   FontWeight="SemiBold"/>
                                                 </StackPanel>
                                         </Button>
                                 </StackPanel>
@@ -100,9 +113,9 @@
                                 <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                                 <Rectangle Width="16"
-                                                                Height="16"
-                                                                Fill="#3498DB"
-                                                                Margin="0,0,8,0"/>
+                                                           Height="16"
+                                                           Fill="#3498DB"
+                                                           Margin="0,0,8,0"/>
                                                 <TextBlock Text="Выбор зала"
                                                            FontSize="16"
                                                            FontWeight="SemiBold"
@@ -132,9 +145,9 @@
                                 <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                                 <Rectangle Width="16"
-                                                                Height="16"
-                                                                Fill="#E67E22"
-                                                                Margin="0,0,8,0"/>
+                                                           Height="16"
+                                                           Fill="#E67E22"
+                                                           Margin="0,0,8,0"/>
                                                 <TextBlock Text="Выбор стола"
                                                            FontSize="16"
                                                            FontWeight="SemiBold"
@@ -164,9 +177,9 @@
                                 <GroupBox.Header>
                                         <StackPanel Orientation="Horizontal">
                                                 <Rectangle Width="16"
-                                                                Height="16"
-                                                                Fill="#9B59B6"
-                                                                Margin="0,0,8,0"/>
+                                                           Height="16"
+                                                           Fill="#9B59B6"
+                                                           Margin="0,0,8,0"/>
                                                 <TextBlock Text="Управление заказами"
                                                            FontSize="16"
                                                            FontWeight="SemiBold"
@@ -179,30 +192,15 @@
                                         <Button Width="220"
                                                 Height="55"
                                                 Click="CreateOrder_Click"
-                                                Margin="0,0,20,0"
                                                 Style="{DynamicResource PrimaryButtonStyle}">
                                                 <StackPanel Orientation="Horizontal">
                                                         <Ellipse Width="14"
-                                                                        Height="14"
-                                                                        Fill="White"
-                                                                        Margin="0,0,10,0"/>
+                                                                 Height="14"
+                                                                 Fill="White"
+                                                                 Margin="0,0,10,0"/>
                                                         <TextBlock Text="Создать заказ"
-                                                                        FontWeight="Bold"
-                                                                        FontSize="16"/>
-                                                </StackPanel>
-                                        </Button>
-                                        <Button Width="180"
-                                                Height="55"
-                                                Click="GoHome_Click"
-                                                Style="{DynamicResource SecondaryButtonStyle}">
-                                                <StackPanel Orientation="Horizontal">
-                                                        <Rectangle Width="14"
-                                                                        Height="14"
-                                                                        Fill="White"
-                                                                        Margin="0,0,10,0"/>
-                                                        <TextBlock Text="На главную"
-                                                                        FontWeight="SemiBold"
-                                                                        FontSize="14"/>
+                                                                   FontWeight="Bold"
+                                                                   FontSize="16"/>
                                                 </StackPanel>
                                         </Button>
                                 </StackPanel>
@@ -217,9 +215,9 @@
                         Padding="20">
                         <Border.Effect>
                                 <DropShadowEffect BlurRadius="10"
-                                                ShadowDepth="2"
-                                                Color="#40000000"
-                                                Opacity="0.3"/>
+                                                  ShadowDepth="2"
+                                                  Color="#40000000"
+                                                  Opacity="0.3"/>
                         </Border.Effect>
                         <Grid>
                                 <Grid.RowDefinitions>
@@ -228,7 +226,7 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Grid.Row="0"
-                                                Margin="0,0,0,20">
+                                            Margin="0,0,0,20">
                                         <TextBlock Text="📊 История заказов последней смены"
                                                    FontSize="24"
                                                    FontWeight="Bold"
@@ -257,18 +255,18 @@
                                                                         BorderThickness="1">
                                                                         <Border.Background>
                                                                                 <LinearGradientBrush StartPoint="0,0"
-                                                                                                EndPoint="0,1">
+                                                                                                     EndPoint="0,1">
                                                                                         <GradientStop Color="#FFFFFF"
-                                                                                                        Offset="0"/>
+                                                                                                      Offset="0"/>
                                                                                         <GradientStop Color="#F8F9FA"
-                                                                                                        Offset="1"/>
+                                                                                                      Offset="1"/>
                                                                                 </LinearGradientBrush>
                                                                         </Border.Background>
                                                                         <Border.Effect>
                                                                                 <DropShadowEffect BlurRadius="5"
-                                                                                                ShadowDepth="1"
-                                                                                                Color="#20000000"
-                                                                                                Opacity="0.2"/>
+                                                                                                  ShadowDepth="1"
+                                                                                                  Color="#20000000"
+                                                                                                  Opacity="0.2"/>
                                                                         </Border.Effect>
                                                                         <Grid>
                                                                                 <Grid.ColumnDefinitions>
@@ -294,10 +292,10 @@
                                                                                                    Margin="0,0,0,5">
                                                         <Run Text="🕒 Создан: "/>
                                                         <Run Text="{Binding CreatedAt, StringFormat='dd.MM.yyyy HH:mm', Mode=OneWay}"
-                                                                                                                FontWeight="Medium"/>
+                                                                                                FontWeight="Medium"/>
                                                         <Run Text=" • ✅ Завершен: "/>
                                                         <Run Text="{Binding CompletedAt, StringFormat='dd.MM.yyyy HH:mm', Mode=OneWay}"
-                                                                                                                FontWeight="Medium"/>
+                                                                                                FontWeight="Medium"/>
                                                                                         </TextBlock>
 
                                                                                         <Border Background="#E8F5E8"
@@ -320,11 +318,11 @@
                                                                                                 Padding="15,10">
                                                                                                 <Border.Background>
                                                                                                         <LinearGradientBrush StartPoint="0,0"
-                                                                                                                        EndPoint="0,1">
+                                                                                                                             EndPoint="0,1">
                                                                                                                 <GradientStop Color="#27AE60"
-                                                                                                                                Offset="0"/>
+                                                                                                                              Offset="0"/>
                                                                                                                 <GradientStop Color="#2ECC71"
-                                                                                                                                Offset="1"/>
+                                                                                                                              Offset="1"/>
                                                                                                         </LinearGradientBrush>
                                                                                                 </Border.Background>
                                                                                                 <TextBlock Text="{Binding TotalAmount, StringFormat='{}{0:N2} BYN', Mode=OneWay}"
@@ -351,21 +349,21 @@
                         Padding="15,8">
                         <Border.Background>
                                 <LinearGradientBrush StartPoint="0,0"
-                                                EndPoint="0,1">
+                                                     EndPoint="0,1">
                                         <GradientStop Color="#34495E"
-                                                        Offset="0"/>
+                                                      Offset="0"/>
                                         <GradientStop Color="#2C3E50"
-                                                        Offset="1"/>
+                                                      Offset="1"/>
                                 </LinearGradientBrush>
                         </Border.Background>
                         <Border.Effect>
                                 <DropShadowEffect BlurRadius="5"
-                                                ShadowDepth="1"
-                                                Color="#40000000"
-                                                Opacity="0.3"/>
+                                                  ShadowDepth="1"
+                                                  Color="#40000000"
+                                                  Opacity="0.3"/>
                         </Border.Effect>
                         <StackPanel Orientation="Horizontal"
-                                        VerticalAlignment="Center">
+                                    VerticalAlignment="Center">
                                 <TextBlock Text="👤"
                                            FontSize="16"
                                            VerticalAlignment="Center"
@@ -393,19 +391,19 @@
         <Window.Resources>
                 <!-- Стиль для современных кнопок -->
                 <Style x:Key="ModernButtonStyle"
-                                TargetType="Button">
+                       TargetType="Button">
                         <Setter Property="Background"
-                                        Value="#3498DB"/>
+                                Value="#3498DB"/>
                         <Setter Property="Foreground"
-                                        Value="White"/>
+                                Value="White"/>
                         <Setter Property="BorderThickness"
-                                        Value="0"/>
+                                Value="0"/>
                         <Setter Property="FontWeight"
-                                        Value="SemiBold"/>
+                                Value="SemiBold"/>
                         <Setter Property="FontSize"
-                                        Value="14"/>
+                                Value="14"/>
                         <Setter Property="Cursor"
-                                        Value="Hand"/>
+                                Value="Hand"/>
                         <Setter Property="Template">
                                 <Setter.Value>
                                         <ControlTemplate TargetType="Button">
@@ -417,14 +415,14 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                         <Trigger Property="IsMouseOver"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#2980B9"/>
+                                                                        Value="#2980B9"/>
                                                         </Trigger>
                                                         <Trigger Property="IsPressed"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#21618C"/>
+                                                                        Value="#21618C"/>
                                                         </Trigger>
                                                 </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -434,19 +432,19 @@
 
                 <!-- Стиль для основных кнопок -->
                 <Style x:Key="PrimaryButtonStyle"
-                                TargetType="Button">
+                       TargetType="Button">
                         <Setter Property="Background"
-                                        Value="#27AE60"/>
+                                Value="#27AE60"/>
                         <Setter Property="Foreground"
-                                        Value="White"/>
+                                Value="White"/>
                         <Setter Property="BorderThickness"
-                                        Value="0"/>
+                                Value="0"/>
                         <Setter Property="FontWeight"
-                                        Value="Bold"/>
+                                Value="Bold"/>
                         <Setter Property="FontSize"
-                                        Value="16"/>
+                                Value="16"/>
                         <Setter Property="Cursor"
-                                        Value="Hand"/>
+                                Value="Hand"/>
                         <Setter Property="Template">
                                 <Setter.Value>
                                         <ControlTemplate TargetType="Button">
@@ -455,23 +453,23 @@
                                                         Padding="15,10">
                                                         <Border.Effect>
                                                                 <DropShadowEffect BlurRadius="5"
-                                                                                ShadowDepth="2"
-                                                                                Color="#40000000"
-                                                                                Opacity="0.3"/>
+                                                                                  ShadowDepth="2"
+                                                                                  Color="#40000000"
+                                                                                  Opacity="0.3"/>
                                                         </Border.Effect>
                                                         <ContentPresenter HorizontalAlignment="Center"
                                                                           VerticalAlignment="Center"/>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                         <Trigger Property="IsMouseOver"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#2ECC71"/>
+                                                                        Value="#2ECC71"/>
                                                         </Trigger>
                                                         <Trigger Property="IsPressed"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#229954"/>
+                                                                        Value="#229954"/>
                                                         </Trigger>
                                                 </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -481,19 +479,19 @@
 
                 <!-- Стиль для вторичных кнопок -->
                 <Style x:Key="SecondaryButtonStyle"
-                                TargetType="Button">
+                       TargetType="Button">
                         <Setter Property="Background"
-                                        Value="#95A5A6"/>
+                                Value="#95A5A6"/>
                         <Setter Property="Foreground"
-                                        Value="White"/>
+                                Value="White"/>
                         <Setter Property="BorderThickness"
-                                        Value="0"/>
+                                Value="0"/>
                         <Setter Property="FontWeight"
-                                        Value="SemiBold"/>
+                                Value="SemiBold"/>
                         <Setter Property="FontSize"
-                                        Value="14"/>
+                                Value="14"/>
                         <Setter Property="Cursor"
-                                        Value="Hand"/>
+                                Value="Hand"/>
                         <Setter Property="Template">
                                 <Setter.Value>
                                         <ControlTemplate TargetType="Button">
@@ -502,23 +500,23 @@
                                                         Padding="15,10">
                                                         <Border.Effect>
                                                                 <DropShadowEffect BlurRadius="5"
-                                                                                ShadowDepth="2"
-                                                                                Color="#40000000"
-                                                                                Opacity="0.3"/>
+                                                                                  ShadowDepth="2"
+                                                                                  Color="#40000000"
+                                                                                  Opacity="0.3"/>
                                                         </Border.Effect>
                                                         <ContentPresenter HorizontalAlignment="Center"
                                                                           VerticalAlignment="Center"/>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                         <Trigger Property="IsMouseOver"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#7F8C8D"/>
+                                                                        Value="#7F8C8D"/>
                                                         </Trigger>
                                                         <Trigger Property="IsPressed"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#5D6D7E"/>
+                                                                        Value="#5D6D7E"/>
                                                         </Trigger>
                                                 </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -528,15 +526,15 @@
 
                 <!-- Стиль для GroupBox -->
                 <Style x:Key="ModernGroupBoxStyle"
-                                TargetType="GroupBox">
+                       TargetType="GroupBox">
                         <Setter Property="Background"
-                                        Value="White"/>
+                                Value="White"/>
                         <Setter Property="BorderThickness"
-                                        Value="0"/>
+                                Value="0"/>
                         <Setter Property="Padding"
-                                        Value="15"/>
+                                Value="15"/>
                         <Setter Property="Margin"
-                                        Value="0"/>
+                                Value="0"/>
                         <Setter Property="Template">
                                 <Setter.Value>
                                         <ControlTemplate TargetType="GroupBox">
@@ -545,9 +543,9 @@
                                                         Padding="{TemplateBinding Padding}">
                                                         <Border.Effect>
                                                                 <DropShadowEffect BlurRadius="8"
-                                                                                ShadowDepth="2"
-                                                                                Color="#40000000"
-                                                                                Opacity="0.2"/>
+                                                                                  ShadowDepth="2"
+                                                                                  Color="#40000000"
+                                                                                  Opacity="0.2"/>
                                                         </Border.Effect>
                                                         <Grid>
                                                                 <Grid.RowDefinitions>
@@ -566,21 +564,21 @@
                 </Style>
                 <!-- Стиль для ComboBox -->
                 <Style x:Key="ModernComboBoxStyle"
-                                TargetType="ComboBox">
+                       TargetType="ComboBox">
                         <Setter Property="Background"
-                                        Value="#F8F9FA"/>
+                                Value="#F8F9FA"/>
                         <Setter Property="BorderBrush"
-                                        Value="#DEE2E6"/>
+                                Value="#DEE2E6"/>
                         <Setter Property="BorderThickness"
-                                        Value="2"/>
+                                Value="2"/>
                         <Setter Property="Padding"
-                                        Value="12,10"/>
+                                Value="12,10"/>
                         <Setter Property="FontSize"
-                                        Value="14"/>
+                                Value="14"/>
                         <Setter Property="Height"
-                                        Value="45"/>
+                                Value="45"/>
                         <Setter Property="MaxDropDownHeight"
-                                        Value="200"/>
+                                Value="200"/>
                         <Setter Property="Template">
                                 <Setter.Value>
                                         <ControlTemplate TargetType="ComboBox">
@@ -591,9 +589,9 @@
                                                         Height="{TemplateBinding Height}">
                                                         <Border.Effect>
                                                                 <DropShadowEffect BlurRadius="5"
-                                                                                ShadowDepth="1"
-                                                                                Color="#20000000"
-                                                                                Opacity="0.3"/>
+                                                                                  ShadowDepth="1"
+                                                                                  Color="#20000000"
+                                                                                  Opacity="0.3"/>
                                                         </Border.Effect>
                                                         <Grid>
                                                                 <ToggleButton x:Name="ToggleButton"
@@ -646,9 +644,9 @@
                                                                                 MinWidth="{TemplateBinding ActualWidth}">
                                                                                 <Border.Effect>
                                                                                         <DropShadowEffect BlurRadius="8"
-                                                                                                        ShadowDepth="2"
-                                                                                                        Color="#40000000"
-                                                                                                        Opacity="0.4"/>
+                                                                                                          ShadowDepth="2"
+                                                                                                          Color="#40000000"
+                                                                                                          Opacity="0.4"/>
                                                                                 </Border.Effect>
                                                                                 <ScrollViewer Margin="0"
                                                                                               SnapsToDevicePixels="True"
@@ -663,23 +661,23 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                         <Trigger Property="IsMouseOver"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="BorderBrush"
-                                                                                Value="#ADB5BD"/>
+                                                                        Value="#ADB5BD"/>
                                                                 <Setter Property="Background"
-                                                                                Value="#FFFFFF"/>
+                                                                        Value="#FFFFFF"/>
                                                         </Trigger>
                                                         <Trigger Property="IsFocused"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="BorderBrush"
-                                                                                Value="#3498DB"/>
+                                                                        Value="#3498DB"/>
                                                                 <Setter Property="Background"
-                                                                                Value="#FFFFFF"/>
+                                                                        Value="#FFFFFF"/>
                                                         </Trigger>
                                                         <Trigger Property="IsDropDownOpen"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="BorderBrush"
-                                                                                Value="#3498DB"/>
+                                                                        Value="#3498DB"/>
                                                         </Trigger>
                                                 </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -689,13 +687,13 @@
                 <!-- Стиль для элементов ComboBox -->
                 <Style TargetType="ComboBoxItem">
                         <Setter Property="Background"
-                                        Value="Transparent"/>
+                                Value="Transparent"/>
                         <Setter Property="BorderThickness"
-                                        Value="0"/>
+                                Value="0"/>
                         <Setter Property="Padding"
-                                        Value="12,8"/>
+                                Value="12,8"/>
                         <Setter Property="FontSize"
-                                        Value="14"/>
+                                Value="14"/>
                         <Setter Property="Template">
                                 <Setter.Value>
                                         <ControlTemplate TargetType="ComboBoxItem">
@@ -707,18 +705,18 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                         <Trigger Property="IsHighlighted"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#E3F2FD"/>
+                                                                        Value="#E3F2FD"/>
                                                                 <Setter Property="Foreground"
-                                                                                Value="#1976D2"/>
+                                                                        Value="#1976D2"/>
                                                         </Trigger>
                                                         <Trigger Property="IsSelected"
-                                                                        Value="True">
+                                                                 Value="True">
                                                                 <Setter Property="Background"
-                                                                                Value="#2196F3"/>
+                                                                        Value="#2196F3"/>
                                                                 <Setter Property="Foreground"
-                                                                                Value="White"/>
+                                                                        Value="White"/>
                                                         </Trigger>
                                                 </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -728,62 +726,62 @@
 
                 <!-- Стиль для карточек столов -->
                 <Style x:Key="TableCardStyle"
-                                TargetType="Border">
+                       TargetType="Border">
                         <Setter Property="Background">
                                 <Setter.Value>
                                         <LinearGradientBrush EndPoint="0.5,1"
-                                                        StartPoint="0.5,0">
+                                                             StartPoint="0.5,0">
                                                 <GradientStop Color="#FFFFFF"
-                                                                Offset="0"/>
+                                                              Offset="0"/>
                                                 <GradientStop Color="#F8F9FA"
-                                                                Offset="1"/>
+                                                              Offset="1"/>
                                         </LinearGradientBrush>
                                 </Setter.Value>
                         </Setter>
                         <Setter Property="BorderBrush"
-                                        Value="#DEE2E6"/>
+                                Value="#DEE2E6"/>
                         <Setter Property="BorderThickness"
-                                        Value="2"/>
+                                Value="2"/>
                         <Setter Property="CornerRadius"
-                                        Value="12"/>
+                                Value="12"/>
                         <Setter Property="Width"
-                                        Value="160"/>
+                                Value="160"/>
                         <Setter Property="Height"
-                                        Value="100"/>
+                                Value="100"/>
                         <Setter Property="Margin"
-                                        Value="8"/>
+                                Value="8"/>
                         <Setter Property="Cursor"
-                                        Value="Hand"/>
+                                Value="Hand"/>
                         <Setter Property="Effect">
                                 <Setter.Value>
                                         <DropShadowEffect BlurRadius="8"
-                                                        ShadowDepth="2"
-                                                        Color="#20000000"
-                                                        Opacity="0.3"/>
+                                                          ShadowDepth="2"
+                                                          Color="#20000000"
+                                                          Opacity="0.3"/>
                                 </Setter.Value>
                         </Setter>
                         <Style.Triggers>
                                 <Trigger Property="IsMouseOver"
-                                                Value="True">
+                                         Value="True">
                                         <Setter Property="BorderBrush"
-                                                        Value="#3498DB"/>
+                                                Value="#3498DB"/>
                                         <Setter Property="Background">
                                                 <Setter.Value>
                                                         <LinearGradientBrush EndPoint="0.5,1"
-                                                                        StartPoint="0.5,0">
+                                                                             StartPoint="0.5,0">
                                                                 <GradientStop Color="#EBF3FD"
-                                                                                Offset="0"/>
+                                                                              Offset="0"/>
                                                                 <GradientStop Color="#D6E9FC"
-                                                                                Offset="1"/>
+                                                                              Offset="1"/>
                                                         </LinearGradientBrush>
                                                 </Setter.Value>
                                         </Setter>
                                         <Setter Property="Effect">
                                                 <Setter.Value>
                                                         <DropShadowEffect BlurRadius="12"
-                                                                        ShadowDepth="3"
-                                                                        Color="#30000000"
-                                                                        Opacity="0.4"/>
+                                                                          ShadowDepth="3"
+                                                                          Color="#30000000"
+                                                                          Opacity="0.4"/>
                                                 </Setter.Value>
                                         </Setter>
                                 </Trigger>
@@ -792,58 +790,58 @@
 
                 <!-- Стиль для выбранной карточки стола -->
                 <Style x:Key="SelectedTableCardStyle"
-                                TargetType="Border"
-                                BasedOn="{StaticResource TableCardStyle}">
+                       TargetType="Border"
+                       BasedOn="{StaticResource TableCardStyle}">
                         <Setter Property="Background">
                                 <Setter.Value>
                                         <LinearGradientBrush EndPoint="0.5,1"
-                                                        StartPoint="0.5,0">
+                                                             StartPoint="0.5,0">
                                                 <GradientStop Color="#3498DB"
-                                                                Offset="0"/>
+                                                              Offset="0"/>
                                                 <GradientStop Color="#2980B9"
-                                                                Offset="1"/>
+                                                              Offset="1"/>
                                         </LinearGradientBrush>
                                 </Setter.Value>
                         </Setter>
                         <Setter Property="BorderBrush"
-                                        Value="#2C3E50"/>
+                                Value="#2C3E50"/>
                         <Setter Property="Effect">
                                 <Setter.Value>
                                         <DropShadowEffect BlurRadius="15"
-                                                        ShadowDepth="4"
-                                                        Color="#40000000"
-                                                        Opacity="0.5"/>
+                                                          ShadowDepth="4"
+                                                          Color="#40000000"
+                                                          Opacity="0.5"/>
                                 </Setter.Value>
                         </Setter>
                 </Style>
 
                 <!-- Стиль для текста столов -->
                 <Style x:Key="TableTextStyle"
-                                TargetType="TextBlock">
+                       TargetType="TextBlock">
                         <Setter Property="FontSize"
-                                        Value="14"/>
+                                Value="14"/>
                         <Setter Property="FontWeight"
-                                        Value="SemiBold"/>
+                                Value="SemiBold"/>
                         <Setter Property="Foreground"
-                                        Value="#2C3E50"/>
+                                Value="#2C3E50"/>
                         <Setter Property="TextAlignment"
-                                        Value="Center"/>
+                                Value="Center"/>
                         <Setter Property="VerticalAlignment"
-                                        Value="Center"/>
+                                Value="Center"/>
                         <Setter Property="HorizontalAlignment"
-                                        Value="Center"/>
+                                Value="Center"/>
                         <Setter Property="LineHeight"
-                                        Value="18"/>
+                                Value="18"/>
                 </Style>
 
                 <!-- Стиль для текста выбранного стола -->
                 <Style x:Key="SelectedTableTextStyle"
-                                TargetType="TextBlock"
-                                BasedOn="{StaticResource TableTextStyle}">
+                       TargetType="TextBlock"
+                       BasedOn="{StaticResource TableTextStyle}">
                         <Setter Property="Foreground"
-                                        Value="White"/>
+                                Value="White"/>
                         <Setter Property="FontWeight"
-                                        Value="Bold"/>
+                                Value="Bold"/>
                 </Style>
         </Window.Resources>
 </Window>

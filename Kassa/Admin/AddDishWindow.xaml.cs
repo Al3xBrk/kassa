@@ -11,17 +11,16 @@ namespace Kassa
         {
             InitializeComponent();
         }
-
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(DishName))
             {
-                MessageBox.Show("Введите название блюда.");
+                ModernMessageBox.ShowWarning("Введите название блюда.", "Ошибка");
                 return;
             }
             if (DishPrice == null)
             {
-                MessageBox.Show("Введите корректную цену.");
+                ModernMessageBox.ShowWarning("Введите корректную цену.", "Ошибка");
                 return;
             }
             DialogResult = true;
