@@ -20,8 +20,8 @@ namespace Kassa
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=kassa;TrustServerCertificate=True;");
-                //optionsBuilder.UseNpgsql("Host=localhost;Database=kassa;Username=postgres;Password=manager");
+                //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=kassa;TrustServerCertificate=True;");
+                optionsBuilder.UseNpgsql("Host=localhost;Database=kassa;Username=postgres;Password=manager");
             }
         }
 
@@ -65,7 +65,7 @@ namespace Kassa
 
             modelBuilder.Entity<TableReservation>()
                 .Property(r => r.Date)
-                .HasColumnType("datetime2");
+                .HasColumnType("timestamp without time zone");
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
@@ -85,19 +85,19 @@ namespace Kassa
                 .HasForeignKey(oi => oi.DishGroupId)
                 .OnDelete(DeleteBehavior.Restrict); modelBuilder.Entity<Order>()
                 .Property(o => o.OrderDate)
-                .HasColumnType("datetime2");
+                .HasColumnType("timestamp without time zone");
 
             modelBuilder.Entity<Order>()
                 .Property(o => o.PaymentTime)
-                .HasColumnType("datetime2");
+                .HasColumnType("timestamp without time zone");
 
             modelBuilder.Entity<Shift>()
                 .Property(o => o.OpenedAt)
-                .HasColumnType("datetime2");
+                .HasColumnType("timestamp without time zone");
 
             modelBuilder.Entity<Shift>()
                 .Property(o => o.ClosedAt)
-                .HasColumnType("datetime2");
+                .HasColumnType("timestamp without time zone");
 
             modelBuilder.Entity<User>(entity =>
             {

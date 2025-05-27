@@ -122,7 +122,50 @@ namespace Kassa
                 }
             }
 
+            // Показать чек сразу после подтверждения оплаты
+            ShowReceipt();
+
             DialogResult = true;
+        }
+
+        private void ShowReceipt()
+        {
+            // Получаем ФИО кассира
+            string? cashierName = _order.User?.FullName;
+            if (string.IsNullOrWhiteSpace(cashierName))
+            {
+                // Пробуем загрузить пользователя из базы, если не подгружен
+                var dbUser = new KassaContext().Users.FirstOrDefault(u => u.Id == _order.UserId);
+                cashierName = dbUser?.FullName ?? "-";
+            }
+            // Время создания заказа
+            DateTime orderDate = _order.OrderDate;
+            // Время оплаты
+            DateTime? paymentTime = DateTime.Now;
+            // Список блюд
+            var dishes = _order.Items?.Select(i => new DishViewModel { Name = i.Dish.Name, Price = i.Price }).ToList() ?? new List<DishViewModel>();
+            // Сумма заказа
+            decimal total = _order.TotalAmount;
+            // Способ оплаты
+            string paymentMethod = SelectedPaymentMethod?.Name ?? "-";
+            // Получено и сдача (только для наличных)
+            decimal? cashGiven = CashGiven;
+            decimal? change = Change;
+
+            var wnd = new PrintReceiptWindow(
+                orderDate,
+                dishes,
+                total,
+                paymentMethod,
+                cashierName,
+                paymentTime,
+                cashGiven,
+                change)
+            {
+                Owner = this
+            };
+            wnd.Title = "Чек заказа";
+            wnd.ShowDialog();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
