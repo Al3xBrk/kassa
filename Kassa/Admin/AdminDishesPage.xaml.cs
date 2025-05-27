@@ -38,10 +38,9 @@ namespace Kassa
                 }
             }
         }
-
         private void AddGroup_Click(object sender, RoutedEventArgs e)
         {
-            var addGroupWindow = new AddGroupWindow();
+            var addGroupWindow = new AddGroupWindow { Owner = Window.GetWindow(this) };
             if (addGroupWindow.ShowDialog() == true)
             {
                 var groupName = addGroupWindow.GroupName;
@@ -109,7 +108,7 @@ namespace Kassa
                 var group = _context.DishGroups.FirstOrDefault(g => g.Name == groupName);
                 if (group != null)
                 {
-                    var editGroupWindow = new AddGroupWindow(group.Name);
+                    var editGroupWindow = new AddGroupWindow(group.Name) { Owner = Window.GetWindow(this) };
                     if (editGroupWindow.ShowDialog() == true)
                     {
                         var newName = editGroupWindow.GroupName;

@@ -4,7 +4,7 @@
         Title="🍽️ Добавить блюдо - Ресторанная система"
         Height="429"
         Width="450"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Background="#F5F7FA"
         FontFamily="Segoe UI">
@@ -207,7 +207,8 @@
                                     HorizontalAlignment="Right"
                                     Margin="0,25,0,0">
                                 <Button Style="{StaticResource PrimaryButtonStyle}"
-                                        Click="SaveButton_Click" Width="162">
+                                        Click="SaveButton_Click"
+                                                Width="162">
                                         <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="💾"
                                                            FontSize="16"
