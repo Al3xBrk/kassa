@@ -7,4 +7,5 @@ public class Dish
     public decimal Price { get; set; }
     public int DishGroupId { get; set; }
     public DishGroup DishGroup { get; set; } = null!; // Non-nullable reference type with default initialization
+    public bool IsDeleted { get; set; } = false; // Мягкое удаление
 }

@@ -16,7 +16,7 @@
     <Window.Resources>
         <!-- Стиль для групп блюд -->
         <Style x:Key="GroupsListBoxStyle"
-                TargetType="ListBox">
+               TargetType="ListBox">
             <Setter Property="Background"
                     Value="White"/>
             <Setter Property="BorderThickness"
@@ -33,9 +33,9 @@
                                 Padding="{TemplateBinding Padding}">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="8"
-                                        ShadowDepth="2"
-                                        Color="#20000000"
-                                        Opacity="0.3"/>
+                                                  ShadowDepth="2"
+                                                  Color="#20000000"
+                                                  Opacity="0.3"/>
                             </Border.Effect>
                             <ScrollViewer Focusable="False"
                                           VerticalScrollBarVisibility="Auto"
@@ -50,7 +50,7 @@
 
         <!-- Стиль для элементов групп -->
         <Style x:Key="GroupItemStyle"
-                TargetType="ListBoxItem">
+               TargetType="ListBoxItem">
             <Setter Property="Background"
                     Value="Transparent"/>
             <Setter Property="BorderThickness"
@@ -72,7 +72,7 @@
                                 <Style TargetType="Border">
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver"
-                                                Value="True">
+                                                 Value="True">
                                             <Setter Property="Background"
                                                     Value="#E8F4FD"/>
                                             <Setter Property="BorderBrush"
@@ -84,7 +84,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected"
-                                    Value="True">
+                                     Value="True">
                                 <Setter Property="Background"
                                         Value="#3498DB"/>
                                 <Setter Property="Foreground"
@@ -98,7 +98,7 @@
 
         <!-- Стиль для блюд -->
         <Style x:Key="DishCardStyle"
-                TargetType="Border">
+               TargetType="Border">
             <Setter Property="Background"
                     Value="White"/>
             <Setter Property="BorderBrush"
@@ -114,22 +114,22 @@
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect BlurRadius="5"
-                            ShadowDepth="1"
-                            Color="#20000000"
-                            Opacity="0.2"/>
+                                      ShadowDepth="1"
+                                      Color="#20000000"
+                                      Opacity="0.2"/>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver"
-                        Value="True">
+                         Value="True">
                     <Setter Property="BorderBrush"
                             Value="#3498DB"/>
                     <Setter Property="Effect">
                         <Setter.Value>
                             <DropShadowEffect BlurRadius="8"
-                                    ShadowDepth="2"
-                                    Color="#30000000"
-                                    Opacity="0.3"/>
+                                              ShadowDepth="2"
+                                              Color="#30000000"
+                                              Opacity="0.3"/>
                         </Setter.Value>
                     </Setter>
                 </Trigger>
@@ -138,7 +138,7 @@
 
         <!-- Стиль для современных кнопок -->
         <Style x:Key="ModernButtonStyle"
-                TargetType="Button">
+               TargetType="Button">
             <Setter Property="Background"
                     Value="#3498DB"/>
             <Setter Property="Foreground"
@@ -159,21 +159,21 @@
                                 Padding="12,8">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="3"
-                                        ShadowDepth="1"
-                                        Color="#20000000"
-                                        Opacity="0.3"/>
+                                                  ShadowDepth="1"
+                                                  Color="#20000000"
+                                                  Opacity="0.3"/>
                             </Border.Effect>
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
-                                    Value="True">
+                                     Value="True">
                                 <Setter Property="Background"
                                         Value="#2980B9"/>
                             </Trigger>
                             <Trigger Property="IsPressed"
-                                    Value="True">
+                                     Value="True">
                                 <Setter Property="Background"
                                         Value="#21618C"/>
                             </Trigger>
@@ -185,47 +185,69 @@
 
         <!-- Стиль для кнопки добавления -->
         <Style x:Key="AddButtonStyle"
-                TargetType="Button"
-                BasedOn="{StaticResource ModernButtonStyle}">
+               TargetType="Button"
+               BasedOn="{StaticResource ModernButtonStyle}">
             <Setter Property="Background"
                     Value="#27AE60"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver"
-                        Value="True">
+                         Value="True">
                     <Setter Property="Background"
                             Value="#2ECC71"/>
                 </Trigger>
                 <Trigger Property="IsPressed"
-                        Value="True">
+                         Value="True">
                     <Setter Property="Background"
                             Value="#229954"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
-
         <!-- Стиль для кнопки удаления -->
         <Style x:Key="RemoveButtonStyle"
-                TargetType="Button"
-                BasedOn="{StaticResource ModernButtonStyle}">
+               TargetType="Button">
             <Setter Property="Background"
                     Value="#E74C3C"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                        Value="True">
-                    <Setter Property="Background"
-                            Value="#C0392B"/>
-                </Trigger>
-                <Trigger Property="IsPressed"
-                        Value="True">
-                    <Setter Property="Background"
-                            Value="#A93226"/>
-                </Trigger>
-            </Style.Triggers>
+            <Setter Property="Foreground"
+                    Value="White"/>
+            <Setter Property="BorderThickness"
+                    Value="0"/>
+            <Setter Property="FontWeight"
+                    Value="Bold"/>
+            <Setter Property="FontSize"
+                    Value="14"/>
+            <Setter Property="Cursor"
+                    Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="0">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="0"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        Value="#C0392B"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        Value="#A93226"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Стиль для основных кнопок действий -->
         <Style x:Key="ActionButtonStyle"
-                TargetType="Button">
+               TargetType="Button">
             <Setter Property="Background"
                     Value="#27AE60"/>
             <Setter Property="Foreground"
@@ -250,21 +272,21 @@
                                 Padding="20,10">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="8"
-                                        ShadowDepth="3"
-                                        Color="#40000000"
-                                        Opacity="0.4"/>
+                                                  ShadowDepth="3"
+                                                  Color="#40000000"
+                                                  Opacity="0.4"/>
                             </Border.Effect>
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver"
-                                    Value="True">
+                                     Value="True">
                                 <Setter Property="Background"
                                         Value="#2ECC71"/>
                             </Trigger>
                             <Trigger Property="IsPressed"
-                                    Value="True">
+                                     Value="True">
                                 <Setter Property="Background"
                                         Value="#229954"/>
                             </Trigger>
@@ -276,18 +298,18 @@
 
         <!-- Стиль для оплаты -->
         <Style x:Key="PayButtonStyle"
-                TargetType="Button"
-                BasedOn="{StaticResource ActionButtonStyle}">
+               TargetType="Button"
+               BasedOn="{StaticResource ActionButtonStyle}">
             <Setter Property="Background"
                     Value="#E67E22"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver"
-                        Value="True">
+                         Value="True">
                     <Setter Property="Background"
                             Value="#F39C12"/>
                 </Trigger>
                 <Trigger Property="IsPressed"
-                        Value="True">
+                         Value="True">
                     <Setter Property="Background"
                             Value="#D68910"/>
                 </Trigger>
@@ -310,9 +332,9 @@
                 Margin="0,0,0,20">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10"
-                        ShadowDepth="2"
-                        Color="#40000000"
-                        Opacity="0.3"/>
+                                  ShadowDepth="2"
+                                  Color="#40000000"
+                                  Opacity="0.3"/>
             </Border.Effect>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -321,7 +343,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0"
-                        VerticalAlignment="Center">
+                            VerticalAlignment="Center">
                     <TextBlock Text="🍽️ Создание заказа"
                                FontSize="24"
                                FontWeight="Bold"
@@ -362,9 +384,9 @@
                     Margin="0,0,10,0">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="8"
-                            ShadowDepth="2"
-                            Color="#20000000"
-                            Opacity="0.3"/>
+                                      ShadowDepth="2"
+                                      Color="#20000000"
+                                      Opacity="0.3"/>
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="📋 Группы блюд"
@@ -388,9 +410,9 @@
                     Margin="5,0">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="8"
-                            ShadowDepth="2"
-                            Color="#20000000"
-                            Opacity="0.3"/>
+                                      ShadowDepth="2"
+                                      Color="#20000000"
+                                      Opacity="0.3"/>
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="🍕 Меню блюд"
@@ -414,7 +436,7 @@
                                             </Grid.ColumnDefinitions>
 
                                             <StackPanel Grid.Column="0"
-                                                    VerticalAlignment="Center">
+                                                        VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Name}"
                                                            FontSize="15"
                                                            FontWeight="SemiBold"
@@ -454,9 +476,9 @@
                     Margin="10,0,0,0">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="8"
-                            ShadowDepth="2"
-                            Color="#20000000"
-                            Opacity="0.3"/>
+                                      ShadowDepth="2"
+                                      Color="#20000000"
+                                      Opacity="0.3"/>
                 </Border.Effect>
                 <StackPanel>
                     <TextBlock Text="🛒 Состав заказа"
@@ -502,11 +524,10 @@
                                                                            FontSize="13"
                                                                            VerticalAlignment="Center"
                                                                            Foreground="#34495E"/>
-
                                                                 <Button Grid.Column="1"
-                                                                        Content="-"
+                                                                        Content="×"
                                                                         Style="{StaticResource RemoveButtonStyle}"
-                                                                        FontSize="10"
+                                                                        FontSize="14"
                                                                         Width="25"
                                                                         Height="25"
                                                                         Click="RemoveDishFromOrder_Click"
@@ -534,9 +555,9 @@
                 Margin="0,20,0,0">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10"
-                        ShadowDepth="2"
-                        Color="#40000000"
-                        Opacity="0.3"/>
+                                  ShadowDepth="2"
+                                  Color="#40000000"
+                                  Opacity="0.3"/>
             </Border.Effect>
             <Grid>
                 <Grid.ColumnDefinitions>

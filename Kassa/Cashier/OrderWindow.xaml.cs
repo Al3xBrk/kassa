@@ -62,7 +62,7 @@ namespace Kassa
 
         private void LoadGroups()
         {
-            var groups = _context.DishGroups.Include(g => g.Dishes).ToList();
+            var groups = _context.DishGroups.Include(g => g.Dishes).Where(g => !g.IsDeleted).ToList();
             Console.WriteLine($"Loaded {groups.Count} groups from the database.");
 
             var groupDictionary = new Dictionary<string, List<DishViewModel>>();
@@ -70,7 +70,7 @@ namespace Kassa
             foreach (var group in groups)
             {
                 Console.WriteLine($"Group: {group.Name}, Dishes: {group.Dishes.Count}");
-                groupDictionary[group.Name] = group.Dishes.Select(d => new DishViewModel
+                groupDictionary[group.Name] = group.Dishes.Where(d => !d.IsDeleted).Select(d => new DishViewModel
                 {
                     Id = d.Id,
                     DishGroupId = group.Id,
@@ -188,7 +188,7 @@ namespace Kassa
                     HallId = _hallId,
                     TableNumber = _tableNumber,
                     TotalAmount = total,
-                    OrderDate = DateTime.Now, // окальное время для PostgreSQL (datetime2)
+                    OrderDate = DateTime.Now, // окальное время для PostgreSQL (timestamp without time zone)
                     StatusId = 1, // "Создан"
                     UserId = _userId
                 };

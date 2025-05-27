@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Кассир - Система управления рестораном"
-        Height="750"
+        Height="812"
         Width="1200"
         WindowStartupLocation="CenterScreen"
         Background="#F5F7FA"

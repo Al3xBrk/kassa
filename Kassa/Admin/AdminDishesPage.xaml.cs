@@ -13,14 +13,29 @@ namespace Kassa
             InitializeComponent();
             LoadGroups();
         }
-
         private void LoadGroups()
         {
             GroupsListBox.Items.Clear();
-            var groups = _context.DishGroups.ToList();
+            var groups = _context.DishGroups.Where(g => !g.IsDeleted).ToList();
             foreach (var group in groups)
             {
                 GroupsListBox.Items.Add(group.Name);
+            }
+        }
+
+        private void RefreshDishesForSelectedGroup()
+        {
+            if (GroupsListBox.SelectedItem is string groupName)
+            {
+                var group = _context.DishGroups.Include(g => g.Dishes).FirstOrDefault(g => g.Name == groupName);
+                if (group != null)
+                {
+                    DishesListBox.Items.Clear();
+                    foreach (var dish in group.Dishes.Where(d => !d.IsDeleted))
+                    {
+                        DishesListBox.Items.Add($"{dish.Name} ({dish.Price:C2})");
+                    }
+                }
             }
         }
 
@@ -43,7 +58,6 @@ namespace Kassa
                 }
             }
         }
-
         private void GroupsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (GroupsListBox.SelectedItem is string groupName)
@@ -52,7 +66,7 @@ namespace Kassa
                 if (group != null)
                 {
                     DishesListBox.Items.Clear();
-                    foreach (var dish in group.Dishes)
+                    foreach (var dish in group.Dishes.Where(d => !d.IsDeleted))
                     {
                         DishesListBox.Items.Add($"{dish.Name} ({dish.Price:C2})");
                     }
@@ -114,7 +128,6 @@ namespace Kassa
                 }
             }
         }
-
         private void DeleteGroup_Click(object sender, RoutedEventArgs e)
         {
             string? groupName = (sender as Button)?.DataContext as string;
@@ -125,10 +138,34 @@ namespace Kassa
                 var group = _context.DishGroups.Include(g => g.Dishes).FirstOrDefault(g => g.Name == groupName);
                 if (group != null)
                 {
-                    if (ModernMessageBox.ShowQuestion($"Удалить группу '{group.Name}' и все её блюда?", "Подтверждение") == ModernMessageBoxResult.Yes)
+                    if (ModernMessageBox.ShowQuestion($"Удалить группу '{group.Name}'?", "Подтверждение") == ModernMessageBoxResult.Yes)
                     {
-                        _context.Dishes.RemoveRange(group.Dishes);
-                        _context.DishGroups.Remove(group);
+                        // Проверяем, есть ли заказы с блюдами из этой группы
+                        var hasOrdersWithDishes = _context.OrderItems.Any(oi => oi.DishGroupId == group.Id);
+
+                        if (hasOrdersWithDishes)
+                        {
+                            // Мягкое удаление - помечаем группу и все её блюда как удаленные
+                            group.IsDeleted = true;
+                            foreach (var dish in group.Dishes)
+                            {
+                                dish.IsDeleted = true;
+                            }
+
+                            ModernMessageBox.ShowInformation(
+                                $"Группа '{group.Name}' и все её блюда помечены как удаленные, так как используются в существующих заказах.\n" +
+                                "Они больше не будут отображаться в меню, но останутся в истории заказов.",
+                                "Группа скрыта"
+                            );
+                        }
+                        else
+                        {
+                            // Жесткое удаление, если блюда группы не используются в заказах
+                            _context.Dishes.RemoveRange(group.Dishes);
+                            _context.DishGroups.Remove(group);
+                            ModernMessageBox.ShowSuccess($"Группа '{group.Name}' и все её блюда полностью удалены.");
+                        }
+
                         _context.SaveChanges();
                         LoadGroups();
                         DishesListBox.Items.Clear();
@@ -154,13 +191,12 @@ namespace Kassa
                     {
                         var addDishWindow = new AddDishWindow { Owner = Window.GetWindow(this) };
                         addDishWindow.DishNameTextBox.Text = dish.Name;
-                        addDishWindow.DishPriceTextBox.Text = dish.Price.ToString();
-                        if (addDishWindow.ShowDialog() == true)
+                        addDishWindow.DishPriceTextBox.Text = dish.Price.ToString(); if (addDishWindow.ShowDialog() == true)
                         {
                             dish.Name = addDishWindow.DishName;
                             dish.Price = addDishWindow.DishPrice ?? dish.Price;
                             _context.SaveChanges();
-                            GroupsListBox_SelectionChanged(null, null);
+                            RefreshDishesForSelectedGroup();
                         }
                     }
                 }
@@ -184,9 +220,42 @@ namespace Kassa
                     {
                         if (ModernMessageBox.ShowQuestion($"Удалить блюдо '{dish.Name}'?", "Подтверждение") == ModernMessageBoxResult.Yes)
                         {
-                            _context.Dishes.Remove(dish);
+                            // Проверяем, есть ли заказы с этим блюдом
+                            var hasOrdersWithDish = _context.OrderItems.Any(oi => oi.DishId == dish.Id);
+
+                            if (hasOrdersWithDish)
+                            {
+                                // Мягкое удаление - помечаем блюдо как удаленное
+                                dish.IsDeleted = true;
+
+                                ModernMessageBox.ShowInformation(
+                                    $"Блюдо '{dish.Name}' помечено как удаленное, так как используется в существующих заказах.\n" +
+                                    "Оно больше не будет отображаться в меню, но останется в истории заказов.",
+                                    "Блюдо скрыто"
+                                );
+                            }
+                            else
+                            {
+                                // Жесткое удаление, если блюдо не используется в заказах
+                                _context.Dishes.Remove(dish);
+                                ModernMessageBox.ShowSuccess($"Блюдо '{dish.Name}' полностью удалено.");
+                            }
+
                             _context.SaveChanges();
-                            GroupsListBox_SelectionChanged(null, null);
+
+                            // Обновляем отображение списка блюд
+                            if (GroupsListBox.SelectedItem is string selectedGroupName)
+                            {
+                                var selectedGroup = _context.DishGroups.Include(g => g.Dishes).FirstOrDefault(g => g.Name == selectedGroupName);
+                                if (selectedGroup != null)
+                                {
+                                    DishesListBox.Items.Clear();
+                                    foreach (var d in selectedGroup.Dishes.Where(d => !d.IsDeleted))
+                                    {
+                                        DishesListBox.Items.Add($"{d.Name} ({d.Price:C2})");
+                                    }
+                                }
+                            }
                         }
                     }
                 }
